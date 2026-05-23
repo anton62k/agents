@@ -6,7 +6,7 @@ stabilization.
 ## Branches
 
 - master/main: integration branch.
-- release/x.y.x: release stabilization branch.
+- release/x.y.z: release stabilization branch.
 
 ## Flow
 
