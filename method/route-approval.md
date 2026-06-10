@@ -7,26 +7,9 @@ Route approval is the fast human review before execution starts.
 The orchestrator may choose a pipeline, but the human confirms the route before
 agents spend time or mutate a working tree.
 
-## Proposed Run Plan
+## Proposed Route Plan
 
-Show this before execution:
-
-```yaml
-request_summary: ""
-selected_pipeline: ""
-why: ""
-execution_mode: codex | claude-code | revo-future
-required_roles: []
-alternative_roles: [] # structure is defined in method/intake.md
-optional_roles: []
-surface: ""
-stack: ""
-frameworks: []
-local_values_needed: []
-missing_capabilities: []
-human_gates: []
-first_artifacts: []
-```
+Before execution, show the route plan defined in `route-plan.md`.
 
 ## Human Choices
 
@@ -49,6 +32,8 @@ first_artifacts: []
 
 - Route approval is required before starting a multi-role pipeline.
 - Keep this gate lightweight; do not ask for approval on every step.
+- Approval changes `route_plan.approval.status` from `proposed` to `approved`,
+  `changed`, or `rejected`.
 - If `missing_capabilities` is not empty, default recommendation is
   `method first` or `analysis only`, not blind execution.
 - Record the approved route in run state, not in method markdown.
