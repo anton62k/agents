@@ -18,6 +18,15 @@ engineering practices.
 - When adding a new practice, add a checklist or template if it changes how an
   agent should work.
 - Avoid duplicating the same rule across many files. Link to the canonical file.
+- Do not commit concrete local environment values in markdown: personal GitHub
+  accounts, absolute home paths, hostnames, namespaces, token names that expose
+  private infrastructure, passwords, API keys, or one-machine paths. Use
+  placeholders and the env boundary in `method/env-boundary.md`.
+- Role and pipeline markdown is method, not run state. Runtime status, local
+  account selection, approvals, PR numbers, and deployment coordinates belong in
+  a run ledger or ignored local overlay.
+- When adding or changing roles, stacks, frameworks, or pipelines, follow
+  `method/maintenance.md` and `method/role-composition.md`.
 
 ## Quality Bar
 

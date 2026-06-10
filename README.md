@@ -27,6 +27,11 @@ quality gates, Sonar checks, PR review, and CI repair.
 - `templates/` - starter files copied into product repositories.
 - `skills/` - agent skill definitions and operational workflows.
 - `checklists/` - short acceptance checklists.
+- `method/` - canonical rules for role, pipeline, and environment definitions.
+- `roles/` - portable role definitions and role knowledge references.
+- `stacks/` - language and ecosystem knowledge used by roles.
+- `pipelines/` - portable multi-role workflows with gates and handoff contracts.
+- `adapters/` - notes for running the same method in Codex, Claude Code, and revo.
 
 ## How To Use
 
@@ -45,3 +50,9 @@ Create a new npm TypeScript library:
 For an existing project, add a small repo-local `AGENTS.md` that points here and
 records only local facts: package manager, branch policy, CI commands, release
 branch, deployment target, and domain-specific constraints.
+
+For multi-agent work, start with `method/README.md`. Keep role behavior in
+`roles/`, workflow order in `pipelines/`, and local values in ignored env/local
+overlays rather than committed markdown.
+
+To update the method itself, follow `method/maintenance.md`.
