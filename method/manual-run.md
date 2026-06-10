@@ -19,14 +19,15 @@ future orchestrator imports roles and pipelines directly.
    human for it.
 3. Read `materialization.md` if the consuming repo has generated or linked
    adapter files.
-4. Read `intake.md` and classify the request.
-5. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
-6. Run `capability-check.md` against the selected pipeline, roles, stack,
+4. Follow `orchestrator-run.md` as the run lifecycle contract.
+5. Read `intake.md` and classify the request.
+6. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
+7. Run `capability-check.md` against the selected pipeline, roles, stack,
    references, and adapter.
-7. Build the `route_plan` from `route-plan.md`.
-8. Show the route plan to the human and wait for `route-approval.md`.
-9. Execute only the approved pipeline.
-10. Keep run state in chat or in the consuming repo's run artifact according to
+8. Build the `route_plan` from `route-plan.md`.
+9. Show the route plan to the human and wait for `route-approval.md`.
+10. Execute only the approved pipeline.
+11. Keep run state in chat or in the consuming repo's run artifact according to
    `route-plan.md`.
 
 ## Codex Runtime Shape
@@ -74,6 +75,8 @@ manual_run:
 - Do not copy concrete local values into canonical method files.
 - If generated platform files disagree with canonical roles or pipelines, the
   canonical method wins.
+- Manual runs implement `orchestrator-run.md` with the main session acting as
+  orchestrator.
 - If the consuming repo lacks an entrypoint, create or propose a minimal
   `AGENTS.md`, `CLAUDE.md`, and `.agents/README.md` bootstrap.
 - If generated adapter files are stale or ambiguous, refresh them from

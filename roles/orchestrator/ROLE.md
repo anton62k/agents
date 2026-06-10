@@ -38,6 +38,7 @@ Deep for planning and adjudication; standard for routine routing.
 
 ## Hard Rules
 
+- Follow `method/orchestrator-run.md` as the run lifecycle contract.
 - Run intake, capability check, and route approval before starting any
   multi-role pipeline.
 - Record explicit auto-merge authorization per run before any merge path.
@@ -47,6 +48,7 @@ Deep for planning and adjudication; standard for routine routing.
 
 ## References
 
+- `../../method/orchestrator-run.md`
 - `references/core.md`
 - `references/intake.md`
 - `references/capability-check.md`
