@@ -25,7 +25,8 @@ Each record defines:
 - required_roles: `orchestrator`, `analyst`, `reviewer`, `developer`,
   `integrator`, `watcher`
 - alternative_roles: []
-- optional_roles: `merger`, `deploy-watcher`, `qa-backend`, `qa-frontend`
+- optional_roles: `architect`, `merger`, `deploy-watcher`, `qa-backend`,
+  `qa-frontend`
 - route_gates: task spec approval, human-action items, merge approval,
   ambiguous architecture/product/security decisions
 
@@ -36,11 +37,9 @@ Each record defines:
 - required_roles: `orchestrator`, `developer`, `integrator`, `watcher`
 - alternative_roles:
   - group_id: defect-analysis
-    roles:
-      - analyst
-      - reviewer
+    roles: `analyst`, `reviewer`
     resolution: at_least_one
-- optional_roles: `qa-backend`, `qa-frontend`
+- optional_roles: `architect`, `qa-backend`, `qa-frontend`
 - route_gates: risky missing reproduction, behavior/product decision,
   merge approval
 
@@ -51,7 +50,7 @@ Each record defines:
   explanation, plan-map
 - required_roles: `orchestrator`, `analyst`
 - alternative_roles: []
-- optional_roles: `reviewer`, `knowledge-engineer`
+- optional_roles: `architect`, `reviewer`, `knowledge-engineer`
 - route_gates: converting analysis into edits, promoting best-practice
   proposals into hard rules
 
@@ -73,7 +72,7 @@ Each record defines:
   new stack or adapter
 - required_roles: `orchestrator`, `knowledge-engineer`
 - alternative_roles: []
-- optional_roles: `reviewer`
+- optional_roles: `architect`, `reviewer`
 - route_gates: promoting candidate lessons or best practices, merge approval
 
 ## Standard Startup

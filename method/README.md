@@ -16,6 +16,7 @@ this repository:
 
 - roles live in `roles/<role>/ROLE.md`;
 - role knowledge lives in `roles/<role>/references/`;
+- shared practice references live in `references/`;
 - stack knowledge lives in `stacks/<stack>/`;
 - pipelines live in `pipelines/<pipeline>/PIPELINE.md`;
 - catalog-backed discovery is defined by `discovery.md`, `roles/INDEX.md`, and
@@ -34,17 +35,18 @@ this repository:
 
 1. Keep the base schema small.
 2. Add thin role definitions with explicit references.
-3. Add stack and specialization layers through `role-composition.md`.
-4. Add pipelines with gates and handoff contracts.
-5. Add route approval before execution.
-6. Add catalogs for discovery and capability checks.
-7. Add a route plan and run-state contract.
-8. Define manual run and consuming-repo bootstrap.
-9. Define adapter materialization for Codex and Claude Code.
-10. Define the orchestrator run contract.
-11. Exercise the method manually in Codex and Claude Code.
-12. Fold repeated lessons into references after human approval.
-13. Later, add a revo importer that loads the same definitions into
+3. Add shared practice references and role composition rules.
+4. Add stack and specialization layers through `role-composition.md`.
+5. Add pipelines with gates and handoff contracts.
+6. Add route approval before execution.
+7. Add catalogs for discovery and capability checks.
+8. Add a route plan and run-state contract.
+9. Define manual run and consuming-repo bootstrap.
+10. Define adapter materialization for Codex and Claude Code.
+11. Define the orchestrator run contract.
+12. Exercise the method manually in Codex and Claude Code.
+13. Fold repeated lessons into references after human approval.
+14. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals

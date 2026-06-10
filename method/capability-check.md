@@ -13,6 +13,7 @@ available method definitions.
 - selected surface;
 - selected stack;
 - selected framework references;
+- selected practice references;
 - adapter target: Codex, Claude Code, or revo.
 
 ## Checks
@@ -27,15 +28,25 @@ available method definitions.
    `developer-backend` or `developer-frontend`.
 7. Stack exists at `stacks/<stack>/STACK.md` when a stack is selected.
 8. Framework references exist when the pipeline requires them.
-9. Adapter notes exist for the selected execution mode.
-10. Local values are placeholders only and are listed for run-time resolution.
+9. Practice references exist under `references/` when selected.
+10. Adapter notes exist for the selected execution mode.
+11. Local values are placeholders only and are listed for run-time resolution.
 
 ## Output
 
 ```yaml
 capability_status: ready | missing | ambiguous
 missing_capabilities:
-  - kind: role | role-group | stack | framework | pipeline | adapter | local-value
+  - kind: role
+    allowed_kinds:
+      - role
+      - role-group
+      - stack
+      - framework
+      - practice
+      - pipeline
+      - adapter
+      - local-value
     id: ""
     impact: ""
 recommendation: proceed | run-method-development-first | ask-human

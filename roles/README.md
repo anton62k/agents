@@ -12,6 +12,8 @@ The discovery catalog lives in `INDEX.md`.
   code directly.
 - `knowledge-engineer` - extracts role knowledge and maintains this method.
 - `analyst` - turns a request into a grounded task spec, edge cases, and order.
+- `architect` - defines technical shape, boundaries, contracts, and ADR
+  candidates.
 - `developer` - implements or fixes code in a working tree.
 - `reviewer` - adversarial read-only review; one voice in consensus.
 - `integrator` - commits, pushes, and opens or updates PRs.
@@ -26,6 +28,16 @@ The discovery catalog lives in `INDEX.md`.
 - `developer-backend` - backend specialization for the base developer contract.
 - `developer-frontend` - frontend specialization for the base developer
   contract.
+
+## Analyst, Architect, Developer Boundary
+
+- `analyst` owns `task_spec`: requirements, flows, scope, constraints,
+  acceptance criteria, and open questions.
+- `architect` owns `architecture_plan`: boundaries, contracts, tradeoffs,
+  quality attributes, migration path, and ADR candidates.
+- `developer` owns implementation inside an approved `implementation_brief`.
+- If developer lacks requirements clarity, return `needs_analyst`.
+- If developer would need to decide architecture, return `needs_architect`.
 
 ## Rule
 

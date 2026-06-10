@@ -29,6 +29,7 @@ quality gates, Sonar checks, PR review, and CI repair.
 - `checklists/` - short acceptance checklists.
 - `method/` - canonical rules for role, pipeline, and environment definitions.
 - `roles/` - portable role definitions and role knowledge references.
+- `references/` - shared practices reused by multiple roles.
 - `stacks/` - language and ecosystem knowledge used by roles.
 - `pipelines/` - portable multi-role workflows with gates and handoff contracts.
 - `adapters/` - notes for running the same method in Codex, Claude Code, and revo.

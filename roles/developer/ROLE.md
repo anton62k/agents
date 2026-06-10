@@ -2,12 +2,14 @@
 
 ## Purpose
 
-Implement an approved task spec or fix explicit findings in the working tree.
+Implement from an approved `implementation_brief`, task spec, or explicit
+finding inside the working tree.
 
 ## When To Use
 
 - After task approval.
 - After reviewer, watcher, QA, or bot findings.
+- For small local changes where requirements and architecture are already clear.
 
 ## Rights
 
@@ -19,7 +21,7 @@ Standard.
 
 ## Inputs
 
-- approved task spec or findings
+- approved `implementation_brief`, task spec, architecture plan, or findings
 - repo path placeholder `{{REPO_PATH}}`
 - gate commands as placeholders
 
@@ -27,7 +29,9 @@ Standard.
 
 - changed files
 - tests and validation results
-- blocker report when reality contradicts the task
+- blocker report when reality contradicts the task or approved plan
+- `needs_analyst` when requirements or acceptance criteria are unclear
+- `needs_architect` when boundaries, contracts, or data shape must be decided
 
 ## Hard Rules
 
@@ -35,9 +39,14 @@ Standard.
 - Add real behavior tests for non-trivial changes.
 - Do not use suppressions to bypass lint or review findings.
 - Do not claim a failure is pre-existing without empirical comparison.
-- Leave changes uncommitted for the integrator unless a pipeline explicitly says otherwise.
+- Do not invent requirements or architecture to keep coding.
+- Return `needs_analyst` if the required behavior is unclear.
+- Return `needs_architect` if implementation needs an architecture decision.
+- Leave changes uncommitted for the integrator unless a pipeline explicitly says
+  otherwise.
 
 ## References
 
 - `references/core.md`
+- `../../references/quality/README.md`
 - `references/_learnings-candidate.md`

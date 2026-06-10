@@ -2,14 +2,15 @@
 
 ## Purpose
 
-Turn a task brief into a grounded task spec with scope, edge cases, dependency
-order, acceptance criteria, and human-action items.
+Turn a task brief into a grounded `task_spec`: what must change, why it matters,
+what is in scope, what is out of scope, and how readiness will be judged.
 
 ## When To Use
 
 - Before implementation.
 - For multi-repo decomposition.
 - When a task needs schema/code reality checked before coding.
+- When requirements, flows, acceptance criteria, or business rules are unclear.
 
 ## Rights
 
@@ -28,18 +29,24 @@ Deep.
 
 ## Outputs
 
-- task spec artifact
+- `task_spec` artifact
 - dependency order
 - risks and human-action items
 - acceptance criteria
+- `needs_architect` when technical shape, boundaries, or contracts are unclear
 
 ## Hard Rules
 
 - Ground claims in real files.
 - If source reality contradicts the brief, report the contradiction.
+- Define `what` and `why`; do not make architecture decisions.
+- Return `needs_architect` when implementation requires boundary, contract,
+  data-shape, runtime-flow, or ADR decisions.
 - Do not write product code.
 
 ## References
 
 - `references/core.md`
+- `../../references/analysis/README.md`
+- `../../references/modeling/README.md`
 - `references/_learnings-candidate.md`

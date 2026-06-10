@@ -104,6 +104,10 @@ After approval, create or update `run_state` using `route-plan.md`.
 Resolved local values may enter run state only when the pipeline needs them.
 Committed method docs keep placeholders only.
 
+When analysis or architecture steps ran, prepare a compact
+`implementation_brief` for the developer from approved `task_spec`,
+`architecture_plan`, findings, and route constraints.
+
 ### 8. Execute Pipeline
 
 Read the approved `pipelines/<pipeline>/PIPELINE.md` and execute its steps.
@@ -141,6 +145,10 @@ orchestrator_run:
     required: []
     alternative: []
     optional: []
+  handoffs:
+    task_spec: {}
+    architecture_plan: {}
+    implementation_brief: {}
   gates: []
   artifacts: []
   blockers: []

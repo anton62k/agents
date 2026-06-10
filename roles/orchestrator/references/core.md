@@ -64,6 +64,11 @@ here. Read `method/orchestrator-run.md` first.
 6. Stop when the pipeline completes, a configured gate opens, a blocker appears,
    or the human stops the run.
 
+When developer work follows analyst or architect work, compress approved
+`task_spec`, `architecture_plan`, findings, and route constraints into an
+`implementation_brief`. Do not require the developer to rediscover product scope
+or architecture decisions from long upstream artifacts.
+
 ## Handoff Contract
 
 [DECISION] Use this handoff contract when delegating to specialist roles.
