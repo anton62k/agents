@@ -49,7 +49,7 @@ Do not treat practices as stacks. SOLID, DDD, CQRS, C4, BPMN, ADRs, event
 storming, requirements engineering, and test strategy are practice references.
 They may be used by several roles.
 
-## Developer Split
+## Developer Surface Specialization
 
 Use:
 

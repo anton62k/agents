@@ -108,6 +108,12 @@ When analysis or architecture steps ran, prepare a compact
 `implementation_brief` for the developer from approved `task_spec`,
 `architecture_plan`, findings, and route constraints.
 
+Compact means 200-400 words or the equivalent in concise YAML. Include only:
+goal, required behavior, files or modules to inspect first, architecture
+constraints, implementation slices, acceptance criteria, required tests, risks,
+out-of-scope items, and stop conditions. Summarize findings; do not paste raw
+review text or full upstream artifacts.
+
 ### 8. Execute Pipeline
 
 Read the approved `pipelines/<pipeline>/PIPELINE.md` and execute its steps.
@@ -146,9 +152,9 @@ orchestrator_run:
     alternative: []
     optional: []
   handoffs:
-    task_spec: {}
-    architecture_plan: {}
-    implementation_brief: {}
+    task_spec: {} # see roles/analyst/references/core.md
+    architecture_plan: {} # see roles/architect/references/core.md
+    implementation_brief: {} # see roles/developer/references/core.md
   gates: []
   artifacts: []
   blockers: []

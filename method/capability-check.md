@@ -38,19 +38,13 @@ available method definitions.
 capability_status: ready | missing | ambiguous
 missing_capabilities:
   - kind: role
-    allowed_kinds:
-      - role
-      - role-group
-      - stack
-      - framework
-      - practice
-      - pipeline
-      - adapter
-      - local-value
     id: ""
     impact: ""
 recommendation: proceed | run-method-development-first | ask-human
 ```
+
+Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `practice`,
+`pipeline`, `adapter`, `local-value`.
 
 ## Rules
 

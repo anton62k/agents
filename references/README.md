@@ -34,3 +34,5 @@ They are not roles, stacks, pipelines, or local overlays.
 - A role decides when the practice is relevant for its current step.
 - If a shared reference changes role behavior, update the role reference too.
 - Do not duplicate the same practice across many role-local references.
+- Add concrete practice files only when the practice is approved and has enough
+  structure to guide agent behavior.

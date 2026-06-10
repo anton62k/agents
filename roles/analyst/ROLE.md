@@ -40,8 +40,7 @@ Deep.
 - Ground claims in real files.
 - If source reality contradicts the brief, report the contradiction.
 - Define `what` and `why`; do not make architecture decisions.
-- Return `needs_architect` when implementation requires boundary, contract,
-  data-shape, runtime-flow, or ADR decisions.
+- Return `needs_architect` using the criteria in `references/core.md`.
 - Do not write product code.
 
 ## References

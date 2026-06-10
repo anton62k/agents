@@ -67,7 +67,8 @@ here. Read `method/orchestrator-run.md` first.
 When developer work follows analyst or architect work, compress approved
 `task_spec`, `architecture_plan`, findings, and route constraints into an
 `implementation_brief`. Do not require the developer to rediscover product scope
-or architecture decisions from long upstream artifacts.
+or architecture decisions from long upstream artifacts. Use the canonical
+`implementation_brief` structure in `roles/developer/references/core.md`.
 
 ## Handoff Contract
 

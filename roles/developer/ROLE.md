@@ -39,7 +39,7 @@ Standard.
 - Add real behavior tests for non-trivial changes.
 - Do not use suppressions to bypass lint or review findings.
 - Do not claim a failure is pre-existing without empirical comparison.
-- Do not invent requirements or architecture to keep coding.
+- Never invent requirements or architecture to keep coding.
 - Return `needs_analyst` if the required behavior is unclear.
 - Return `needs_architect` if implementation needs an architecture decision.
 - Leave changes uncommitted for the integrator unless a pipeline explicitly says
