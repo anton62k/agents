@@ -17,7 +17,7 @@ optional `developer`, optional `integrator`, optional `watcher`, optional
 
 ## Steps
 
-1. Orchestrator runs intake, capability check, and route approval.
+1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
 2. Deploy-watcher verifies the merged change is live.
 3. QA role runs approved scenarios.
 4. If QA finds code bugs, route to developer and repeat PR cycle.
@@ -26,7 +26,6 @@ optional `developer`, optional `integrator`, optional `watcher`, optional
 
 ## Human Gates
 
-- Route approval before execution.
 - Any secret or live-system access beyond the pipeline grant.
 - Infra mutation.
 - Merge approval for follow-up PRs unless explicit auto-merge is recorded.

@@ -8,9 +8,12 @@ Read:
 - `method/route-approval.md`
 - selected `pipelines/<pipeline>/PIPELINE.md`
 
-Rules:
+Canonical rules:
 
-- [DECISION] The human approves the route, not every internal step.
-- [DECISION] If capabilities are missing, recommend `method first` or
-  `analysis only`.
-- [DECISION] Approved route choices are recorded in run state, not method docs.
+- Follow approval choices, fallback handling, and recording rules in
+  `method/route-approval.md`.
+
+Orchestrator-specific guidance:
+
+- Present a route-level decision before pipeline execution; later gates remain
+  owned by the selected pipeline.

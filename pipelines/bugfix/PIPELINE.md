@@ -16,7 +16,7 @@ optional `qa-backend` or `qa-frontend`.
 
 ## Steps
 
-1. Orchestrator runs intake, capability check, and route approval.
+1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
 2. Reproduce or source-check the defect.
 3. Define the minimal expected behavior and affected scope.
 4. Developer fixes the defect and adds regression coverage where practical.
@@ -27,7 +27,6 @@ optional `qa-backend` or `qa-frontend`.
 
 ## Human Gates
 
-- Route approval before execution.
 - Missing reproduction with risky fix.
 - Behavior/product decision.
 - Merge approval unless explicitly authorized.

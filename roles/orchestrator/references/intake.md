@@ -8,11 +8,12 @@ Read:
 - `method/role-composition.md`
 - `pipelines/README.md`
 
-Rules:
+Canonical rules:
 
-- [DECISION] Requests about roles, pipelines, references, adapters, or method
-  maintenance route to `method-development`.
-- [DECISION] Review-only and research-only requests route to `analysis-only`
-  unless the human asks for edits.
-- [DECISION] Unknown surface, stack, or framework must be visible in the
-  proposed run plan.
+- Follow classification, pipeline selection, and ambiguity handling in
+  `method/intake.md`.
+
+Orchestrator-specific guidance:
+
+- Use this reference to decide which method and pipeline documents to read next;
+  keep pipeline-specific exceptions out of this file.

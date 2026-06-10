@@ -26,9 +26,9 @@ pipelines, adapters, and maintenance rules.
 
 ## Steps
 
-1. Orchestrator runs intake and confirms the task is method work.
-2. Capability check identifies missing or weak definitions.
-3. Human route approval confirms the scope of method work.
+1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
+2. Confirm the approved route is `method-development`.
+3. Capability check output identifies missing or weak definitions.
 4. Knowledge-engineer extracts source material and drafts the change.
 5. Reviewer checks structure, source labels, env-boundary compliance, and
    adapter neutrality.
@@ -37,7 +37,6 @@ pipelines, adapters, and maintenance rules.
 
 ## Human Gates
 
-- route approval before editing method files;
 - approval before promoting `[BEST-PRACTICE]` or candidate lessons to hard
   rules;
 - merge approval.

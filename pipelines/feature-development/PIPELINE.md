@@ -28,7 +28,7 @@ optional `qa-frontend`.
 
 ## Steps
 
-1. Orchestrator runs intake, capability check, and route approval.
+1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
 2. Orchestrator records approved run parameters.
 3. Analyst produces the task spec and human-action items.
 4. Reviewer consensus reviews the task spec.
@@ -44,7 +44,6 @@ optional `qa-frontend`.
 
 ## Human Gates
 
-- route approval before execution;
 - task spec approval;
 - human-action items;
 - merge approval by default;

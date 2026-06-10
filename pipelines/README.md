@@ -1,6 +1,7 @@
 # Pipelines
 
 Portable pipelines define role order, state artifacts, gates, and handoffs.
+Shared startup and route approval gate text lives in `COMMON-STEPS.md`.
 
 The current base is deliberately small:
 

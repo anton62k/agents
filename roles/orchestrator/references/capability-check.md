@@ -7,10 +7,12 @@ Read:
 - `method/capability-check.md`
 - `method/role-composition.md`
 
-Rules:
+Canonical rules:
 
-- [DECISION] Missing required role, stack, pipeline, or adapter blocks automatic
-  execution.
-- [DECISION] Missing optional roles reduce coverage but do not block by default.
-- [DECISION] Generic fallback for a missing specialization requires human route
-  approval.
+- Follow required, optional, and fallback capability handling in
+  `method/capability-check.md`.
+
+Orchestrator-specific guidance:
+
+- Surface missing or weak capabilities in the proposed run plan; do not silently
+  drop required roles or references.

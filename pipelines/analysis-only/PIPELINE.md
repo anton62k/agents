@@ -17,7 +17,7 @@ Answer a technical question or produce a plan without editing code.
 
 ## Steps
 
-1. Orchestrator runs intake, capability check, and route approval.
+1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
 2. Gather source files and existing docs.
 3. Analyst produces findings or plan.
 4. Optional reviewer checks hallucinated paths, line claims, and edge cases.
@@ -25,7 +25,6 @@ Answer a technical question or produce a plan without editing code.
 
 ## Human Gates
 
-- Route approval before execution when more than one role is used.
 - Before converting analysis into code edits.
 - Before promoting best-practice proposals into hard rules.
 
