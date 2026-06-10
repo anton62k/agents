@@ -6,6 +6,7 @@ This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 
 - Start multi-role work with `{{AGENTS_REPO_PATH}}/method/manual-run.md`.
 - Use `{{AGENTS_REPO_PATH}}/method/bootstrap.md` for local setup.
+- Use `{{AGENTS_REPO_PATH}}/method/materialization.md` for generated files.
 - Discover roles from `{{AGENTS_REPO_PATH}}/roles/INDEX.md`.
 - Discover pipelines from `{{AGENTS_REPO_PATH}}/pipelines/INDEX.md`.
 - Keep concrete local values in ignored `.agents/local.*` files.
