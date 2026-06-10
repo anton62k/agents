@@ -17,6 +17,7 @@ selected_pipeline: ""
 why: ""
 execution_mode: codex | claude-code | revo-future
 required_roles: []
+alternative_roles: []
 optional_roles: []
 surface: ""
 stack: ""
@@ -31,7 +32,7 @@ first_artifacts: []
 
 - `approve` - run the selected pipeline.
 - `change pipeline` - pick a different pipeline.
-- `change roles` - adjust required or optional roles.
+- `change roles` - adjust required, alternative, or optional roles.
 - `analysis only` - switch to `analysis-only`.
 - `method first` - run `method-development` to add missing capability.
 - `stop` - do not run.

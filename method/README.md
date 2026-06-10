@@ -18,8 +18,10 @@ this repository:
 - role knowledge lives in `roles/<role>/references/`;
 - stack knowledge lives in `stacks/<stack>/`;
 - pipelines live in `pipelines/<pipeline>/PIPELINE.md`;
-- route selection is defined by `intake.md`, `capability-check.md`, and
-  `route-approval.md`;
+- catalog-backed discovery is defined by `discovery.md`, `roles/INDEX.md`, and
+  `pipelines/INDEX.md`;
+- route selection is defined by `intake.md`, `discovery.md`,
+  `capability-check.md`, and `route-approval.md`;
 - platform-specific generation and invocation rules live in `adapters/`;
 - local values live outside committed markdown, per `env-boundary.md`.
 
@@ -30,9 +32,10 @@ this repository:
 3. Add stack and specialization layers through `role-composition.md`.
 4. Add pipelines with gates and handoff contracts.
 5. Add route approval before execution.
-6. Exercise the method manually in Codex and Claude Code.
-7. Fold repeated lessons into references after human approval.
-8. Later, add a revo importer that loads the same definitions into
+6. Add catalogs for discovery and capability checks.
+7. Exercise the method manually in Codex and Claude Code.
+8. Fold repeated lessons into references after human approval.
+9. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals
