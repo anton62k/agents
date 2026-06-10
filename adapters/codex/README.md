@@ -6,6 +6,7 @@ Codex can run this method directly through skills and prompts.
 
 - `method/manual-run.md` is the main startup procedure.
 - `method/bootstrap.md` explains how the consuming repo points to this method.
+- `method/materialization.md` defines generated or linked Codex-facing files.
 - `roles/<role>/ROLE.md` becomes the role instruction block.
 - `roles/<role>/references/` are loaded progressively as needed.
 - `pipelines/<pipeline>/PIPELINE.md` guides the main Codex session.
@@ -24,12 +25,15 @@ to canonical method files instead of redefining role behavior.
 2. Open the consuming repo as `{{TARGET_REPO_PATH}}`.
 3. Ensure `AGENTS.md` points Codex to `method/manual-run.md` and
    `method/bootstrap.md`.
-4. Keep concrete paths and accounts in ignored local overlays.
+4. Use `method/materialization.md` before generating `.agents/skills/*`.
+5. Keep concrete paths and accounts in ignored local overlays.
 
 ## Rules
 
 - Use placeholders from `method/env-boundary.md`.
 - Keep review-only Codex calls non-interactive and read-only.
+- Generated `.agents/*` files must include canonical source pointers when they
+  mirror roles, pipelines, or skills.
 - Do not rely on Codex-specific output fields in canonical role definitions.
 - Platform wrappers may add envelope fields, but the portable role result remains
   `output`, `artifacts`, `needsHuman`, and `lesson`.

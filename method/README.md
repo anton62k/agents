@@ -24,6 +24,8 @@ this repository:
   `capability-check.md`, `route-plan.md`, and `route-approval.md`;
 - manual execution and consuming-repo setup are defined by `manual-run.md` and
   `bootstrap.md`;
+- adapter materialization into consuming-repo files is defined by
+  `materialization.md`;
 - platform-specific generation and invocation rules live in `adapters/`;
 - local values live outside committed markdown, per `env-boundary.md`.
 
@@ -37,9 +39,10 @@ this repository:
 6. Add catalogs for discovery and capability checks.
 7. Add a route plan and run-state contract.
 8. Define manual run and consuming-repo bootstrap.
-9. Exercise the method manually in Codex and Claude Code.
-10. Fold repeated lessons into references after human approval.
-11. Later, add a revo importer that loads the same definitions into
+9. Define adapter materialization for Codex and Claude Code.
+10. Exercise the method manually in Codex and Claude Code.
+11. Fold repeated lessons into references after human approval.
+12. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals

@@ -17,14 +17,16 @@ future orchestrator imports roles and pipelines directly.
    method and which adapter entrypoints are present.
 2. Resolve `{{AGENTS_REPO_PATH}}` from the consuming repo overlay or ask the
    human for it.
-3. Read `intake.md` and classify the request.
-4. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
-5. Run `capability-check.md` against the selected pipeline, roles, stack,
+3. Read `materialization.md` if the consuming repo has generated or linked
+   adapter files.
+4. Read `intake.md` and classify the request.
+5. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
+6. Run `capability-check.md` against the selected pipeline, roles, stack,
    references, and adapter.
-6. Build the `route_plan` from `route-plan.md`.
-7. Show the route plan to the human and wait for `route-approval.md`.
-8. Execute only the approved pipeline.
-9. Keep run state in chat or in the consuming repo's run artifact according to
+7. Build the `route_plan` from `route-plan.md`.
+8. Show the route plan to the human and wait for `route-approval.md`.
+9. Execute only the approved pipeline.
+10. Keep run state in chat or in the consuming repo's run artifact according to
    `route-plan.md`.
 
 ## Codex Runtime Shape
@@ -74,3 +76,5 @@ manual_run:
   canonical method wins.
 - If the consuming repo lacks an entrypoint, create or propose a minimal
   `AGENTS.md`, `CLAUDE.md`, and `.agents/README.md` bootstrap.
+- If generated adapter files are stale or ambiguous, refresh them from
+  `materialization.md` before using them as instructions.

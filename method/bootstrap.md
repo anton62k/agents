@@ -26,7 +26,8 @@ On a new device, do this before running agents:
    files.
 5. Create ignored local overlay files for concrete values, for example
    `.agents/local.env` or `.agents/local.context.md`.
-6. Start work with `manual-run.md` until a future orchestrator imports these
+6. Read `materialization.md` before generating or linking adapter files.
+7. Start work with `manual-run.md` until a future orchestrator imports these
    definitions directly.
 
 The agent resolves `{{AGENTS_REPO_PATH}}` from the local overlay before reading
@@ -110,6 +111,8 @@ Start every multi-role task with:
   `.claude/agents/`.
 - Generated files must keep a pointer to the canonical role or skill source.
 - Generated files are adapter output, not canonical method.
+- `materialization.md` defines headers, update flow, and validation rules for
+  these files.
 
 ## Rules
 
