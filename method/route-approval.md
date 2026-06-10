@@ -17,6 +17,7 @@ selected_pipeline: ""
 why: ""
 execution_mode: codex | claude-code | revo-future
 required_roles: []
+alternative_roles: [] # structure is defined in method/intake.md
 optional_roles: []
 surface: ""
 stack: ""
@@ -31,10 +32,18 @@ first_artifacts: []
 
 - `approve` - run the selected pipeline.
 - `change pipeline` - pick a different pipeline.
-- `change roles` - adjust required or optional roles.
+- `change roles` - adjust required, alternative, or optional roles.
 - `analysis only` - switch to `analysis-only`.
 - `method first` - run `method-development` to add missing capability.
 - `stop` - do not run.
+
+## Adjusting Alternative Roles
+
+- Alternative roles are groups from `method/intake.md`.
+- The human may select one role from each group, keep the group for the
+  orchestrator to resolve by availability, or change group membership.
+- If a group has no acceptable role, choose `method first` or `analysis only`
+  instead of starting execution.
 
 ## Rules
 

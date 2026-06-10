@@ -1,0 +1,116 @@
+# Role Catalog
+
+This catalog is the discovery surface for orchestrator intake and future runtime
+imports. Keep role behavior in `ROLE.md` and references; keep this file focused
+on routing metadata.
+
+## Catalog Format
+
+Each record defines:
+
+- `id` - canonical role id used by pipelines and route plans.
+- `path` - role definition path.
+- `surface` - primary work surface, or `any`.
+- `capabilities` - short routing tags used during discovery.
+- `rights` - read/write boundary summary.
+
+## Role Records
+
+### `orchestrator`
+
+- path: `roles/orchestrator/ROLE.md`
+- surface: any
+- capabilities: intake, routing, gates, state, handoffs
+- rights: state and routing only
+
+### `knowledge-engineer`
+
+- path: `roles/knowledge-engineer/ROLE.md`
+- surface: method
+- capabilities: role design, references, pipelines, adapters
+- rights: method repo edits after approval
+
+### `analyst`
+
+- path: `roles/analyst/ROLE.md`
+- surface: any
+- capabilities: task spec, decomposition, source-backed analysis
+- rights: read-only
+
+### `developer`
+
+- path: `roles/developer/ROLE.md`
+- surface: any
+- capabilities: implementation, bugfix, local gates
+- rights: working tree writes
+
+### `developer-backend`
+
+- path: `roles/developer-backend/ROLE.md`
+- surface: backend
+- capabilities: api, persistence, jobs, workers, migrations, backend tests
+- rights: working tree writes
+
+### `developer-frontend`
+
+- path: `roles/developer-frontend/ROLE.md`
+- surface: frontend
+- capabilities: ui, routing, forms, browser-visible behavior, frontend state
+- rights: working tree writes
+
+### `reviewer`
+
+- path: `roles/reviewer/ROLE.md`
+- surface: any
+- capabilities: adversarial review, risk finding, gate review
+- rights: read-only
+
+### `integrator`
+
+- path: `roles/integrator/ROLE.md`
+- surface: repo
+- capabilities: commit, push, pull request publication
+- rights: git and GitHub writes
+
+### `watcher`
+
+- path: `roles/watcher/ROLE.md`
+- surface: repo
+- capabilities: ci, quality gates, review comments, PR state
+- rights: read-only PR inspection
+
+### `merger`
+
+- path: `roles/merger/ROLE.md`
+- surface: repo
+- capabilities: merge execution after explicit authorization
+- rights: GitHub merge only
+
+### `deploy-watcher`
+
+- path: `roles/deploy-watcher/ROLE.md`
+- surface: deployment
+- capabilities: deployment verification, health checks
+- rights: read-only deployment inspection
+
+### `qa-backend`
+
+- path: `roles/qa-backend/ROLE.md`
+- surface: backend
+- capabilities: live API QA, runtime behavior checks
+- rights: approved API access
+
+### `qa-frontend`
+
+- path: `roles/qa-frontend/ROLE.md`
+- surface: frontend
+- capabilities: browser QA, workflow smoke checks
+- rights: approved browser automation
+
+## Composition Notes
+
+- `developer-backend` and `developer-frontend` extend `developer`; see
+  `../method/role-composition.md`.
+- Stack and framework knowledge is selected separately from the role id.
+- Local commands, accounts, paths, hosts, and secrets must come from a run overlay,
+  not this catalog.

@@ -20,7 +20,9 @@ This file tells agents how to update the method safely.
    - workflow order/gates -> `pipelines/<pipeline>/`;
    - platform mechanics -> `adapters/<platform>/`;
    - local values -> local overlay, never committed markdown.
-5. Add or update a checklist/reference when the rule changes what an agent does.
+5. Update `roles/INDEX.md` or `pipelines/INDEX.md` when adding, removing, or
+   changing routable roles or pipelines.
+6. Add or update a checklist/reference when the rule changes what an agent does.
 
 ## Source Labels
 
@@ -52,5 +54,6 @@ Every new hard rule needs a source label:
 - Does this belong to role, stack, framework, pipeline, adapter, or local overlay?
 - Is the source label present?
 - Are placeholders used instead of local values?
+- Are discovery catalogs updated when routable roles or pipelines changed?
 - Is the rule short in dispatcher files and detailed in references?
 - Does the change remain usable by Codex, Claude Code, and future revo?

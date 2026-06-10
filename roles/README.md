@@ -4,6 +4,8 @@ These are portable role definitions. They are intentionally thin at first. Deep
 domain knowledge is added role by role through `references/` after real runs and
 human approval.
 
+The discovery catalog lives in `INDEX.md`.
+
 ## Base Roles
 
 - `orchestrator` - routes the run, owns state and gates, never writes product
@@ -18,6 +20,12 @@ human approval.
 - `deploy-watcher` - verifies post-merge deployment.
 - `qa-backend` - live backend QA through public/API surfaces.
 - `qa-frontend` - browser QA for frontend workflows.
+
+## Specializations
+
+- `developer-backend` - backend specialization for the base developer contract.
+- `developer-frontend` - frontend specialization for the base developer
+  contract.
 
 ## Rule
 

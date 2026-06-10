@@ -6,6 +6,8 @@ Read:
 
 - `method/capability-check.md`
 - `method/role-composition.md`
+- `roles/INDEX.md`
+- `pipelines/INDEX.md`
 
 Canonical rules:
 
