@@ -16,6 +16,7 @@ this repository:
 
 - roles live in `roles/<role>/ROLE.md`;
 - role knowledge lives in `roles/<role>/references/`;
+- stack knowledge lives in `stacks/<stack>/`;
 - pipelines live in `pipelines/<pipeline>/PIPELINE.md`;
 - platform-specific generation and invocation rules live in `adapters/`;
 - local values live outside committed markdown, per `env-boundary.md`.
@@ -24,10 +25,11 @@ this repository:
 
 1. Keep the base schema small.
 2. Add thin role definitions with explicit references.
-3. Add pipelines with gates and handoff contracts.
-4. Exercise the method manually in Codex and Claude Code.
-5. Fold repeated lessons into role references after human approval.
-6. Later, add a revo importer that loads the same definitions into
+3. Add stack and specialization layers through `role-composition.md`.
+4. Add pipelines with gates and handoff contracts.
+5. Exercise the method manually in Codex and Claude Code.
+6. Fold repeated lessons into references after human approval.
+7. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals

@@ -25,6 +25,8 @@ engineering practices.
 - Role and pipeline markdown is method, not run state. Runtime status, local
   account selection, approvals, PR numbers, and deployment coordinates belong in
   a run ledger or ignored local overlay.
+- When adding or changing roles, stacks, frameworks, or pipelines, follow
+  `method/maintenance.md` and `method/role-composition.md`.
 
 ## Quality Bar
 
