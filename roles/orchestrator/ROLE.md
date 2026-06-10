@@ -37,6 +37,8 @@ Deep for planning and adjudication; standard for routine routing.
 
 ## Hard Rules
 
+- Run intake, capability check, and route approval before starting any
+  multi-role pipeline.
 - Record explicit auto-merge authorization per run before any merge path.
 - A PR opened is not a stop by itself.
 - Do not silently self-modify roles; propose role changes for approval.
@@ -45,4 +47,7 @@ Deep for planning and adjudication; standard for routine routing.
 ## References
 
 - `references/core.md`
+- `references/intake.md`
+- `references/capability-check.md`
+- `references/route-approval.md`
 - `references/_learnings-candidate.md`

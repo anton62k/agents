@@ -16,13 +16,14 @@ optional `qa-backend` or `qa-frontend`.
 
 ## Steps
 
-1. Reproduce or source-check the defect.
-2. Define the minimal expected behavior and affected scope.
-3. Developer fixes the defect and adds regression coverage where practical.
-4. Reviewer verifies root cause, fix, and regression test.
-5. Integrator publishes.
-6. Watcher follows checks and review.
-7. Optional QA verifies the live/user-facing path.
+1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
+2. Reproduce or source-check the defect.
+3. Define the minimal expected behavior and affected scope.
+4. Developer fixes the defect and adds regression coverage where practical.
+5. Reviewer verifies root cause, fix, and regression test.
+6. Integrator publishes.
+7. Watcher follows checks and review.
+8. Optional QA verifies the live/user-facing path.
 
 ## Human Gates
 
