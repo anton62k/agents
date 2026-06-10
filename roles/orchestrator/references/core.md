@@ -5,6 +5,8 @@ run retros.
 
 Initial rules:
 
+- [ORCHESTRATOR] Use `method/orchestrator-run.md` as the run lifecycle
+  contract.
 - [ORCHESTRATOR] Manual Codex and Claude Code runs start from
   `method/manual-run.md`.
 - [DECISION] Every multi-role run starts with intake, capability check, and
