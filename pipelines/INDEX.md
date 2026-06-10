@@ -12,7 +12,7 @@ Each record defines:
 - `path` - pipeline definition path.
 - `triggers` - request patterns that make the pipeline a candidate.
 - `required_roles` - roles that must exist before automatic execution.
-- `alternative_roles` - role groups where at least one role must exist.
+- `alternative_roles` - role-group objects where at least one role must exist.
 - `optional_roles` - roles that improve coverage but do not block by default.
 - `route_gates` - pipeline-specific human gates after standard startup.
 
@@ -24,7 +24,7 @@ Each record defines:
 - triggers: new feature, multi-repo change, task-to-PR work
 - required_roles: `orchestrator`, `analyst`, `reviewer`, `developer`,
   `integrator`, `watcher`
-- alternative_roles: none
+- alternative_roles: []
 - optional_roles: `merger`, `deploy-watcher`, `qa-backend`, `qa-frontend`
 - route_gates: task spec approval, human-action items, merge approval,
   ambiguous architecture/product/security decisions
@@ -34,7 +34,12 @@ Each record defines:
 - path: `pipelines/bugfix/PIPELINE.md`
 - triggers: known defect, QA finding, watcher finding, CI or review defect
 - required_roles: `orchestrator`, `developer`, `integrator`, `watcher`
-- alternative_roles: one of `analyst`, `reviewer`
+- alternative_roles:
+  - group_id: defect-analysis
+    roles:
+      - analyst
+      - reviewer
+    resolution: at_least_one
 - optional_roles: `qa-backend`, `qa-frontend`
 - route_gates: risky missing reproduction, behavior/product decision,
   merge approval
@@ -45,7 +50,7 @@ Each record defines:
 - triggers: architecture review, feasibility analysis, source-backed
   explanation, plan-map
 - required_roles: `orchestrator`, `analyst`
-- alternative_roles: none
+- alternative_roles: []
 - optional_roles: `reviewer`, `knowledge-engineer`
 - route_gates: converting analysis into edits, promoting best-practice
   proposals into hard rules
@@ -55,7 +60,7 @@ Each record defines:
 - path: `pipelines/post-merge-qa/PIPELINE.md`
 - triggers: merged PR, deployed behavior verification, runtime-only confirmation
 - required_roles: `orchestrator`, `deploy-watcher`, `qa-backend`
-- alternative_roles: none
+- alternative_roles: []
 - optional_roles: `qa-frontend`, `developer`, `integrator`, `watcher`,
   `merger`
 - route_gates: extra live-system access, infra mutation, follow-up PR merge
@@ -67,7 +72,7 @@ Each record defines:
 - triggers: method change, missing capability, role or pipeline improvement,
   new stack or adapter
 - required_roles: `orchestrator`, `knowledge-engineer`
-- alternative_roles: none
+- alternative_roles: []
 - optional_roles: `reviewer`
 - route_gates: promoting candidate lessons or best practices, merge approval
 

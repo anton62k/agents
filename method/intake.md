@@ -35,12 +35,24 @@ surface: backend | frontend | infra | docs | library | unknown
 stack: js-ts | unknown
 frameworks: []
 required_roles: []
-alternative_roles: []
+alternative_roles:
+  - group_id: ""
+    roles: []
+    resolution: at_least_one
 optional_roles: []
 local_values_needed: []
 missing_capabilities: []
 recommended_next_step: route-approval | method-development | ask-human
 ```
+
+## Field Definitions
+
+- `alternative_roles`: role-group objects discovered from
+  `../pipelines/INDEX.md`. Each group has `group_id`, `roles`, and
+  `resolution: at_least_one`; at least one role from each group must be
+  available for the route to proceed.
+- `ambiguity`: structured discovery notes with `field`, `reason`, and
+  `candidates` when route selection cannot be made confidently.
 
 ## Rules
 
@@ -48,8 +60,10 @@ recommended_next_step: route-approval | method-development | ask-human
   method, choose `method-development`.
 - If the request says "only research", "review only", or equivalent, prefer
   `analysis-only`.
-- Use `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md` when
-  selecting candidate routes.
+- To select candidate routes, read `discovery.md` for the process, then read
+  `../pipelines/INDEX.md` for pipeline `triggers`, `required_roles`,
+  `alternative_roles`, and `optional_roles`, then read `../roles/INDEX.md` to
+  confirm role ids, surfaces, capabilities, and rights.
 - If the target stack or framework is unknown, do not guess silently; mark it
   `unknown` and ask for route approval with the ambiguity visible.
 - Do not resolve local values during intake. Only list what will be needed.

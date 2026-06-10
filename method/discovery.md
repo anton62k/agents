@@ -33,13 +33,19 @@ candidate_routes:
     why: ""
     confidence: high | medium | low
     required_roles: []
-    alternative_roles: []
+    alternative_roles:
+      - group_id: ""
+        roles: []
+        resolution: at_least_one
     optional_roles: []
     surface: backend | frontend | infra | docs | library | method | repo | unknown
     stack: js-ts | unknown
     frameworks: []
     local_values_needed: []
-    ambiguity: []
+    ambiguity:
+      - field: ""
+        reason: ""
+        candidates: []
 recommended_route: ""
 ```
 

@@ -21,7 +21,8 @@ available method definitions.
 2. Pipeline file exists at `pipelines/<pipeline>/PIPELINE.md`.
 3. Every required role id exists in `roles/INDEX.md`.
 4. Every required role file exists at `roles/<role>/ROLE.md`.
-5. Each alternative role group has at least one role present in `roles/INDEX.md`.
+5. Each alternative role group has at least one role present in
+   `roles/INDEX.md`; groups with zero present roles are unresolved.
 6. Surface-specific role exists when required, for example
    `developer-backend` or `developer-frontend`.
 7. Stack exists at `stacks/<stack>/STACK.md` when a stack is selected.
@@ -44,7 +45,8 @@ recommendation: proceed | run-method-development-first | ask-human
 
 - Missing optional roles do not block the route; list them as reduced coverage.
 - Missing required roles, unresolved alternative role groups, selected stack, or
-  selected pipeline blocks execution.
+  selected pipeline blocks execution. Unresolved means zero roles from the group
+  are present in `roles/INDEX.md`.
 - If a missing capability is itself method work, route to
   `method-development`.
 - Do not substitute a generic role for a missing specialization without human
