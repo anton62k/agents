@@ -7,9 +7,9 @@ hooks.
 
 - `method/manual-run.md` is the main startup procedure.
 - `method/bootstrap.md` explains how the consuming repo points to this method.
-- `roles/<role>/ROLE.md` can generate `.claude/agents/<role>.md`.
-- `roles/<role>/references/` can generate or link to `.claude/skills/<role>/`.
-- `pipelines/<pipeline>/PIPELINE.md` can generate workflow commands or skills.
+- `roles/<role>/ROLE.md` generates `.claude/agents/<role>.md`.
+- `roles/<role>/references/` supply `.claude/skills/<role>/`.
+- `pipelines/<pipeline>/PIPELINE.md` becomes workflow commands or skills.
 - Human gates are handled by the main Claude Code session or deterministic hooks.
 
 ## Discovery
