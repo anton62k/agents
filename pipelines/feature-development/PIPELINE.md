@@ -28,21 +28,23 @@ optional `qa-frontend`.
 
 ## Steps
 
-1. Orchestrator records run parameters and selects this pipeline.
-2. Analyst produces the task spec and human-action items.
-3. Reviewer consensus reviews the task spec.
-4. Human approves or rejects the task spec.
-5. Developer implements from a fresh base/worktree.
-6. Reviewer consensus reviews code.
-7. Developer fixes blocking findings; repeat up to the configured cap.
-8. Integrator creates or updates the PR.
-9. Watcher polls and classifies CI, Sonar, bot, and human review state.
-10. Developer fixes watcher findings; repeat until ready or blocked.
-11. Human merge gate, unless explicit auto-merge is recorded for this run.
-12. Optional post-merge deploy and QA stages.
+1. Orchestrator runs intake, capability check, and route approval.
+2. Orchestrator records approved run parameters.
+3. Analyst produces the task spec and human-action items.
+4. Reviewer consensus reviews the task spec.
+5. Human approves or rejects the task spec.
+6. Developer implements from a fresh base/worktree.
+7. Reviewer consensus reviews code.
+8. Developer fixes blocking findings; repeat up to the configured cap.
+9. Integrator creates or updates the PR.
+10. Watcher polls and classifies CI, Sonar, bot, and human review state.
+11. Developer fixes watcher findings; repeat until ready or blocked.
+12. Human merge gate, unless explicit auto-merge is recorded for this run.
+13. Optional post-merge deploy and QA stages.
 
 ## Human Gates
 
+- route approval before execution;
 - task spec approval;
 - human-action items;
 - merge approval by default;

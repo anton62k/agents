@@ -8,5 +8,7 @@ The current base is deliberately small:
 - `bugfix` - reproduce, patch, review, PR.
 - `analysis-only` - read-only investigation and recommendation.
 - `post-merge-qa` - deploy verification and live QA loop.
+- `method-development` - add or improve roles, stacks, pipelines, adapters, and
+  references.
 
 Runtime values use placeholders and are resolved per run.

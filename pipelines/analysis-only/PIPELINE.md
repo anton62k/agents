@@ -17,13 +17,15 @@ Answer a technical question or produce a plan without editing code.
 
 ## Steps
 
-1. Gather source files and existing docs.
-2. Analyst produces findings or plan.
-3. Optional reviewer checks hallucinated paths, line claims, and edge cases.
-4. Orchestrator returns a concise decision or next-step proposal.
+1. Orchestrator runs intake, capability check, and route approval.
+2. Gather source files and existing docs.
+3. Analyst produces findings or plan.
+4. Optional reviewer checks hallucinated paths, line claims, and edge cases.
+5. Orchestrator returns a concise decision or next-step proposal.
 
 ## Human Gates
 
+- Route approval before execution when more than one role is used.
 - Before converting analysis into code edits.
 - Before promoting best-practice proposals into hard rules.
 
