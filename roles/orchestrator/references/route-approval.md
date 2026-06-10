@@ -6,6 +6,7 @@ human route decision.
 Read:
 
 - `method/route-approval.md`
+- `method/route-plan.md`
 - selected `pipelines/<pipeline>/PIPELINE.md`
 
 Canonical rules:
@@ -17,3 +18,4 @@ Orchestrator-specific guidance:
 
 - Present a route-level decision before pipeline execution; later gates remain
   owned by the selected pipeline.
+- Keep the approved route in run state using `method/route-plan.md`.

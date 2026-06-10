@@ -31,6 +31,7 @@ Deep for planning and adjudication; standard for routine routing.
 ## Outputs
 
 - run ledger updates
+- approved route plan
 - role prompts or step inputs
 - gate requests
 - final run summary

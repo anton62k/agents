@@ -25,3 +25,4 @@ the inbox/control-plane mechanism.
 
 Pipeline markdown uses placeholders only. Resolved values belong in a run ledger,
 for example `RUN.md`, `STATUS.md`, `steps/*.json`, or future DBOS/Revisium state.
+Use `route-plan.md` for the canonical approved route and run-state shape.

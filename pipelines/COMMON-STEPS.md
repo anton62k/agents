@@ -9,7 +9,8 @@ Every multi-role pipeline starts with the orchestrator running:
 
 1. Intake: see `../method/intake.md`.
 2. Capability check: see `../method/capability-check.md`.
-3. Route approval: see `../method/route-approval.md`.
+3. Route plan: see `../method/route-plan.md`.
+4. Route approval: see `../method/route-approval.md`.
 
 The selected pipeline continues only after the route is approved or changed by
 the human.
