@@ -1,6 +1,6 @@
 # AGENTS.md - Library Repo
 
-This repo follows `anton62k/agents` TypeScript library practices.
+This repo follows the canonical agents TypeScript library practices.
 
 ## Repo Facts
 

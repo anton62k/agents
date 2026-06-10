@@ -55,4 +55,7 @@ For multi-agent work, start with `method/README.md`. Keep role behavior in
 `roles/`, workflow order in `pipelines/`, and local values in ignored env/local
 overlays rather than committed markdown.
 
+For a new device or a new consuming repo, start with `method/bootstrap.md`, then
+run the manual startup flow in `method/manual-run.md`.
+
 To update the method itself, follow `method/maintenance.md`.

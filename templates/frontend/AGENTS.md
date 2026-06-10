@@ -1,6 +1,6 @@
 # AGENTS.md - Frontend Repo
 
-This repo follows `anton62k/agents` frontend practices.
+This repo follows the canonical agents frontend practices.
 
 ## Repo Facts
 

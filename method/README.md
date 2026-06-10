@@ -22,6 +22,8 @@ this repository:
   `pipelines/INDEX.md`;
 - route selection is defined by `intake.md`, `discovery.md`,
   `capability-check.md`, `route-plan.md`, and `route-approval.md`;
+- manual execution and consuming-repo setup are defined by `manual-run.md` and
+  `bootstrap.md`;
 - platform-specific generation and invocation rules live in `adapters/`;
 - local values live outside committed markdown, per `env-boundary.md`.
 
@@ -34,9 +36,10 @@ this repository:
 5. Add route approval before execution.
 6. Add catalogs for discovery and capability checks.
 7. Add a route plan and run-state contract.
-8. Exercise the method manually in Codex and Claude Code.
-9. Fold repeated lessons into references after human approval.
-10. Later, add a revo importer that loads the same definitions into
+8. Define manual run and consuming-repo bootstrap.
+9. Exercise the method manually in Codex and Claude Code.
+10. Fold repeated lessons into references after human approval.
+11. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals

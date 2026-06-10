@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 
@@ -8,22 +8,18 @@ This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 - Use `{{AGENTS_REPO_PATH}}/method/bootstrap.md` for local setup.
 - Discover roles from `{{AGENTS_REPO_PATH}}/roles/INDEX.md`.
 - Discover pipelines from `{{AGENTS_REPO_PATH}}/pipelines/INDEX.md`.
-- Keep concrete local values in ignored `.agents/local.*` files.
+- Generated `.claude/agents/*` files must point back to canonical roles.
 
 ## Repo Facts
 
 - Package manager: TODO
 - Runtime/framework: TODO
 - Protected branch: TODO
-- Release branch: TODO
 - Local verify command: TODO
-- Sonar project key: TODO
 
 ## Required Workflow
 
-- Inspect existing structure before editing.
-- Keep changes scoped.
-- Run local verification before commit.
-- Check CI after push.
-- Treat Sonar unresolved issues as blockers when Sonar is configured.
-- Answer PR review threads in-thread and resolve only after validation.
+- Keep the main session responsible for human gates.
+- Use subagents only within their approved rights.
+- Keep local accounts, paths, and secrets in ignored local overlays.
+- Do not let generated Claude Code files override canonical method behavior.

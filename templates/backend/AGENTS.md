@@ -1,6 +1,6 @@
 # AGENTS.md - Backend Repo
 
-This repo follows `anton62k/agents` backend practices.
+This repo follows the canonical agents backend practices.
 
 ## Repo Facts
 
