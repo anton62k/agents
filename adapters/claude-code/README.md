@@ -5,10 +5,29 @@ hooks.
 
 ## Mapping
 
-- `roles/<role>/ROLE.md` can generate `.claude/agents/<role>.md`.
-- `roles/<role>/references/` can generate or link to `.claude/skills/<role>/`.
-- `pipelines/<pipeline>/PIPELINE.md` can generate workflow commands or skills.
+- `method/manual-run.md` is the main startup procedure.
+- `method/bootstrap.md` explains how the consuming repo points to this method.
+- `roles/<role>/ROLE.md` generates `.claude/agents/<role>.md`.
+- `roles/<role>/references/` supply `.claude/skills/<role>/`.
+- `pipelines/<pipeline>/PIPELINE.md` becomes workflow commands or skills.
 - Human gates are handled by the main Claude Code session or deterministic hooks.
+
+## Discovery
+
+Claude Code learns about available agents from generated or linked
+`.claude/agents/*` files, but the canonical source remains `roles/INDEX.md`,
+`roles/<role>/ROLE.md`, and `pipelines/INDEX.md`.
+
+Generated Claude Code files should include enough pointers back to this method
+for the main session to reload canonical references when behavior is ambiguous.
+
+## New Device Bootstrap
+
+1. Make this repository available as `{{AGENTS_REPO_PATH}}`.
+2. Open the consuming repo as `{{TARGET_REPO_PATH}}`.
+3. Ensure `CLAUDE.md` points Claude Code to `method/manual-run.md` and
+   `method/bootstrap.md`.
+4. Generate or link `.claude/agents/*` only from canonical role definitions.
 
 ## Subagent Constraint
 

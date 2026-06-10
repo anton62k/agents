@@ -5,6 +5,8 @@ run retros.
 
 Initial rules:
 
+- [ORCHESTRATOR] Manual Codex and Claude Code runs start from
+  `method/manual-run.md`.
 - [DECISION] Every multi-role run starts with intake, capability check, and
   human route approval.
 - [ORCHESTRATOR] Route mutating actions to the owner role.
