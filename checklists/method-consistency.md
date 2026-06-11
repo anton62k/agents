@@ -14,6 +14,7 @@ Run it before publishing a method PR.
 
 ## Checklist
 
+- [ ] `node tools/validate.mjs` passes.
 - [ ] The change belongs to the edited owner: role, stack, framework reference,
   shared reference, pipeline, adapter, template, or local overlay.
 - [ ] `roles/INDEX.md` matches routable role files.
