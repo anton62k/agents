@@ -33,3 +33,4 @@ analysts, and integrators.
 - `references/package-managers.md`
 - `references/testing.md`
 - `references/lint-format.md`
+- `references/verification.md`
