@@ -1,7 +1,7 @@
 # AGENTS.md - anton62k/agents
 
-This repository stores reusable agent workflows, prompts, templates, and
-engineering practices.
+This repository stores the canonical agent method plus older playbook material
+under `legacy/`.
 
 ## Scope
 
@@ -13,10 +13,10 @@ engineering practices.
 
 ## Editing Rules
 
-- Keep prompts directly actionable for coding agents.
-- Keep practices concrete and testable: commands, gates, expected evidence.
-- When adding a new practice, add a checklist or template if it changes how an
-  agent should work.
+- Keep canonical behavior in `method/`, `roles/`, `pipelines/`, `references/`,
+  `stacks/`, `adapters/`, `templates/artifacts/`, and canonical checklists.
+- Treat `legacy/` as source material, not the default location for new behavior.
+- Promote useful legacy material into the canonical layer through small PRs.
 - Avoid duplicating the same rule across many files. Link to the canonical file.
 - Do not commit concrete local environment values in markdown: personal GitHub
   accounts, absolute home paths, hostnames, namespaces, token names that expose

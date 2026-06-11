@@ -5,4 +5,4 @@ description: Bootstrap a backend service with API contracts, tests, CI, and qual
 
 # Bootstrap Backend Skill
 
-Follow `prompts/bootstrap-new-backend.md` and backend practices.
+Follow `legacy/prompts/bootstrap-new-backend.md` and legacy backend practices.

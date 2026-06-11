@@ -1,6 +1,6 @@
 # AGENTS.md - Backend Repo
 
-This repo follows the canonical agents backend practices.
+This legacy template points to older backend practices.
 
 ## Repo Facts
 

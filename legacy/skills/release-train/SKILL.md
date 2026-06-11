@@ -5,4 +5,5 @@ description: Operate release branches, cherry-picks, version bumps, tags, CI, an
 
 # Release Train Skill
 
-Follow `prompts/release-train.md` and `practices/release-train.md`.
+Follow `legacy/prompts/release-train.md` and
+`legacy/practices/release-train.md`.

@@ -1,10 +1,10 @@
 # anton62k/agents
 
-Personal agent playbook for building and maintaining software projects.
+Canonical agent method for building and maintaining software projects.
 
-This repository contains reusable prompts, skills, templates, and engineering
-practices used to bootstrap, review, validate, release, and maintain projects
-with AI coding agents.
+This repository contains reusable role definitions, pipelines, references,
+templates, adapters, and method rules used to run AI coding agents consistently
+across Codex, Claude Code, and future orchestrator runtimes.
 
 Product repositories should keep project-specific context. This repository keeps
 the reusable method.
@@ -13,41 +13,24 @@ the reusable method.
 
 Project repos contain context. `anton62k/agents` contains method.
 
-Use this repository to standardize how agents work across new and existing
-projects: frontend apps, backend services, TypeScript libraries, release trains,
-quality gates, Sonar checks, PR review, and CI repair.
+Use this repository to standardize how agents route work, choose roles, produce
+handoff artifacts, apply gates, and keep platform-specific files reproducible.
 
 ## Structure
 
-- `prompts/` - copy-paste task prompts for agents.
-- `practices/` - engineering rules and recommendations.
-- `frontend/` - frontend-specific architecture and quality practices.
-- `backend/` - backend-specific architecture and quality practices.
-- `libraries/` - library/package-specific practices.
-- `templates/` - starter files copied into product repositories.
-- `templates/artifacts/` - fillable route, run-state, and handoff artifacts.
-- `skills/` - agent skill definitions and operational workflows.
-- `checklists/` - short acceptance checklists.
 - `method/` - canonical rules for role, pipeline, and environment definitions.
 - `roles/` - portable role definitions and role knowledge references.
 - `references/` - shared practices reused by multiple roles.
 - `stacks/` - language and ecosystem knowledge used by roles.
 - `pipelines/` - portable multi-role workflows with gates and handoff contracts.
 - `adapters/` - notes for running the same method in Codex, Claude Code, and revo.
+- `templates/common/` - consuming-repo entrypoint templates.
+- `templates/artifacts/` - fillable route, run-state, and handoff artifacts.
+- `checklists/requirements.md` - canonical requirements readiness gate.
+- `legacy/` - older playbook prompts, skills, practices, templates, and
+  checklists kept as source material during migration.
 
 ## How To Use
-
-For a new project, start with one bootstrap prompt:
-
-```md
-Use anton62k/agents/prompts/bootstrap-new-library.md.
-
-Create a new npm TypeScript library:
-- name: @scope/package
-- public API: ...
-- release channel: alpha
-- quality: local verify, Sonar zero new issues, type tests
-```
 
 For an existing project, add a small repo-local `AGENTS.md` that points here and
 records only local facts: package manager, branch policy, CI commands, release
@@ -61,3 +44,8 @@ For a new device or a new consuming repo, start with `method/bootstrap.md`, then
 run the manual startup flow in `method/manual-run.md`.
 
 To update the method itself, follow `method/maintenance.md`.
+
+Legacy prompts and skills are available under `legacy/`, but new canonical
+behavior should be promoted into `method/`, `roles/`, `pipelines/`,
+`references/`, `stacks/`, `adapters/`, `templates/artifacts/`, or
+`checklists/requirements.md`.

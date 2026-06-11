@@ -5,4 +5,5 @@ description: Bootstrap a TypeScript library with docs, CI, quality gates, tests,
 
 # Bootstrap Library Skill
 
-Follow `prompts/bootstrap-new-library.md` and `libraries/typescript-library.md`.
+Follow `legacy/prompts/bootstrap-new-library.md` and
+`legacy/libraries/typescript-library.md`.

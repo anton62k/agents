@@ -5,4 +5,4 @@ description: Bootstrap a frontend repository with FSD-aware structure, quality g
 
 # Bootstrap Frontend Skill
 
-Follow `prompts/bootstrap-new-frontend.md` and frontend practices.
+Follow `legacy/prompts/bootstrap-new-frontend.md` and legacy frontend practices.
