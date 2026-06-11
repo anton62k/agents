@@ -10,17 +10,22 @@ runtime boundaries.
   and contract tests.
 - [DECISION] Keep transport handlers thin when the framework supports separate
   service, handler, or domain layers.
-- [DECISION] Put state-changing business intent in commands or services, and
-  keep read paths side-effect free when the repo uses CQRS.
-- [DECISION] Prisma or another ORM may live directly in command/query handlers
-  when that is the repo pattern. The handler must still read as one use case and
-  should not mix raw query detail, transport mapping, domain policy, and system
-  mechanics in one unreadable block.
+- [DECISION] Put state-changing business intent in the repo-approved application
+  layer, for example a use case, command handler, service, or workflow unit.
+- [DECISION] Keep read paths side-effect free when the repo uses separate read
+  and write models.
+- [DECISION] Generated clients, ORMs, query builders, and repositories belong at
+  the repo-approved data boundary. Do not force a repository or service layer
+  when the repo intentionally keeps data access in a handler or use-case unit.
+- [DECISION] A backend unit should still read as one use case. Split raw query
+  detail, transport mapping, domain policy, integration calls, and system
+  mechanics when they obscure the flow.
 - [DECISION] Add services for reused domain policy, integration boundaries, or
   cross-cutting backend capabilities. Do not add a service only to satisfy a
   generic layering rule.
 - [DECISION] Keep persistence details behind repo-approved boundaries when
-  domain rules are non-trivial.
+  domain rules are non-trivial or the public contract should not expose storage
+  shape.
 - [DECISION] Treat migrations and generated artifacts as reviewed artifacts that
   follow repo-local rules.
 - [DECISION] Test database-specific query, JSON, transaction, and rollback
@@ -41,10 +46,18 @@ runtime boundaries.
 
 ## Source Material
 
-- `../../../legacy/backend/api-contracts.md`
-- `../../../legacy/backend/cqrs.md`
-- `../../../legacy/backend/integration-tests.md`
-- `../../../legacy/backend/nestjs.md`
-- `../../../legacy/backend/prisma.md`
-- `../../../references/quality/readable-code.md`
-- `../../../stacks/js-ts/references/application-architecture.md`
+- Always load:
+  - `../../../references/quality/readable-code.md`
+
+- Load when the selected stack is `js-ts`:
+  - `../../../stacks/js-ts/references/application-architecture.md`
+
+- Load when selected by route evidence or repo overlay:
+  - `../../../legacy/backend/api-contracts.md`
+  - `../../../legacy/backend/cqrs.md`
+  - `../../../legacy/backend/integration-tests.md`
+  - `../../../legacy/backend/nestjs.md`
+  - `../../../legacy/backend/prisma.md`
+
+Do not load CQRS, NestJS, Prisma, a specific ORM, or a repository pattern as a
+backend default. They are conditional on repo evidence or route approval.

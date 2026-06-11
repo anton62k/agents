@@ -41,8 +41,8 @@ The adapter builds context in this order:
 
 1. `roles/developer/ROLE.md`
 2. `roles/developer-backend/ROLE.md`
-3. selected `stacks/<stack>/STACK.md`
-4. framework references
+3. selected `stacks/<stack>/STACK.md` and its core references
+4. conditional framework and pattern references selected by route evidence
 5. tooling references
 6. shared practice references
 7. repo-local overlay
@@ -57,6 +57,11 @@ convenience, but the method source stays composed.
 Do not treat practices as stacks. SOLID, DDD, CQRS, C4, BPMN, ADRs, event
 storming, requirements engineering, and test strategy are practice references.
 They may be used by several roles.
+
+Do not treat framework references as stack defaults. React, Vue, Svelte, NestJS,
+Prisma, TypeORM, GraphQL Code Generator, FSD, and similar concrete references
+are loaded only when repo evidence, route approval, or overlay config selects
+them. Once selected, they may add stricter rules for that run.
 
 ## Developer Surface Specialization
 

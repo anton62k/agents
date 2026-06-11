@@ -20,6 +20,23 @@ They are not roles, stacks, pipelines, or local overlays.
 - workflow order stays in `pipelines/`;
 - local commands, paths, accounts, and secrets stay in ignored overlays.
 
+## Reference Selection
+
+References are knowledge modules, not defaults. A reference may be:
+
+- `core`: safe to load whenever the owning role, stack, or practice is selected;
+- `conditional`: loaded only when the route, repo overlay, config, package
+  metadata, or human approval selects the matching framework, tool, pattern, or
+  practice.
+
+Core references may mention examples, but they must not make a framework,
+library, ORM, architecture style, UI renderer, package manager, CI provider, or
+static-analysis tool mandatory. Conditional references may be strict after they
+are selected.
+
+When a concrete tool or pattern is uncertain, keep it as a candidate in route
+planning and return `needs_human` if selecting it would create a repo precedent.
+
 ## Reference Families
 
 - `analysis/` - requirements, task specs, decomposition, acceptance criteria.
@@ -37,3 +54,5 @@ They are not roles, stacks, pipelines, or local overlays.
 - Do not duplicate the same practice across many role-local references.
 - Add concrete practice files only when the practice is approved and has enough
   structure to guide agent behavior.
+- Keep conditional framework/tool references out of core behavior unless the rule
+  is phrased as conditional on repo evidence.

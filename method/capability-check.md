@@ -54,6 +54,8 @@ Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
 - Missing required roles, unresolved alternative role groups, selected stacks,
   selected required tooling, or selected pipeline blocks execution. Unresolved
   means zero roles from the group are present in `roles/INDEX.md`.
+- Missing conditional framework, tooling, or pattern references block execution
+  only when the route selected them as required for this run.
 - If a missing capability is itself method work, route to
   `method-development`.
 - Do not substitute a generic role for a missing specialization without human
