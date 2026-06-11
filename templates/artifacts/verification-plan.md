@@ -10,6 +10,11 @@ consuming repo or run overlay provides them.
 verification_plan:
   source_inputs:
     route_plan_ref: ""
+    repo_verification_contract:
+      path: "VERIFICATION.md"
+      status: present | missing | stale | equivalent
+      equivalent_path: ""
+      fallback_used: false
     repo_quality_docs: []
     stack_references: []
     tooling_references: []
@@ -44,12 +49,18 @@ verification_plan:
     - id: review-threads
       provider: github
       evidence_required: unresolved_thread_count
+  documentation_followups: []
   stop_and_escalate_if: []
 ```
 
 ## Fill Rules
 
-- Use commands from repo-local docs, scripts, CI config, or ignored run overlays.
+- Look for `VERIFICATION.md` or a repo-declared equivalent before selecting
+  commands.
+- Use commands from repo-local verification docs, scripts, CI config, or ignored
+  run overlays.
+- If the repo-local contract is missing, set `fallback_used: true` and add a
+  documentation follow-up.
 - Use placeholders when a local value, provider, account, token, or project key
   is required.
 - Mark provider-specific gates as `optional_configured` unless the consuming repo

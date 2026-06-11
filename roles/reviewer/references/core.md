@@ -28,6 +28,8 @@ integration.
 
 - Diff is scoped to one concern.
 - Local verification and CI evidence match the repo's required gates.
+- If `VERIFICATION.md` or an equivalent repo-local contract is missing, the
+  verification plan marks fallback discovery and a follow-up exists.
 - Changed behavior has tests or a justified residual-risk note.
 - API, docs, generated artifacts, or migration notes changed when contracts
   changed.

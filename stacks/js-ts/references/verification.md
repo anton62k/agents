@@ -17,6 +17,19 @@ Use evidence in this order:
 Exact commands must come from the repo overlay, scripts, or approved human
 input. Script names below are discovery hints, not commands to invent.
 
+## Default Repo Contract
+
+- [DECISION] Start with `VERIFICATION.md` or the repo-declared equivalent. This
+  is the default source of local verification truth for JS/TS work.
+- [DECISION] If the file is missing, inspect package scripts, workspace layout,
+  CI workflows, static-analysis config, generated-code config, and framework
+  config to build a temporary plan.
+- [DECISION] When fallback discovery is used, report the plan as inferred and
+  include a follow-up to add or update `VERIFICATION.md`.
+- [DECISION] If `VERIFICATION.md` exists but does not match current scripts or
+  CI, report the mismatch and return `needs_human` when the run cannot safely
+  decide which gate is blocking.
+
 ## Primary Gate
 
 - Prefer a repo-defined aggregate script such as `verify`, `check:all`, or

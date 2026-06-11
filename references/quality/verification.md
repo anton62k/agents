@@ -51,7 +51,10 @@ Repo overlays translate candidate checks into exact commands.
 
 ## Source Priority
 
-Use repo-local evidence before generic assumptions:
+Use repo-local evidence before generic assumptions. `VERIFICATION.md` is the
+default repo-local verification contract expected by this method. Its absence is
+not a failure by itself, but it means the agent must use discovery fallback and
+record a documentation follow-up.
 
 1. `VERIFICATION.md`, when present.
 2. Existing equivalent repo docs, for example `docs/quality-gates.md`, README
@@ -63,6 +66,24 @@ Use repo-local evidence before generic assumptions:
 Repo overlay wins for exact commands, blocking status, provider requirements,
 and environment constraints. If a repo-local source is missing or stale, record
 the uncertainty in `verification_plan` instead of guessing.
+
+## Default Contract Behavior
+
+- [DECISION] Always look for `VERIFICATION.md` or a repo-declared equivalent
+  before selecting commands.
+- [DECISION] If `VERIFICATION.md` exists, treat it as authoritative for local
+  gates, conditional gates, static-analysis requirements, remote gates, and
+  reporting format unless current repo evidence proves it stale.
+- [DECISION] If `VERIFICATION.md` is missing, compose a temporary verification
+  plan from scripts, CI, static-analysis config, repo docs, and stack
+  references. Mark `fallback_used: true` in the plan and add a follow-up to
+  create the repo-local verification contract.
+- [DECISION] If `VERIFICATION.md` conflicts with scripts or CI, do not silently
+  choose one. Record the mismatch, use the safest repo-current command set for
+  the run, and return `needs_human` when the conflict changes what is blocking.
+- [DECISION] Do not encode local accounts, tokens, hosts, namespaces, machine
+  paths, or secret values in `VERIFICATION.md`. Put those values in ignored
+  overlays or runtime environment.
 
 ## Provider Rules
 
