@@ -1,8 +1,8 @@
 # AGENTS.md - Frontend Repo
 
-This repo follows the canonical agents frontend practices.
+This legacy template points to older frontend practices.
 
-See `{{AGENTS_REPO_PATH}}/frontend/` for canonical frontend architecture and
+See `{{AGENTS_REPO_PATH}}/legacy/frontend/` for legacy frontend architecture and
 quality practices.
 
 ## Repo Facts

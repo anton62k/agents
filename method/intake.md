@@ -1,7 +1,7 @@
 # Intake
 
-Intake is the first step of every multi-agent run. It turns a user request into a
-candidate route before any pipeline executes.
+Intake is the first step of every multi-agent run. It turns a user request into
+a candidate route before any pipeline executes.
 
 ## Goals
 

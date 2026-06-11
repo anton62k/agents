@@ -20,6 +20,7 @@ This file tells agents how to update the method safely.
    - workflow order/gates -> `pipelines/<pipeline>/`;
    - platform mechanics -> `adapters/<platform>/`;
    - fillable artifact shapes -> `templates/artifacts/`;
+   - legacy source material -> `legacy/`;
    - local values -> local overlay, never committed markdown.
 5. Update `roles/INDEX.md` or `pipelines/INDEX.md` when adding, removing, or
    changing routable roles or pipelines.
@@ -59,4 +60,5 @@ Every new hard rule needs a source label:
 - Are discovery catalogs updated when routable roles or pipelines changed?
 - Is the rule short in dispatcher files and detailed in references?
 - Are fillable artifact templates updated when artifact schemas changed?
+- If the source is legacy material, was only the reusable part promoted?
 - Does the change remain usable by Codex, Claude Code, and future revo?
