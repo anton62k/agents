@@ -108,13 +108,7 @@ Committed method docs keep placeholders only.
 
 Before developer execution, verify `../checklists/requirements.md` for any
 available `task_spec`. If the requirements check is not `ready`, stop with the
-matching next action:
-
-- `needs_analyst` for requirements, scope, behavior, or acceptance ambiguity;
-- `needs_architect` for boundary, contract, data-shape, runtime-flow,
-  migration, quality-attribute, or ADR decisions;
-- `needs_human` for product, architecture, security, merge, deploy, secret, or
-  destructive-action decisions.
+matching next action defined in the checklist's Status Rules section.
 
 When analysis or architecture steps ran and clarification is clear, prepare a
 compact
@@ -212,8 +206,7 @@ method first, or stop.
   capability check.
 - If blocking capabilities are missing, recommend `method first` or
   `analysis only`.
-- If blocking clarification markers remain, stop with `needs_analyst`,
-  `needs_architect`, or `needs_human`; do not start developer execution.
+- Follow `constitution.md` section 3 for blocking clarification markers.
 - Keep runtime values in run state or ignored overlays, never in committed
   method files.
 - Future revo import reads canonical method, role, and pipeline files; it does

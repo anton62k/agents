@@ -40,6 +40,8 @@ rules.
 - [DECISION] When clarification is required, return the smallest correct next
   action or route decision: `needs_analyst`, `needs_architect`, `needs_human`,
   `method first`, or `stop`.
+- [DECISION] Use `../checklists/requirements.md` for operational field paths,
+  readiness status, and application rules.
 
 ### 4. Role Boundaries
 

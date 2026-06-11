@@ -80,13 +80,8 @@ or architecture decisions from long upstream artifacts. Use the canonical
 [DECISION] Use `checklists/requirements.md` and role escalation fields to decide
 whether the run can continue.
 
-Stop and reroute when any of these are unresolved:
-
-- requirements, scope, behavior, or acceptance criteria -> `needs_analyst`;
-- boundary, contract, data-shape, runtime-flow, migration, quality-attribute, or
-  ADR decisions -> `needs_architect`;
-- product approval, architecture approval, security decision, merge, deploy,
-  secret access, or destructive action -> `needs_human`.
+Stop and reroute based on the unresolved blockers defined in the checklist's
+Status Rules section.
 
 Do not ask the developer to fill these gaps during implementation.
 
