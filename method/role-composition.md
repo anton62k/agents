@@ -63,6 +63,11 @@ Prisma, TypeORM, GraphQL Code Generator, FSD, and similar concrete references
 are loaded only when repo evidence, route approval, or overlay config selects
 them. Once selected, they may add stricter rules for that run.
 
+Prefer granular references over large technology bundles. A common frontend
+route may compose React, MobX, MVVM, DI, and FSD references. A common backend
+route may compose NestJS, Prisma, CQRS, and GraphQL references. The route is the
+bundle; the references remain independently selectable.
+
 ## Developer Surface Specialization
 
 Use:

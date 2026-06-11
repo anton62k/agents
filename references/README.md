@@ -37,6 +37,26 @@ are selected.
 When a concrete tool or pattern is uncertain, keep it as a candidate in route
 planning and return `needs_human` if selecting it would create a repo precedent.
 
+## Granular And Composite References
+
+Prefer granular references for concrete technologies, frameworks, tools, and
+patterns. A granular reference should describe one selectable concern.
+
+Composite references may exist as route recipes. They describe a common
+combination, but they must not hide the individual selection decisions.
+
+Examples:
+
+- frontend route: React UI boundary + MVVM + MobX reactivity + frontend
+  DI/composition + FSD when each concern is selected;
+- backend route: NestJS + Prisma + CQRS + GraphQL when each concern is selected;
+- verification route: local scripts + tests + static analysis + optional Sonar
+  when each gate is selected.
+
+The route is the bundle. References remain independently selectable so a repo can
+use React without MobX, MobX without FSD, Prisma without CQRS, or GraphQL without
+NestJS.
+
 ## Reference Families
 
 - `analysis/` - requirements, task specs, decomposition, acceptance criteria.
