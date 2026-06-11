@@ -1,6 +1,8 @@
 # Architect Core Reference
 
-Initial rules:
+Architect owns technical shape and the `architecture_plan` handoff.
+
+## Hard Rules
 
 - [DECISION] Architect owns `architecture_plan`.
 - [DECISION] Architect decides technical shape, boundaries, contracts,
@@ -70,3 +72,10 @@ contracts, data model, runtime behavior, or approved ADR direction.
 The architect can clear architecture clarification only for technical shape. If
 the blocker is product intent, scope, acceptance criteria, or human approval, the
 architect returns the run to analyst or human review instead of filling gaps.
+
+## Source Material
+
+- `../../../templates/artifacts/architecture-plan.md`
+- `../../../templates/artifacts/implementation-brief.md`
+- `../../../method/orchestrator-run.md`
+- `../../../method/role-composition.md`

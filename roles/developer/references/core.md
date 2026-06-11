@@ -1,8 +1,9 @@
 # Developer Core Reference
 
-[TODO] Fill from existing developer runs and retros.
+Developer owns implementation inside approved requirements and architecture
+constraints.
 
-Initial rules:
+## Hard Rules
 
 - [ORCHESTRATOR] Developer owns working tree changes and local verification.
 - [ORCHESTRATOR] Developer does not own git/gh publishing.
@@ -46,3 +47,10 @@ implementation_brief:
 Before editing files, inspect the brief and upstream artifacts for unresolved
 markers. If any marker blocks safe implementation, return the matching stop
 state instead of guessing or widening scope.
+
+## Source Material
+
+- `../../../templates/artifacts/implementation-brief.md`
+- `../../../checklists/requirements.md`
+- `../../../method/orchestrator-run.md`
+- `../../../method/role-composition.md`
