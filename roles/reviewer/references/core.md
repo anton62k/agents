@@ -35,7 +35,5 @@ integration.
 
 ## Source Material
 
-- `../../../legacy/checklists/pr-review.md`
-- `../../../legacy/practices/quality-gates.md`
 - `../../../references/quality/readable-code.md`
 - `../../../references/quality/verification.md`

@@ -25,8 +25,3 @@ feature-code decisions.
 - Route to `developer` when review or CI requires code changes.
 - Route to `watcher` when remote checks, review decision, or quality-gate state
   is unknown after publishing.
-
-## Source Material
-
-- `../../../legacy/practices/github-pr-workflow.md`
-- `../../../legacy/prompts/address-pr-comments.md`

@@ -14,7 +14,3 @@ Lint and format checks are quality gates, not cleanup suggestions.
   changes when the pipeline requires local verification.
 - [DECISION] Treat zero-warning policies as blocking when the repo or CI defines
   them.
-
-## Source Material
-
-- `../../../legacy/practices/eslint-prettier-markdownlint.md`

@@ -23,7 +23,6 @@ This file tells agents how to update the method safely.
    - workflow order/gates -> `pipelines/<pipeline>/`;
    - platform mechanics -> `adapters/<platform>/`;
    - fillable artifact shapes -> `templates/artifacts/`;
-   - legacy source material -> `legacy/`;
    - local values -> local overlay, never committed markdown.
 6. Decide whether each touched reference is `core` or `conditional`.
    Conditional framework, tool, provider, and architecture-style references must
@@ -58,6 +57,7 @@ Every new hard rule needs a source label:
 - Do not duplicate the same rule across many roles.
 - Do not encode run-specific values in method files.
 - Do not commit raw project evidence or lesson-candidate files.
+- Do not use `legacy/` as source material for new runtime behavior.
 - Do not let adapters fork canonical behavior.
 - Do not silently change merge, deploy, or secret-access rules.
 - Do not commit best-practice suggestions before approval.
@@ -71,7 +71,8 @@ Every new hard rule needs a source label:
 - Are discovery catalogs updated when routable roles or pipelines changed?
 - Is the rule short in dispatcher files and detailed in references?
 - Are fillable artifact templates updated when artifact schemas changed?
-- If the source is legacy material, was only the reusable part promoted?
+- If an archived idea was recovered, was it rebuilt as new canonical behavior
+  without linking runtime docs to `legacy/`?
 - If the source is project evidence, was raw evidence kept out of this repo and
   only the approved abstraction committed?
 - Does the change remain usable by Codex, Claude Code, and future revo?

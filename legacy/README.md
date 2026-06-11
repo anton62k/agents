@@ -1,7 +1,8 @@
 # Legacy Playbook
 
 This directory contains the older playbook material that existed before the
-canonical method layout was introduced.
+canonical method layout was introduced. It is archived material, not runtime
+agent knowledge.
 
 ## Contents
 
@@ -16,18 +17,18 @@ canonical method layout was introduced.
 
 ## Status
 
-Legacy files are not the default source for new role, pipeline, or adapter
-behavior. They remain available as source material while the canonical method is
-built out.
+Legacy files must not be loaded by roles, stacks, pipelines, adapters, or runtime
+references. The canonical method is the only active source for agent behavior.
 
-## Promotion Rule
+## Recovery Rule
 
-When legacy material is useful for the new system:
+When an archived idea is still useful for the new system:
 
-1. Reference it from the relevant role, stack, pipeline, or checklist.
-2. Extract only the reusable rule or template into the canonical layer.
-3. Keep local or project-specific details out of canonical files.
-4. Leave the legacy source in place unless a later PR explicitly removes it.
+1. Do not link runtime docs to this directory.
+2. Rebuild the idea as a new canonical rule, reference, template, or checklist.
+3. Get human approval for the reusable abstraction.
+4. Keep local or project-specific details out of canonical files.
+5. Leave the archived source in place unless a later PR explicitly removes it.
 
 Canonical destinations:
 

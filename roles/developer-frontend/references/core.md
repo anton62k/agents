@@ -46,12 +46,6 @@ and browser-verifiable quality.
 
 - Load when selected by route evidence or repo overlay:
   - `../../../stacks/js-ts/references/react-mobx-mvvm.md`
-  - `../../../legacy/frontend/accessibility.md`
-  - `../../../legacy/frontend/forms.md`
-  - `../../../legacy/frontend/fsd.md`
-  - `../../../legacy/frontend/landing-page-quality.md`
-  - `../../../legacy/frontend/react-mobx.md`
-  - `../../../legacy/frontend/storybook-e2e.md`
 
 Do not load React, MobX, FSD, Storybook, or browser-specific references as
 frontend defaults. They are conditional on repo evidence or route approval.

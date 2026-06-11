@@ -27,8 +27,8 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 - `templates/common/` - consuming-repo entrypoint templates.
 - `templates/artifacts/` - fillable route, run-state, and handoff artifacts.
 - `checklists/requirements.md` - canonical requirements readiness gate.
-- `legacy/` - older playbook prompts, skills, practices, templates, and
-  checklists kept as source material during migration.
+- `legacy/` - archived older material. It is not runtime agent knowledge and
+  should not be loaded by roles, stacks, pipelines, or adapters.
 
 ## How To Use
 
@@ -48,7 +48,7 @@ run the manual startup flow in `method/manual-run.md`.
 
 To update the method itself, follow `method/maintenance.md`.
 
-Legacy prompts and skills are available under `legacy/`, but new canonical
-behavior should be promoted into `method/`, `roles/`, `pipelines/`,
+Do not link runtime behavior to `legacy/`. When an archived idea is still useful,
+rebuild it as new canonical behavior in `method/`, `roles/`, `pipelines/`,
 `references/`, `stacks/`, `adapters/`, `templates/artifacts/`, or
-`checklists/requirements.md`.
+`checklists/requirements.md` after approval.

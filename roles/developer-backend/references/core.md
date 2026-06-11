@@ -52,12 +52,5 @@ runtime boundaries.
 - Load when the selected stack is `js-ts`:
   - `../../../stacks/js-ts/references/application-architecture.md`
 
-- Load when selected by route evidence or repo overlay:
-  - `../../../legacy/backend/api-contracts.md`
-  - `../../../legacy/backend/cqrs.md`
-  - `../../../legacy/backend/integration-tests.md`
-  - `../../../legacy/backend/nestjs.md`
-  - `../../../legacy/backend/prisma.md`
-
 Do not load CQRS, NestJS, Prisma, a specific ORM, or a repository pattern as a
 backend default. They are conditional on repo evidence or route approval.

@@ -29,4 +29,3 @@ Merger executes a merge only after explicit authorization and a ready verdict.
 - `../../../roles/merger/ROLE.md`
 - `../../../method/route-approval.md`
 - `../../../pipelines/post-merge-qa/PIPELINE.md`
-- `../../../legacy/practices/github-pr-workflow.md`

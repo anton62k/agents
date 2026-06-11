@@ -8,8 +8,8 @@ them into canonical files, and keeps adapter/runtime materialization secondary.
 - [DECISION] Roles are portable specialists backed by references.
 - [DECISION] Pipelines are separate artifacts with explicit gates.
 - [DECISION] Evolution is curation through git and approval, not model training.
-- [DECISION] Extract from existing artifacts, source files, run retros, and
-  legacy material before asking open-ended questions.
+- [DECISION] Extract from canonical artifacts, source files, approved run retros,
+  and current method files before asking open-ended questions.
 - [DECISION] Label every non-obvious rule with its source type before promotion.
 - [DECISION] Keep `ROLE.md` and `PIPELINE.md` files as dispatchers; move detailed
   knowledge into role, stack, or shared references.
@@ -17,9 +17,8 @@ them into canonical files, and keeps adapter/runtime materialization secondary.
   generated artifacts. They must not become a second source of truth.
 - [DECISION] Keep raw project evidence and unapproved lesson notes outside this
   repository.
-- [DECISION] Promote only the reusable part of legacy material. Keep local
-  values, product facts, account names, paths, hosts, namespaces, and secrets
-  out of canonical files.
+- [DECISION] Keep local values, product facts, account names, paths, hosts,
+  namespaces, and secrets out of canonical files.
 - [DECISION] After human approval, commit the approved abstraction directly to
   the canonical owner file.
 - [DECISION] Update discovery catalogs when routable roles or pipelines change.
@@ -28,8 +27,8 @@ them into canonical files, and keeps adapter/runtime materialization secondary.
 
 ## Work Cycle
 
-1. Inventory existing roles, pipelines, references, adapters, and legacy source
-   material related to the change.
+1. Inventory existing canonical roles, pipelines, references, adapters, and
+   templates related to the change.
 2. Build a compact plan map: affected roles, knowledge domains, pipelines,
    artifacts, gates, and adapter surfaces.
 3. Aggregate project-specific evidence outside this repository and present only
@@ -57,4 +56,3 @@ them into canonical files, and keeps adapter/runtime materialization secondary.
 - `../../../method/pipeline-definition.md`
 - `../../../method/materialization.md`
 - `../../../method/maintenance.md`
-- `../../../legacy/README.md`

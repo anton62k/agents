@@ -18,9 +18,3 @@ TypeScript rules apply when the stack owner selects `js-ts`.
   metadata, declaration output, and README examples.
 - [DECISION] Verify generated declarations and exported files before publishing
   or handing work to an integrator.
-
-## Source Material
-
-- `../../../legacy/practices/type-tests.md`
-- `../../../legacy/libraries/typescript-library.md`
-- `../../../legacy/libraries/package-exports.md`

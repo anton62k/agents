@@ -35,7 +35,4 @@ plan.
 
 ## Source Material
 
-- `../../../legacy/practices/github-pr-workflow.md`
 - `../../../references/quality/verification.md`
-- `../../../legacy/prompts/address-pr-comments.md`
-- `../../../legacy/prompts/fix-ci.md`

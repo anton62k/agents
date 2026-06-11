@@ -1,7 +1,7 @@
 # AGENTS.md - anton62k/agents
 
-This repository stores the canonical agent method plus older playbook material
-under `legacy/`.
+This repository stores the canonical agent method. Older material under
+`legacy/` is archived and must not be used as runtime agent knowledge.
 
 ## Scope
 
@@ -15,8 +15,10 @@ under `legacy/`.
 
 - Keep canonical behavior in `method/`, `roles/`, `pipelines/`, `references/`,
   `stacks/`, `adapters/`, `templates/artifacts/`, and canonical checklists.
-- Treat `legacy/` as source material, not the default location for new behavior.
-- Promote useful legacy material into the canonical layer through small PRs.
+- Do not load `legacy/` from roles, stacks, pipelines, adapters, or runtime
+  references.
+- Rebuild useful ideas as new canonical rules through small PRs instead of
+  linking to legacy files.
 - Avoid duplicating the same rule across many files. Link to the canonical file.
 - Do not commit concrete local environment values in markdown: personal GitHub
   accounts, absolute home paths, hostnames, namespaces, token names that expose
