@@ -45,7 +45,14 @@ and browser-verifiable quality.
   - `../../../references/quality/readable-code.md`
 
 - Load when selected by route evidence or repo overlay:
-  - `../../../stacks/js-ts/references/react-mobx-mvvm.md`
+  - `../../../stacks/js-ts/references/react-ui-boundary.md`
+  - `../../../stacks/js-ts/references/mobx-reactivity.md`
+  - `../../../stacks/js-ts/references/mvvm-frontend.md`
+  - `../../../stacks/js-ts/references/frontend-di-composition.md`
+  - `../../../stacks/js-ts/references/frontend-fsd.md`
+  - `../../../stacks/js-ts/references/react-mobx-mvvm.md` as a composite route
+    only
 
-Do not load React, MobX, FSD, Storybook, or browser-specific references as
-frontend defaults. They are conditional on repo evidence or route approval.
+Do not load React, MobX, MVVM, DI, FSD, Storybook, or browser-specific
+references as frontend defaults. They are conditional on repo evidence, route
+approval, or overlay config.

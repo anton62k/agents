@@ -40,7 +40,12 @@ Core references:
 
 Conditional references:
 
-- `references/react-mobx-mvvm.md`
+- `references/react-ui-boundary.md`
+- `references/mobx-reactivity.md`
+- `references/mvvm-frontend.md`
+- `references/frontend-di-composition.md`
+- `references/frontend-fsd.md`
+- `references/react-mobx-mvvm.md` as a composite route only
 
 Load conditional references only when route evidence, repo overlay, package
 metadata, config, or human approval selects the matching framework or pattern.
