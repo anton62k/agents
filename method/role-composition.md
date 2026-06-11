@@ -65,8 +65,9 @@ them. Once selected, they may add stricter rules for that run.
 
 Prefer granular references over large technology bundles. A common frontend
 route may compose React, MobX, MVVM, DI, and FSD references. A common backend
-route may compose NestJS, Prisma, CQRS, and GraphQL references. The route is the
-bundle; the references remain independently selectable.
+route may compose backend testing, API layers, NestJS, Prisma, CQRS, GraphQL,
+and jobs references. The route is the bundle; the references remain
+independently selectable.
 
 ## Developer Surface Specialization
 

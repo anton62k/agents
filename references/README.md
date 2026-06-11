@@ -49,7 +49,8 @@ Examples:
 
 - frontend route: React UI boundary + MVVM + MobX reactivity + frontend
   DI/composition + FSD when each concern is selected;
-- backend route: NestJS + Prisma + CQRS + GraphQL when each concern is selected;
+- backend route: backend testing + API layers + NestJS + Prisma + CQRS +
+  GraphQL when each concern is selected;
 - verification route: local scripts + tests + static analysis + optional Sonar
   when each gate is selected.
 
