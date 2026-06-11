@@ -16,6 +16,7 @@ available method definitions.
 - selected tooling references;
 - selected practice references;
 - adapter target: Codex, Claude Code, or revo.
+- local execution profile when available.
 
 ## Checks
 
@@ -33,6 +34,10 @@ available method definitions.
 10. Practice references exist under `references/` when selected.
 11. Adapter notes exist for the selected execution mode.
 12. Local values are placeholders only and are listed for run-time resolution.
+13. Required model profiles exist or are listed as missing.
+14. Required consensus providers exist or are listed as missing.
+15. Budget constraints are compatible with the recommended route or require
+    human approval.
 
 ## Output
 
@@ -46,7 +51,8 @@ recommendation: proceed | run-method-development-first | ask-human
 ```
 
 Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
-`practice`, `pipeline`, `adapter`, `local-value`.
+`practice`, `pipeline`, `adapter`, `local-value`, `model-profile`,
+`consensus-provider`, `budget`.
 
 ## Rules
 
@@ -56,6 +62,10 @@ Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
   means zero roles from the group are present in `roles/INDEX.md`.
 - Missing conditional framework, tooling, or pattern references block execution
   only when the route selected them as required for this run.
+- Missing model profiles or consensus providers require human approval before
+  the orchestrator degrades models or narrows consensus.
+- Budget constraints that would change model level, consensus mode, or iteration
+  cap require route-plan regeneration and human approval.
 - If a missing capability is itself method work, route to
   `method-development`.
 - Do not substitute a generic role for a missing specialization without human

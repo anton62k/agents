@@ -12,7 +12,9 @@ Do not commit:
 - tokens, passwords, API keys, secret values;
 - private hostnames, cluster names, namespaces, or environment URLs;
 - PR numbers, branch names, or deployment coordinates from a specific run;
-- one-machine paths to worktrees, caches, browser profiles, or kube configs.
+- one-machine paths to worktrees, caches, browser profiles, or kube configs;
+- account-bound runner configuration, provider pricing tables, or concrete
+  model choices that should come from local execution profiles.
 
 ## Allowed In Committed Markdown
 
@@ -27,6 +29,9 @@ Use placeholders and variable names:
 - `{{SONAR_PROJECT_KEY}}`
 - `{{KUBE_CONTEXT}}`
 - `{{ADMIN_SECRET_REF}}`
+- `{{MODEL_PROFILE}}`
+- `{{LOCAL_MODEL_NAME}}`
+- `{{RUNNER_ID}}`
 
 Environment variable names are allowed when they are generic and contain no
 secret value, for example `AGENTS_GH_ACCOUNT`, `AGENTS_TARGET_ENV`,

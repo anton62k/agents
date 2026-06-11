@@ -47,6 +47,18 @@ optional `architect`, optional `merger`, optional `deploy-watcher`, optional
 15. Human merge gate, unless explicit auto-merge is recorded for this run.
 16. Optional post-merge deploy and QA stages.
 
+## Execution Policy
+
+- Recommended model levels: analyst `deep`; architect `deep` when selected;
+  developer `standard`; reviewer `deep`; integrator `standard`; watcher
+  `cheap`; deploy and QA roles `standard`.
+- Default task-spec review consensus: `dual-model`.
+- Default architecture review consensus: `single-reviewer`; use `dual-model`
+  for cross-module, data, auth, security, migration, or public API decisions.
+- Default code review consensus: `dual-model`.
+- Default iteration cap: 3 developer/reviewer or developer/watcher loops before
+  `needs_human`.
+
 ## Human Gates
 
 - task spec approval;

@@ -27,13 +27,14 @@ here. Read `method/orchestrator-run.md` first.
    alternative role groups.
 4. Run `method/capability-check.md` before execution.
 5. Build a route plan using `method/route-plan.md`.
-6. Request human route approval using `method/route-approval.md`.
-7. Check requirements readiness and clarification blockers.
-8. Create role-specific handoff inputs, including verification plans before
+6. Recommend execution policy using `method/execution-policy.md`.
+7. Request human route approval using `method/route-approval.md`.
+8. Check requirements readiness and clarification blockers.
+9. Create role-specific handoff inputs, including verification plans before
    developer execution.
-9. Update run state after every role output, gate, blocker, or artifact.
-10. Decide the next role or gate from the approved pipeline.
-11. Synthesize completion with evidence, validation status, blockers, and
+10. Update run state after every role output, gate, blocker, or artifact.
+11. Decide the next role or gate from the approved pipeline.
+12. Synthesize completion with evidence, validation status, blockers, and
     unresolved risks.
 
 ## Non-Responsibilities
@@ -57,8 +58,10 @@ here. Read `method/orchestrator-run.md` first.
 1. Load context from the constitution, consuming repo entrypoint, local
    overlays, method files, role catalogs, pipeline catalogs, stack catalogs, and
    adapter notes.
-2. Produce a route plan with visible ambiguity and missing capabilities.
-3. Ask for human route approval.
+2. Produce a route plan with visible ambiguity, missing capabilities, model
+   levels, consensus mode, iteration cap, and budget policy.
+3. Ask for human route approval, including approval or changes for models,
+   consensus, and budget.
 4. Execute only the approved pipeline.
 5. Before developer execution, clear requirements and clarification gates.
 6. For each pipeline step:
@@ -90,6 +93,29 @@ Do not hard-code JavaScript, npm, Sonar, FSD, or any other provider as a core
 expectation. If a provider is configured but credentials or project access are
 missing, mark that gate as `optional_configured` with a skip or `needs_human`
 condition.
+
+## Execution Policy Ownership
+
+[DECISION] The orchestrator owns execution-policy recommendation and route
+approval. Specialist roles may declare `default_model_level`, but they do not
+choose concrete models, consensus width, or budget.
+
+Before route approval, the orchestrator must show:
+
+- model level per selected role;
+- concrete model source: local overlay, runtime config, or unknown;
+- consensus mode for task-spec, architecture, and code review gates;
+- iteration cap and budget policy;
+- missing model profiles or consensus providers;
+- reduced coverage when fallback models or narrower consensus are proposed.
+
+The human may approve the recommendation or request `change models`,
+`change consensus`, `set budget`, `change roles`, `change pipeline`,
+`analysis only`, `method first`, or `stop`.
+
+Do not silently widen consensus, raise model level, lower model level, or change
+budget after route approval. Regenerate route plan and rerun capability check
+when these choices change.
 
 ## Clarification Gate
 
@@ -132,6 +158,8 @@ After a role returns, the orchestrator must:
 - route approval before multi-role execution;
 - product, architecture, security, or legal ambiguity;
 - missing required role, stack, adapter, or pipeline capability;
+- missing required model profile or consensus provider;
+- budget limit that would change route coverage;
 - destructive filesystem, git, database, deployment, or external-service action;
 - secret, credential, live-system, or production access;
 - merge, release, deploy, or auto-merge authorization;
@@ -162,6 +190,7 @@ state-changing.
 - proposed and approved route plan;
 - role bindings;
 - current pipeline step;
+- execution policy and usage summary;
 - gates and decisions;
 - artifacts and validation results;
 - blockers and next action;

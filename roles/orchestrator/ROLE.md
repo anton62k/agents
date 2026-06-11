@@ -33,11 +33,13 @@ Deep for planning and adjudication; standard for routine routing.
 - target repos as placeholders, not absolute local paths
 - consuming repo entrypoints and local overlay placeholders
 - role, pipeline, stack, method, and adapter catalogs
+- local execution profile when available
 - existing run state when resuming
 
 ## Outputs
 
 - proposed and approved route plan
+- execution policy recommendation and approved overrides
 - role prompts or step inputs
 - `implementation_brief` when developer work follows analysis or architecture
 - gate requests
@@ -52,6 +54,8 @@ Deep for planning and adjudication; standard for routine routing.
 - Follow `method/orchestrator-run.md` as the run lifecycle contract.
 - Run intake, discovery, capability check, route plan, and route approval before
   starting any multi-role pipeline.
+- Show model levels, consensus mode, iteration cap, and budget policy in the
+  route plan before execution.
 - Use only cataloged pipeline and role ids unless the human chooses
   `method-development`.
 - Check requirements readiness and clarification blockers before developer
@@ -68,6 +72,8 @@ Deep for planning and adjudication; standard for routine routing.
 
 - `../../method/constitution.md`
 - `../../method/orchestrator-run.md`
+- `../../method/execution-policy.md`
+- `../../method/usage-accounting.md`
 - `../../checklists/requirements.md`
 - `references/core.md`
 - `references/intake.md`

@@ -12,11 +12,12 @@ Every multi-role pipeline starts with the orchestrator running:
 3. Intake: see `../method/intake.md`.
 4. Discovery: see `../method/discovery.md`.
 5. Capability check: see `../method/capability-check.md`.
-6. Route plan: see `../method/route-plan.md`.
-7. Route approval: see `../method/route-approval.md`.
+6. Execution policy: see `../method/execution-policy.md`.
+7. Route plan: see `../method/route-plan.md`.
+8. Route approval: see `../method/route-approval.md`.
 
-The selected pipeline continues only after the route is approved or changed by
-the human.
+The selected pipeline continues only after the route, model policy, consensus
+policy, and budget policy are approved or changed by the human.
 
 ## Standard Human Gate
 

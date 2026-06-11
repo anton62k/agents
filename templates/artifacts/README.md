@@ -12,6 +12,8 @@ These templates are fillable copies of canonical run artifacts.
 
 - `route-plan.md` - route proposal and approval artifact.
 - `run-state.md` - portable run-state snapshot.
+- `execution-profile.md` - local/runtime model, runner, consensus, and budget
+  capability profile.
 - `task-spec.md` - analyst-owned requirements artifact.
 - `requirements-check.md` - readiness gate for `task_spec`.
 - `architecture-plan.md` - architect-owned technical-shape artifact.
@@ -26,6 +28,8 @@ The templates mirror schemas from these source files:
 
 - `../../method/route-plan.md`;
 - `../../method/orchestrator-run.md`;
+- `../../method/execution-policy.md`;
+- `../../method/usage-accounting.md`;
 - `../../roles/analyst/references/core.md`;
 - `../../checklists/requirements.md`;
 - `../../roles/architect/references/core.md`;

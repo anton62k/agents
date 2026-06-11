@@ -1,6 +1,7 @@
 # Pipelines
 
-Portable pipelines define role order, state artifacts, gates, and handoffs.
+Portable pipelines define role order, state artifacts, gates, handoffs, and
+execution-policy defaults.
 Discovery metadata lives in `INDEX.md`.
 Shared startup and route approval gate text lives in `COMMON-STEPS.md`.
 
@@ -13,4 +14,5 @@ The current base is deliberately small:
 - `method-development` - add or improve roles, stacks, pipelines, adapters, and
   references.
 
-Runtime values use placeholders and are resolved per run.
+Runtime values, concrete models, provider accounts, and budgets use
+placeholders and are resolved per run.

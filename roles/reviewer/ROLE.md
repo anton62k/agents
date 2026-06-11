@@ -10,7 +10,7 @@ or after fixes.
 - Review a task spec before implementation.
 - Review a code diff before PR.
 - Re-review after fixes.
-- Pair with a second model for consensus.
+- Act as one review voice in a consensus policy selected by the orchestrator.
 
 ## Rights
 
@@ -38,6 +38,8 @@ Deep.
 
 - Review real files, not only the diff.
 - A finding from either independent reviewer is considered until adjudicated.
+- Do not decide the consensus width yourself; follow the approved
+  `execution_policy.consensus_policy`.
 - Cite file lines for concrete findings.
 - Calibrate severity to actual gate and product risk.
 

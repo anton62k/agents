@@ -32,6 +32,28 @@ route_plan:
     architecture_or_structure: available | missing | unknown | not-applicable
     static_analysis: configured | optional | unavailable | unknown
     remote_ci: available | missing | unknown
+  execution_policy:
+    execution_profile_ref: ""
+    model_policy:
+      role_levels: {}
+      concrete_models_source: local-overlay | runtime-config | unknown
+      missing_model_profiles: []
+    consensus_policy:
+      task_spec_review: none | single-reviewer | dual-model | adversarial-consensus
+      architecture_review: none | single-reviewer | dual-model | adversarial-consensus
+      code_review: none | single-reviewer | dual-model | adversarial-consensus
+      provider_requirements: []
+      missing_consensus_capabilities: []
+    budget_policy:
+      iteration_cap: null
+      token_budget: null
+      reported_cost_budget: null
+      reported_currency: null
+      budget_exhaustion_action: needs_human | stop | degrade_models
+    usage_accounting:
+      record_attempts: true
+      record_usage: when_available
+      cost_policy: self_reported_only
   local_values_needed: []
   missing_capabilities: []
   clarification_blockers: []
@@ -40,8 +62,8 @@ route_plan:
   approval:
     status: proposed | approved | changed | rejected
     decision: >
-      approve | change pipeline | change roles | analysis only |
-      method first | stop
+      approve | change pipeline | change roles | change models |
+      change consensus | set budget | analysis only | method first | stop
     notes: ""
 ```
 
@@ -49,6 +71,9 @@ route_plan:
 
 - Include only placeholder names in `local_values_needed`.
 - Keep `missing_capabilities` and `clarification_blockers` visible.
+- Keep recommended model levels, consensus mode, and budget policy visible before
+  approval.
 - Keep commands and provider-specific settings out of this route artifact unless
   they are placeholders copied from the consuming repo overlay.
+- Concrete model names may be filled only from a local overlay or runtime config.
 - Do not set approval to `approved` until the human explicitly approves.

@@ -77,6 +77,9 @@ workspace entrypoints and adapter links needed for discovery: AGENTS.md,
 CLAUDE.md, .agents/README.md, .agents/skills, .codex/agents, .claude/agents,
 and .claude/skills.
 
+If model, runner, consensus, or budget defaults are needed, use
+agents/templates/artifacts/execution-profile.md as an ignored local template.
+
 Preserve existing repo-local overlays. Keep concrete local paths, accounts,
 tokens, hosts, and secrets in ignored local files such as .agents/local.*.
 Report what was created, linked, skipped, or needs human input before making

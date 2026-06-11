@@ -18,6 +18,8 @@ Official surfaces used by this adapter:
 - `pipelines/<pipeline>/PIPELINE.md` is exposed through `.agents/skills/*`
   wrappers when a workflow should be directly invokable.
 - The main session owns human gates and writes run artifacts when requested.
+- `method/execution-policy.md` maps portable model levels and consensus choices
+  to local Codex capabilities through local overlays or runtime config.
 
 ## Discovery
 
@@ -57,5 +59,7 @@ redefining role behavior.
 - Do not rely on Codex-specific output fields in canonical role definitions.
 - Platform wrappers may add envelope fields, but the portable role result remains
   `output`, `artifacts`, `needsHuman`, and `lesson`.
+- Codex token usage is adapter metadata; record it according to
+  `method/usage-accounting.md` and do not make roles emit cost fields.
 - Do not symlink canonical `roles/` directly into `.codex/agents`; use adapter
   wrappers.

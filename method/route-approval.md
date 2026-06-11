@@ -16,6 +16,10 @@ Before execution, show the route plan defined in `route-plan.md`.
 - `approve` - run the selected pipeline.
 - `change pipeline` - pick a different pipeline.
 - `change roles` - adjust required, alternative, or optional roles.
+- `change models` - change recommended model levels or concrete local model
+  bindings.
+- `change consensus` - change reviewer consensus mode or providers.
+- `set budget` - set or change iteration, token, or reported-cost limits.
 - `analysis only` - switch to `analysis-only`.
 - `method first` - run `method-development` to add missing capability.
 - `stop` - do not run.
@@ -38,4 +42,6 @@ Before execution, show the route plan defined in `route-plan.md`.
   `method first` or `analysis only`, not blind execution.
 - If clarification blockers are already visible, show them in the route plan and
   route to analyst, architect, or human review before implementation.
+- If model, consensus, or budget choices change, regenerate route plan and rerun
+  capability check before execution.
 - Record the approved route in run state, not in method markdown.

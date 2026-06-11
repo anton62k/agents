@@ -28,12 +28,16 @@ promoted into reusable role behavior.
   `stacks/`, not hardcoded into the role unless they are role-invariant.
 - [ ] `ROLE.md` states purpose, rights, inputs, outputs, escalation markers,
   handoffs, and prohibited actions.
+- [ ] `default_model_level` is portable (`cheap`, `standard`, or `deep`) and
+  does not name a provider-specific concrete model.
 - [ ] `references/core.md` contains the role's always-loaded operating
   knowledge and links to conditional references when needed.
 - [ ] Shared knowledge used by more than one role lives under `references/`.
 - [ ] The role returns `needs_analyst`, `needs_architect`, `needs_human`, or
   `needs_method_materialization` instead of guessing outside its boundary.
 - [ ] Human gates and write permissions are not weakened.
+- [ ] Consensus requirements are expressed in pipeline or route policy, not
+  hidden inside one role.
 - [ ] `roles/INDEX.md` is updated when a routable role is added, removed,
   renamed, or materially rerouted.
 - [ ] Adapter materialization gate from `method/maintenance.md` is complete.

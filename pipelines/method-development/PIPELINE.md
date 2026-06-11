@@ -36,6 +36,16 @@ pipelines, adapters, and maintenance rules.
 6. Knowledge-engineer fixes blocking findings.
 7. Integrator/PR workflow publishes the small method change when requested.
 
+## Execution Policy
+
+- Recommended model levels: knowledge-engineer `deep`; architect `deep` when
+  selected; reviewer `standard` by default and `deep` for role, pipeline, or
+  adapter boundary changes.
+- Default consensus: `single-reviewer`.
+- Use `dual-model` when adding routable roles, changing human gates, changing
+  materialization behavior, or changing result/usage contracts.
+- Default iteration cap: 2 knowledge-engineer/reviewer loops.
+
 ## Human Gates
 
 - approval before adding or changing hard method rules;

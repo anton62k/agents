@@ -13,6 +13,8 @@ Before acting, read:
 - `roles/orchestrator/ROLE.md`
 - `roles/orchestrator/references/core.md`
 - `method/orchestrator-run.md`
+- `method/execution-policy.md`
+- `method/usage-accounting.md`
 - `method/manual-run.md`
 
 Follow the canonical role exactly. If the canonical source cannot be resolved,

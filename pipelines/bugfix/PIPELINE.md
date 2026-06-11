@@ -28,6 +28,15 @@ optional `architect`, optional `qa-backend` or `qa-frontend`.
 9. Watcher follows checks and review.
 10. Optional QA verifies the live/user-facing path.
 
+## Execution Policy
+
+- Recommended model levels: developer `standard`; reviewer `standard`; watcher
+  `cheap`; architect `deep` when selected.
+- Default consensus: `single-reviewer`.
+- Escalate to `dual-model` when root cause, data loss, security, concurrency,
+  migration, or architecture boundary risk is unclear.
+- Default iteration cap: 3 developer/reviewer or developer/watcher loops.
+
 ## Human Gates
 
 - Missing reproduction with risky fix.

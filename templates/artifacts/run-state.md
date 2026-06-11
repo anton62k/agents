@@ -29,6 +29,12 @@ run_state:
       decision: needs_analyst | needs_architect | needs_human | ""
   artifacts: []
   blockers: []
+  execution_policy: {}
+  usage_summary:
+    attempts: []
+    totals_by_role: {}
+    totals_by_model_profile: {}
+    cost_unreported_for: []
   next_action: route-approval
 ```
 
@@ -40,3 +46,6 @@ run_state:
 - Keep secrets out of this artifact unless the consuming repo explicitly uses an
   ignored local run-state location.
 - Keep adapter-specific metadata outside the canonical fields or in a wrapper.
+- Record concrete model names only when they came from local overlay or runtime
+  config.
+- Usage summaries follow `../../method/usage-accounting.md`.
