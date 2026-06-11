@@ -32,17 +32,18 @@ Use this split:
 - `references/core.md` - role behavior and handoff rules.
 - `references/review-checklist.md` - review dimensions or quality gates.
 - `references/examples/` - good and bad examples.
-- `references/_learnings-candidate.md` - unapproved repeated lessons.
 
-Rules promoted from `_learnings-candidate.md` need human approval.
+Unapproved lessons and raw project evidence stay outside this repository. After
+human approval, commit only the reusable abstraction to the canonical owner file.
 
 ## Source Labels
 
 Every non-obvious rule should carry one source label:
 
 - `[ORCHESTRATOR]` - extracted from existing `.agents` or pipeline docs.
-- `[CODE]` - extracted from a real file, with `path:line` in the consuming repo.
-- `[BEST-PRACTICE]` - proposed general practice, needs approval before hardening.
+- `[CODE]` - extracted from approved public/example source or current method repo
+  files. Private project evidence must be aggregated outside this repository.
+- `[BEST-PRACTICE]` - approved general practice that is not tied to one source.
 - `[DECISION]` - approved human decision.
 - `[TODO]` - unresolved or intentionally thin base placeholder.
 

@@ -50,4 +50,3 @@ Standard; deep for state architecture, data flow, or high-risk UX workflows.
 ## References
 
 - `references/core.md`
-- `references/_learnings-candidate.md`

@@ -30,7 +30,6 @@ Deep.
 - references
 - pipeline definitions
 - adapter notes
-- candidate lessons
 
 ## Hard Rules
 
@@ -42,4 +41,3 @@ Deep.
 ## References
 
 - `references/core.md`
-- `references/_learnings-candidate.md`

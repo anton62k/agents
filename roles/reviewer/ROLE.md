@@ -44,4 +44,3 @@ Deep.
 ## References
 
 - `references/core.md`
-- `references/_learnings-candidate.md`

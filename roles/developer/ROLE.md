@@ -51,4 +51,3 @@ Standard.
 
 - `references/core.md`
 - `../../references/quality/README.md`
-- `references/_learnings-candidate.md`

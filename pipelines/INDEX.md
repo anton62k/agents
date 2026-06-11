@@ -73,7 +73,7 @@ Each record defines:
 - required_roles: `orchestrator`, `knowledge-engineer`
 - alternative_roles: []
 - optional_roles: `architect`, `reviewer`
-- route_gates: promoting candidate lessons or best practices, merge approval
+- route_gates: approved hard-rule changes, merge approval
 
 ## Standard Startup
 

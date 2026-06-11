@@ -51,4 +51,3 @@ Deep.
 - `references/core.md`
 - `../../references/analysis/README.md`
 - `../../references/modeling/README.md`
-- `references/_learnings-candidate.md`

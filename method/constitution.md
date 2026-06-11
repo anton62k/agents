@@ -80,8 +80,10 @@ rules.
 ### 8. Lessons And Promotion
 
 - [DECISION] New hard rules are promoted through `method/maintenance.md`.
-- [DECISION] Unapproved lessons stay in `_learnings-candidate.md` until a human
-  accepts them.
+- [DECISION] Raw project evidence and unapproved lesson notes stay outside this
+  repository.
+- [DECISION] Committed method files contain approved reusable abstractions, not
+  project-specific evidence or candidate lessons.
 
 ### 9. Adapter Neutrality
 

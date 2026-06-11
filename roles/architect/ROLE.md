@@ -52,4 +52,3 @@ Deep.
 - `../../references/architecture/README.md`
 - `../../references/modeling/README.md`
 - `../../references/quality/README.md`
-- `references/_learnings-candidate.md`

@@ -40,4 +40,3 @@ Standard for judgment; cheap only for deterministic polling.
 ## References
 
 - `references/core.md`
-- `references/_learnings-candidate.md`
