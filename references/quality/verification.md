@@ -90,9 +90,14 @@ the uncertainty in `verification_plan` instead of guessing.
 - Do not assume a provider exists because similar repos use it.
 - Treat configured static analysis as optional until the consuming repo declares
   it required and required access is available.
+- Use `static-analysis.md` to classify provider states, finding categories,
+  local mode, hosted mode, false positives, and accepted risks.
 - A provider's green aggregate status is evidence, not a complete review. When
   the provider exposes issue-level findings, unresolved new findings must be
   inspected.
+- Failed or warning provider gates must be expanded into issue-level findings
+  when access exists before routing the work back to developer, reviewer, or
+  human.
 - Suppression or accepted risk requires narrow evidence and reviewer or human
   approval according to the consuming repo policy.
 - Missing credentials, project access, or provider config must be reported as
@@ -102,3 +107,4 @@ the uncertainty in `verification_plan` instead of guessing.
 
 - `../../templates/artifacts/verification-plan.md`
 - `../../templates/artifacts/verification-result.md`
+- `static-analysis.md`

@@ -36,16 +36,37 @@ verification_plan:
     - id: static-analysis
       provider: "{{STATIC_ANALYSIS_PROVIDER}}"
       capability: static_analysis
+      provider_state: >
+        not_configured | configured_local | configured_hosted |
+        configured_unavailable | unknown
+      mode: local | hosted | ci | pr-decoration | unknown
+      scope: changed-code | new-code | full-project | unknown
+      blocking: false
       command: "{{STATIC_ANALYSIS_COMMAND}}"
+      hosted_check: "{{STATIC_ANALYSIS_HOSTED_CHECK}}"
+      issue_level_access: required | best-effort | unavailable | unknown
+      categories:
+        - security
+        - reliability
+        - maintainability
+        - duplication
+        - coverage
+        - dependency_risk
+        - quality_gate
       skip_if_missing:
         - credential
         - project_access
         - provider_config
-      evidence_required: issue_or_gate_summary
+      evidence_required: issue_summary_with_gate_status
+      false_positive_policy: reviewer_or_human_required
   remote_after_push:
     - id: remote-ci
       provider: "{{CI_PROVIDER}}"
       evidence_required: status_checks
+    - id: hosted-static-analysis
+      provider: "{{STATIC_ANALYSIS_PROVIDER}}"
+      applies_when: static_analysis.provider_state == configured_hosted
+      evidence_required: issue_summary_with_gate_status
     - id: review-threads
       provider: github
       evidence_required: unresolved_thread_count
@@ -65,5 +86,7 @@ verification_plan:
   is required.
 - Mark provider-specific gates as `optional_configured` unless the consuming repo
   explicitly makes them required.
+- When static analysis is selected, record provider state, mode, scope,
+  categories, issue-level access, and false-positive policy.
 - Do not assume JavaScript, TypeScript, npm, Sonar, FSD, CodeQL, Semgrep, or any
   other stack/tool in the canonical template.

@@ -43,3 +43,8 @@ records `fallback_used: true` and a follow-up to add the repo-local contract.
 
 Developer and watcher results should be reported through `verification_result`
 or an equivalent run-state field.
+
+When static analysis is selected by repo evidence, the plan records provider
+state, local or hosted mode, issue-level access, finding categories, and the
+false-positive or accepted-risk policy. Missing provider access is a skipped or
+`needs_human` state, not a passed gate.

@@ -33,9 +33,12 @@ integration.
 - Changed behavior has tests or a justified residual-risk note.
 - API, docs, generated artifacts, or migration notes changed when contracts
   changed.
+- Static-analysis findings are inspected at issue level when the provider
+  exposes them, and unresolved findings have a decision or next owner.
 - Review threads are answered and resolved only after validation.
 
 ## Source Material
 
 - `../../../references/quality/readable-code.md`
 - `../../../references/quality/verification.md`
+- `../../../references/quality/static-analysis.md`

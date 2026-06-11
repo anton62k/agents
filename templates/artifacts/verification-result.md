@@ -24,6 +24,31 @@ verification_result:
         not-applicable | missing-credential | missing-config |
         missing-tooling | human-required
       evidence: ""
+  static_analysis:
+    - id: ""
+      provider: ""
+      mode: local | hosted | ci | pr-decoration | unknown
+      status: passed | failed | partial | skipped | unavailable | pending
+      provider_state: >
+        not_configured | configured_local | configured_hosted |
+        configured_unavailable | unknown
+      issue_level_access: available | unavailable | not-supported | unknown
+      quality_gate: passed | failed | not-reported | unknown
+      categories:
+        security: passed | failed | not-reported | unknown
+        reliability: passed | failed | not-reported | unknown
+        maintainability: passed | failed | not-reported | unknown
+        duplication: passed | failed | not-reported | unknown
+        coverage: passed | failed | not-reported | unknown
+        dependency_risk: passed | failed | not-reported | unknown
+      findings:
+        - rule: ""
+          severity: ""
+          category: ""
+          location: ""
+          state: new | existing | fixed | false-positive | accepted-risk | unclear
+          next_owner: developer | reviewer | human | waiting
+          evidence: ""
   remote:
     - id: ""
       provider: ""
@@ -42,5 +67,8 @@ verification_result:
   contract, or fallback discovery.
 - Failed required gates block completion.
 - Skipped optional configured gates are acceptable only with a concrete reason.
+- For configured static analysis, record issue-level findings when available and
+  preserve any access limitation as `partial`, `unavailable`, `skipped`, or
+  `needs_human`.
 - A missing credential, project access, or external permission is `needs_human`
   when the approved pipeline requires that gate.
