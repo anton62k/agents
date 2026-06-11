@@ -21,9 +21,3 @@ Testing scope should scale with product risk and blast radius.
   checks when risk warrants it.
 - [DECISION] Backends need behavior coverage for API contracts, persistence,
   queues, auth boundaries, and risky migrations.
-
-## Source Material
-
-- `../../../legacy/practices/test-strategy.md`
-- `../../../legacy/practices/type-tests.md`
-- `../../../legacy/practices/local-ci.md`

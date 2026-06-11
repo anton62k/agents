@@ -21,7 +21,4 @@ Backend QA verifies runtime behavior that static checks and unit tests can miss.
 
 ## Source Material
 
-- `../../../legacy/backend/api-contracts.md`
-- `../../../legacy/backend/integration-tests.md`
-- `../../../legacy/backend/prisma.md`
-- `../../../legacy/practices/test-strategy.md`
+- `../../../references/quality/verification.md`

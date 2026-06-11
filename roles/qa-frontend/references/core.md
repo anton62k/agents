@@ -25,8 +25,4 @@ Frontend QA verifies browser-visible behavior and interaction quality.
 
 ## Source Material
 
-- `../../../legacy/frontend/accessibility.md`
-- `../../../legacy/frontend/forms.md`
-- `../../../legacy/frontend/landing-page-quality.md`
-- `../../../legacy/frontend/storybook-e2e.md`
-- `../../../legacy/practices/test-strategy.md`
+- `../../../references/quality/verification.md`

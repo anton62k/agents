@@ -13,7 +13,3 @@ Package manager rules apply to npm, pnpm, yarn, and compatible script runners.
   explicitly requires that state.
 - [DECISION] If local and remote CI use different package-manager behavior,
   record the difference in repo-local docs or scripts before handing off.
-
-## Source Material
-
-- `../../../legacy/practices/local-ci.md`
