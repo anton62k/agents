@@ -9,15 +9,19 @@ Quality references help agents decide whether a proposed change is safe enough.
 - verification gates;
 - residual risk reporting;
 - non-functional quality checks.
+- readable code and maintainability boundaries.
 
 ## Core References
 
+- `readable-code.md` - stack-neutral readability, abstraction-level, SOLID, and
+  business/system boundary rules.
 - `verification.md` - generic verification planning and result contract.
 
 ## Used By
 
 - `reviewer` as primary owner;
 - `architect` when quality attributes drive design;
-- `developer` when selecting tests and local verification;
+- `developer` when implementing readable code, selecting tests, and running local
+  verification;
 - `watcher` when classifying CI, static-analysis, and review outcomes;
 - `orchestrator` when deciding whether a gate is satisfied.

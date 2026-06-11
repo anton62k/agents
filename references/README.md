@@ -9,7 +9,7 @@ They are not roles, stacks, pipelines, or local overlays.
 - requirements and analysis methods;
 - architecture and decision methods;
 - modeling notations and collaboration methods;
-- quality, risk, and review practices.
+- quality, risk, readable-code, and review practices.
 
 ## What Belongs Elsewhere
 
@@ -25,7 +25,8 @@ They are not roles, stacks, pipelines, or local overlays.
 - `analysis/` - requirements, task specs, decomposition, acceptance criteria.
 - `architecture/` - architecture plans, boundaries, ADRs, quality attributes.
 - `modeling/` - diagrams, domain/process modeling, shared understanding tools.
-- `quality/` - risk review, test strategy, verification confidence.
+- `quality/` - readable code, risk review, test strategy, verification
+  confidence.
 
 ## Reuse Rules
 

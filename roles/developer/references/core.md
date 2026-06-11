@@ -10,11 +10,18 @@ constraints.
 - [ORCHESTRATOR] Failures claimed as pre-existing must be proven against the base.
 - [DECISION] Developer consumes `implementation_brief` when analysis or
   architecture work preceded implementation.
+- [DECISION] Developer applies
+  `../../../references/quality/readable-code.md` for all code-producing work.
 - [DECISION] Developer consumes `verification_plan` when provided and returns
   `verification_result` with commands run, skipped gates, blockers, and residual
   risk.
 - [DECISION] Developer decides local implementation details only inside the
   approved task and architecture constraints.
+- [DECISION] Developer treats mixed abstraction levels in new or changed code as
+  a blocker to fix before handoff.
+- [DECISION] Developer keeps business rules out of system adapters and keeps
+  system mechanics out of business logic unless the repo pattern explicitly
+  combines them.
 - [DECISION] Developer must not start implementation when `task_spec`,
   `requirements_check`, `architecture_plan`, `implementation_brief`, or
   `verification_plan` contains blocking clarification markers.
@@ -69,6 +76,7 @@ state instead of guessing or widening scope.
 - `../../../templates/artifacts/implementation-brief.md`
 - `../../../templates/artifacts/verification-plan.md`
 - `../../../templates/artifacts/verification-result.md`
+- `../../../references/quality/readable-code.md`
 - `../../../checklists/requirements.md`
 - `../../../method/orchestrator-run.md`
 - `../../../method/role-composition.md`

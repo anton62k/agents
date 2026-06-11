@@ -7,6 +7,11 @@ and browser-verifiable quality.
 
 - [DECISION] Keep UI layout and interaction code separate from form, state, API,
   and domain ownership when the repo has those boundaries.
+- [DECISION] React components render and wire events. They must not own business
+  rules, async orchestration, validation policy, URL construction, or derived
+  read-model construction.
+- [DECISION] Avoid business logic in React hooks. Hooks should adapt React
+  lifecycle, context, refs, or framework integration only.
 - [DECISION] Avoid duplicating validation or mapping rules across UI and state
   layers without a shared contract.
 - [DECISION] Keep generated API types, transport error mapping, and UI state in
@@ -17,6 +22,8 @@ and browser-verifiable quality.
   effects, and public reactive getters explicit and testable.
 - [DECISION] Use FSD or similar frontend boundaries only when they clarify real
   domain ownership; avoid ceremony for small apps.
+- [DECISION] Treat FSD or similar structure checks as blocking only when the repo
+  overlay or config enables them.
 - [DECISION] Browser-visible behavior may require browser, e2e, screenshot, or
   component-state checks in addition to static gates.
 - [DECISION] Interactive UI must preserve keyboard navigation, visible focus,
@@ -39,3 +46,5 @@ and browser-verifiable quality.
 - `../../../legacy/frontend/landing-page-quality.md`
 - `../../../legacy/frontend/react-mobx.md`
 - `../../../legacy/frontend/storybook-e2e.md`
+- `../../../references/quality/readable-code.md`
+- `../../../stacks/js-ts/references/react-mobx-mvvm.md`

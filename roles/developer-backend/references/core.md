@@ -12,6 +12,13 @@ runtime boundaries.
   service, handler, or domain layers.
 - [DECISION] Put state-changing business intent in commands or services, and
   keep read paths side-effect free when the repo uses CQRS.
+- [DECISION] Prisma or another ORM may live directly in command/query handlers
+  when that is the repo pattern. The handler must still read as one use case and
+  should not mix raw query detail, transport mapping, domain policy, and system
+  mechanics in one unreadable block.
+- [DECISION] Add services for reused domain policy, integration boundaries, or
+  cross-cutting backend capabilities. Do not add a service only to satisfy a
+  generic layering rule.
 - [DECISION] Keep persistence details behind repo-approved boundaries when
   domain rules are non-trivial.
 - [DECISION] Treat migrations and generated artifacts as reviewed artifacts that
@@ -39,3 +46,5 @@ runtime boundaries.
 - `../../../legacy/backend/integration-tests.md`
 - `../../../legacy/backend/nestjs.md`
 - `../../../legacy/backend/prisma.md`
+- `../../../references/quality/readable-code.md`
+- `../../../stacks/js-ts/references/application-architecture.md`

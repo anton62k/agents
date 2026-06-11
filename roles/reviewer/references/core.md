@@ -14,6 +14,10 @@ integration.
 - [DECISION] Cite concrete file and line references for implementation findings.
 - [DECISION] Verify that tests, docs, and quality gates cover the changed
   behavior or clearly report the gap.
+- [DECISION] Treat mixed abstraction levels in new or changed code as a blocker
+  when it hides behavior, weakens testability, or mixes business and system code.
+- [DECISION] Review React/MVVM code for business logic in React components or
+  hooks when the repo uses that architecture.
 - [DECISION] Treat unresolved static-analysis or bot findings as review inputs,
   not as automatic truth.
 - [DECISION] Mark a finding false positive only with specific evidence from the
@@ -33,4 +37,5 @@ integration.
 
 - `../../../legacy/checklists/pr-review.md`
 - `../../../legacy/practices/quality-gates.md`
+- `../../../references/quality/readable-code.md`
 - `../../../references/quality/verification.md`

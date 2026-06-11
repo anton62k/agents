@@ -37,6 +37,10 @@ Standard.
 ## Hard Rules
 
 - Make the smallest correct change.
+- Write readable code at one abstraction level per function, method, component,
+  or handler.
+- Keep business code and system code separated unless the repo has an approved
+  local adapter pattern for that boundary.
 - Add real behavior tests for non-trivial changes.
 - Do not use suppressions to bypass lint or review findings.
 - Do not claim a failure is pre-existing without empirical comparison.
@@ -50,4 +54,5 @@ Standard.
 ## References
 
 - `references/core.md`
+- `../../references/quality/readable-code.md`
 - `../../references/quality/README.md`

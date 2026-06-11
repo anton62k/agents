@@ -34,3 +34,5 @@ analysts, and integrators.
 - `references/testing.md`
 - `references/lint-format.md`
 - `references/verification.md`
+- `references/application-architecture.md`
+- `references/react-mobx-mvvm.md`

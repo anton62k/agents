@@ -6,7 +6,7 @@ surfaces.
 Examples:
 
 - `js-ts` - JavaScript/TypeScript, Node.js, package managers, linting, testing,
-  and verification mapping.
+  application architecture, React/MobX/MVVM, and verification mapping.
 
 Do not put product-specific commands or environment values here. Use repo-local
 overlays for exact scripts and targets.
