@@ -8,7 +8,7 @@ analysts, and integrators.
 ## Applies To
 
 - Node.js services.
-- React/TypeScript frontends.
+- Browser or frontend TypeScript applications.
 - TypeScript libraries.
 - Repos using npm, pnpm, or compatible package-manager scripts.
 
@@ -29,10 +29,18 @@ analysts, and integrators.
 
 ## References
 
+Core references:
+
 - `references/typescript.md`
 - `references/package-managers.md`
 - `references/testing.md`
 - `references/lint-format.md`
 - `references/verification.md`
 - `references/application-architecture.md`
+
+Conditional references:
+
 - `references/react-mobx-mvvm.md`
+
+Load conditional references only when route evidence, repo overlay, package
+metadata, config, or human approval selects the matching framework or pattern.

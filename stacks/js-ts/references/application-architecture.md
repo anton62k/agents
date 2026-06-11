@@ -22,22 +22,23 @@ Common JS/TS layers:
 - application or use case: orchestration of one business operation;
 - domain policy: business rules, validation, state transitions, eligibility,
   matching, pricing, status decisions;
-- data access: repositories, data sources, generated clients, ORM calls,
+- data access: repositories, data sources, generated clients, query builders,
   persistence query construction;
 - presenter or view model: derived read models, UI status, formatting,
   user-visible actions;
-- renderer or adapter: React components, templates, serialization, framework
-  glue, protocol mapping;
+- renderer or adapter: UI components, templates, serialization, framework glue,
+  protocol mapping;
 - system utility: env access, caching, lifecycle, retries, logging,
   observability, concurrency, parsing, serialization.
 
 Do not mix these layers in one unit when extracting a name would clarify intent.
 
-## Backend And CQRS
+## Backend And Data Access
 
-- [DECISION] In CQRS-style repos, Prisma or another ORM may be used directly in
-  command and query handlers when that is the established data-access pattern.
-- [DECISION] A command or query handler should still read as one use case. Use
+- [DECISION] Use the repo-approved data boundary. Generated clients, ORMs, query
+  builders, data sources, repositories, or direct persistence calls are valid
+  only where the repo pattern allows them.
+- [DECISION] A backend application unit should still read as one use case. Use
   named private methods, functions, or narrow services when raw query details,
   mapping, validation, notification, or transaction steps obscure the use-case
   flow.
@@ -45,7 +46,7 @@ Do not mix these layers in one unit when extracting a name would clarify intent.
   wraps an integration, or owns a durable policy. Do not add a service only to
   satisfy a generic layering rule.
 - [DECISION] Keep write-side business intent separate from read-side projection
-  logic when the repo uses CQRS.
+  logic when the repo uses separate read and write models.
 - [DECISION] Keep transaction boundaries explicit. Do not hide partial writes,
   retry behavior, or rollback assumptions behind generic helpers.
 - [DECISION] Public API handlers, controllers, and resolvers should stay thin:
@@ -53,15 +54,16 @@ Do not mix these layers in one unit when extracting a name would clarify intent.
 
 ## Frontend And UI Runtime
 
-- [DECISION] React or another UI framework should render and wire events. Product
+- [DECISION] A UI renderer or framework should render and wire events. Product
   behavior, derived read models, validation policy, URL construction, and async
-  state belong in view models, stores, services, route loaders, or utilities
-  according to repo pattern.
-- [DECISION] Keep framework hooks as adapters. If a hook starts owning business
-  behavior, move that behavior into a named non-React unit.
-- [DECISION] Put each non-trivial component in its own file when the repo uses
-  file-per-component structure. Keep local subcomponents only when they are
-  tiny, private, and improve readability.
+  state belong in the repo-approved state, presenter, view-model, service,
+  route-loader, or utility layer.
+- [DECISION] Keep framework lifecycle adapters, hooks, effects, bindings, and
+  loaders as adapters. If they start owning business behavior, move that
+  behavior into a named non-renderer unit.
+- [DECISION] Put each non-trivial UI unit in its own file when the repo uses that
+  structure. Keep local private units only when they are tiny and improve
+  readability.
 
 ## Libraries And Packages
 

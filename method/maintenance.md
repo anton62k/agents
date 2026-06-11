@@ -25,10 +25,13 @@ This file tells agents how to update the method safely.
    - fillable artifact shapes -> `templates/artifacts/`;
    - legacy source material -> `legacy/`;
    - local values -> local overlay, never committed markdown.
-6. Update `roles/INDEX.md` or `pipelines/INDEX.md` when adding, removing, or
+6. Decide whether each touched reference is `core` or `conditional`.
+   Conditional framework, tool, provider, and architecture-style references must
+   be selected by route evidence, repo overlay, config, or human approval.
+7. Update `roles/INDEX.md` or `pipelines/INDEX.md` when adding, removing, or
    changing routable roles or pipelines.
-7. Add or update a checklist/reference when the rule changes what an agent does.
-8. Update artifact templates when canonical artifact schemas change.
+8. Add or update a checklist/reference when the rule changes what an agent does.
+9. Update artifact templates when canonical artifact schemas change.
 
 ## Source Labels
 
@@ -62,6 +65,7 @@ Every new hard rule needs a source label:
 ## Review Checklist For Method Changes
 
 - Does this belong to role, stack, framework, pipeline, adapter, or local overlay?
+- Is each touched reference correctly classified as core or conditional?
 - Is the source label present?
 - Are placeholders used instead of local values?
 - Are discovery catalogs updated when routable roles or pipelines changed?

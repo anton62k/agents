@@ -16,8 +16,8 @@ integration.
   behavior or clearly report the gap.
 - [DECISION] Treat mixed abstraction levels in new or changed code as a blocker
   when it hides behavior, weakens testability, or mixes business and system code.
-- [DECISION] Review React/MVVM code for business logic in React components or
-  hooks when the repo uses that architecture.
+- [DECISION] Review renderer and framework-adapter code for business logic when
+  the selected stack or framework reference defines that boundary.
 - [DECISION] Treat unresolved static-analysis or bot findings as review inputs,
   not as automatic truth.
 - [DECISION] Mark a finding false positive only with specific evidence from the
