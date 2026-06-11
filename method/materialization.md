@@ -192,6 +192,25 @@ secret. Use placeholders from `env-boundary.md`.
   canonical source cannot be resolved.
 - Generated wrappers must preserve role rights and human gates.
 
+## Coverage Rules
+
+- A routable role in `roles/INDEX.md` must have matching platform wrappers in
+  `adapters/codex/materialized/agents/` and
+  `adapters/claude-code/materialized/agents/`, unless the omission is
+  explicitly documented.
+- A pipeline marked `platform_invocation: skill-wrapper` in
+  `pipelines/INDEX.md` must have matching skill wrappers in
+  `adapters/codex/materialized/skills/` and
+  `adapters/claude-code/materialized/skills/`, unless the omission is explicitly
+  documented.
+- A `platform_invocation: canonical-only` pipeline is reached through the
+  canonical method flow, such as the `agent-method` skill, and does not require
+  a per-pipeline wrapper.
+- Renaming or removing a routable role or `platform_invocation: skill-wrapper`
+  pipeline must also rename or remove obsolete platform wrappers.
+- Wrapper coverage is adapter output coverage only. Canonical behavior still
+  belongs in `roles/`, `pipelines/`, `references/`, and `stacks/`.
+
 ## Update Flow
 
 1. Update or clone the canonical agents repository.
@@ -214,6 +233,8 @@ Before using materialized files, verify:
 - workspace and repo overlays are used for concrete commands and policies;
 - the selected role ids exist in `roles/INDEX.md`;
 - the selected pipeline id exists in `pipelines/INDEX.md`;
+- routable role and `platform_invocation: skill-wrapper` pipeline wrapper
+  coverage follows the coverage rules above;
 - no generated file contains concrete local paths, accounts, tokens, hosts, or
   deployment coordinates;
 - generated files do not weaken human gates or role rights.

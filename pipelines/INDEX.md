@@ -15,6 +15,8 @@ Each record defines:
 - `alternative_roles` - role-group objects where at least one role must exist.
 - `optional_roles` - roles that improve coverage but do not block by default.
 - `route_gates` - pipeline-specific human gates after standard startup.
+- `platform_invocation` - whether this pipeline is exposed as a direct platform
+  skill wrapper (`canonical-only` or `skill-wrapper`).
 
 ## Pipeline Records
 
@@ -29,6 +31,7 @@ Each record defines:
   `qa-frontend`
 - route_gates: task spec approval, human-action items, merge approval,
   ambiguous architecture/product/security decisions
+- platform_invocation: `canonical-only`
 
 ### `bugfix`
 
@@ -42,6 +45,7 @@ Each record defines:
 - optional_roles: `architect`, `qa-backend`, `qa-frontend`
 - route_gates: risky missing reproduction, behavior/product decision,
   merge approval
+- platform_invocation: `canonical-only`
 
 ### `analysis-only`
 
@@ -53,6 +57,7 @@ Each record defines:
 - optional_roles: `architect`, `reviewer`, `knowledge-engineer`
 - route_gates: converting analysis into edits, promoting best-practice
   proposals into hard rules
+- platform_invocation: `canonical-only`
 
 ### `post-merge-qa`
 
@@ -64,6 +69,7 @@ Each record defines:
   `merger`
 - route_gates: extra live-system access, infra mutation, follow-up PR merge
   approval
+- platform_invocation: `canonical-only`
 
 ### `method-development`
 
@@ -74,6 +80,7 @@ Each record defines:
 - alternative_roles: []
 - optional_roles: `architect`, `reviewer`
 - route_gates: approved hard-rule changes, merge approval
+- platform_invocation: `canonical-only`
 
 ## Standard Startup
 
