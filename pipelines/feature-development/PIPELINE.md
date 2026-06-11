@@ -30,24 +30,26 @@ optional `architect`, optional `merger`, optional `deploy-watcher`, optional
 
 1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
 2. Orchestrator records approved run parameters.
-3. Analyst produces the task spec and human-action items.
-4. Optional architect produces architecture plan or ADR candidate when technical
+3. Analyst produces the task spec, human-action items, and requirements check.
+4. Orchestrator stops for clarification if the requirements check is not ready.
+5. Optional architect produces architecture plan or ADR candidate when technical
    shape is not obvious.
-5. Reviewer consensus reviews the task spec and architecture plan when present.
-6. Human approves or rejects the task spec and significant architecture choices.
-7. Orchestrator prepares the implementation brief.
-8. Developer implements from a fresh base/worktree.
-9. Reviewer consensus reviews code.
-10. Developer fixes blocking findings; repeat up to the configured cap.
-11. Integrator creates or updates the PR.
-12. Watcher polls and classifies CI, Sonar, bot, and human review state.
-13. Developer fixes watcher findings; repeat until ready or blocked.
-14. Human merge gate, unless explicit auto-merge is recorded for this run.
-15. Optional post-merge deploy and QA stages.
+6. Reviewer consensus reviews the task spec and architecture plan when present.
+7. Human approves or rejects the task spec and significant architecture choices.
+8. Orchestrator prepares the implementation brief.
+9. Developer implements from a fresh base/worktree.
+10. Reviewer consensus reviews code.
+11. Developer fixes blocking findings; repeat up to the configured cap.
+12. Integrator creates or updates the PR.
+13. Watcher polls and classifies CI, Sonar, bot, and human review state.
+14. Developer fixes watcher findings; repeat until ready or blocked.
+15. Human merge gate, unless explicit auto-merge is recorded for this run.
+16. Optional post-merge deploy and QA stages.
 
 ## Human Gates
 
 - task spec approval;
+- unresolved requirements or clarification markers;
 - human-action items;
 - merge approval by default;
 - ambiguous architecture/product/security decisions.

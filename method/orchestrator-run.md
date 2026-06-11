@@ -13,6 +13,7 @@ and may add transport, worker, attempt, or cost fields around it.
 - Bind required, alternative, and optional roles.
 - Expose missing capabilities before execution.
 - Ask for human route approval before mutation.
+- Stop at clarification gates before downstream roles guess missing intent.
 - Keep run state portable across Codex, Claude Code, and future revo.
 
 The orchestrator is a coordination layer. Codex and Claude Code may execute the
@@ -33,6 +34,7 @@ contract, but they are not the canonical source for roles or pipelines.
 
 Read:
 
+- `constitution.md`;
 - `bootstrap.md`;
 - `materialization.md` when adapter files are generated or linked;
 - `manual-run.md` for Codex or Claude Code execution;
@@ -97,14 +99,25 @@ Show a concise proposed route and wait for one of the route decisions:
 
 Do not start mutating pipeline steps before route approval.
 
-### 7. Prepare Run State
+### 7. Prepare Run State And Check Clarification
 
 After approval, create or update `run_state` using `route-plan.md`.
 
 Resolved local values may enter run state only when the pipeline needs them.
 Committed method docs keep placeholders only.
 
-When analysis or architecture steps ran, prepare a compact
+Before developer execution, verify `../checklists/requirements.md` for any
+available `task_spec`. If the requirements check is not `ready`, stop with the
+matching next action:
+
+- `needs_analyst` for requirements, scope, behavior, or acceptance ambiguity;
+- `needs_architect` for boundary, contract, data-shape, runtime-flow,
+  migration, quality-attribute, or ADR decisions;
+- `needs_human` for product, architecture, security, merge, deploy, secret, or
+  destructive-action decisions.
+
+When analysis or architecture steps ran and clarification is clear, prepare a
+compact
 `implementation_brief` for the developer from approved `task_spec`,
 `architecture_plan`, findings, and route constraints.
 
@@ -153,6 +166,7 @@ orchestrator_run:
     optional: []
   handoffs:
     task_spec: {} # see roles/analyst/references/core.md
+    requirements_check: {} # see checklists/requirements.md
     architecture_plan: {} # see roles/architect/references/core.md
     implementation_brief: {} # see roles/developer/references/core.md
   gates: []
@@ -162,6 +176,9 @@ orchestrator_run:
   allowed_next_actions:
     - route-approval
     - execute-pipeline
+    - needs_analyst
+    - needs_architect
+    - needs_human
     - ask-human
     - method-development
     - stop
@@ -180,6 +197,7 @@ Proposed route:
 - roles: <required and selected alternative roles>
 - optional coverage: <included or omitted optional roles>
 - missing capabilities: <none or list>
+- clarification blockers: <none or list>
 - local values needed later: <placeholder names only>
 - first gate: route approval
 
@@ -194,6 +212,8 @@ method first, or stop.
   capability check.
 - If blocking capabilities are missing, recommend `method first` or
   `analysis only`.
+- If blocking clarification markers remain, stop with `needs_analyst`,
+  `needs_architect`, or `needs_human`; do not start developer execution.
 - Keep runtime values in run state or ignored overlays, never in committed
   method files.
 - Future revo import reads canonical method, role, and pipeline files; it does

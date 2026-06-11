@@ -13,21 +13,22 @@ future orchestrator imports roles and pipelines directly.
 
 ## Startup Sequence
 
-1. Read `bootstrap.md` to confirm how the consuming repo points to the canonical
+1. Read `constitution.md`; its rules apply to every manual run.
+2. Read `bootstrap.md` to confirm how the consuming repo points to the canonical
    method and which adapter entrypoints are present.
-2. Resolve `{{AGENTS_REPO_PATH}}` from the consuming repo overlay or ask the
+3. Resolve `{{AGENTS_REPO_PATH}}` from the consuming repo overlay or ask the
    human for it.
-3. Read `materialization.md` if the consuming repo has generated or linked
+4. Read `materialization.md` if the consuming repo has generated or linked
    adapter files.
-4. Follow `orchestrator-run.md` as the run lifecycle contract.
-5. Read `intake.md` and classify the request.
-6. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
-7. Run `capability-check.md` against the selected pipeline, roles, stack,
+5. Follow `orchestrator-run.md` as the run lifecycle contract.
+6. Read `intake.md` and classify the request.
+7. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
+8. Run `capability-check.md` against the selected pipeline, roles, stack,
    references, and adapter.
-8. Build the `route_plan` from `route-plan.md`.
-9. Show the route plan to the human and wait for `route-approval.md`.
-10. Execute only the approved pipeline.
-11. Keep run state in chat or in the consuming repo's run artifact according to
+9. Build the `route_plan` from `route-plan.md`.
+10. Show the route plan to the human and wait for `route-approval.md`.
+11. Execute only the approved pipeline.
+12. Keep run state in chat or in the consuming repo's run artifact according to
    `route-plan.md`.
 
 ## Codex Runtime Shape
@@ -51,12 +52,13 @@ future orchestrator imports roles and pipelines directly.
 
 Agents discover available capabilities in this order:
 
-1. Consuming repo `AGENTS.md` or `CLAUDE.md` for local entrypoint instructions.
-2. `roles/INDEX.md` for role ids, surfaces, capabilities, and rights.
-3. `pipelines/INDEX.md` for route candidates and role requirements.
-4. `stacks/README.md` and selected stack files for language knowledge.
-5. `adapters/<platform>/README.md` for platform mechanics.
-6. Consuming repo overlay for local commands, paths, credentials, and targets.
+1. `method/constitution.md` for always-on rules.
+2. Consuming repo `AGENTS.md` or `CLAUDE.md` for local entrypoint instructions.
+3. `roles/INDEX.md` for role ids, surfaces, capabilities, and rights.
+4. `pipelines/INDEX.md` for route candidates and role requirements.
+5. `stacks/README.md` and selected stack files for language knowledge.
+6. `adapters/<platform>/README.md` for platform mechanics.
+7. Consuming repo overlay for local commands, paths, credentials, and targets.
 
 ## Output
 
@@ -72,6 +74,7 @@ manual_run:
 ## Rules
 
 - Do not execute a multi-role pipeline before route approval.
+- Do not start implementation while blocking clarification markers remain.
 - Do not copy concrete local values into canonical method files.
 - If generated platform files disagree with canonical roles or pipelines, the
   canonical method wins.

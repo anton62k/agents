@@ -8,8 +8,12 @@ Initial rules:
 - [DECISION] Architect does not own product requirements or acceptance criteria.
 - [DECISION] Architect does not write product code.
 - [DECISION] If requirements are unclear, return `needs_analyst`.
+- [DECISION] If human approval is required, return `needs_human` and keep the
+  architecture plan blocked until approval is recorded in run state.
 - [DECISION] If a decision is architecturally significant, return an ADR
   candidate and request human approval before implementation.
+- [DECISION] Do not mark the architecture handoff ready while
+  `needs_analyst` or `needs_human` remains true.
 
 ## `architecture_plan`
 
@@ -57,3 +61,9 @@ an `implementation_brief`.
 
 Developer-local choices remain with the developer unless they change boundaries,
 contracts, data model, runtime behavior, or approved ADR direction.
+
+## Clarification Gate
+
+The architect can clear architecture clarification only for technical shape. If
+the blocker is product intent, scope, acceptance criteria, or human approval, the
+architect returns the run to analyst or human review instead of filling gaps.

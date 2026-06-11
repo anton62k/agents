@@ -97,10 +97,11 @@ The consuming repo entrypoint should say:
 ```md
 Use the canonical agent method from {{AGENTS_REPO_PATH}}.
 Start every multi-role task with:
-1. {{AGENTS_REPO_PATH}}/method/manual-run.md
-2. {{AGENTS_REPO_PATH}}/method/intake.md
-3. {{AGENTS_REPO_PATH}}/roles/INDEX.md
-4. {{AGENTS_REPO_PATH}}/pipelines/INDEX.md
+1. {{AGENTS_REPO_PATH}}/method/constitution.md
+2. {{AGENTS_REPO_PATH}}/method/manual-run.md
+3. {{AGENTS_REPO_PATH}}/method/intake.md
+4. {{AGENTS_REPO_PATH}}/roles/INDEX.md
+5. {{AGENTS_REPO_PATH}}/pipelines/INDEX.md
 ```
 
 ## Skill And Agent Files

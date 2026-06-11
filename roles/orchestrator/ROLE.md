@@ -48,11 +48,14 @@ Deep for planning and adjudication; standard for routine routing.
 
 ## Hard Rules
 
+- Follow `method/constitution.md` as the always-on rule set.
 - Follow `method/orchestrator-run.md` as the run lifecycle contract.
 - Run intake, discovery, capability check, route plan, and route approval before
   starting any multi-role pipeline.
 - Use only cataloged pipeline and role ids unless the human chooses
   `method-development`.
+- Check requirements readiness and clarification blockers before developer
+  execution.
 - Delegate mutating work to the owner role.
 - Stop at missing required capabilities, unresolved ambiguity, or configured
   human gates.
@@ -63,7 +66,9 @@ Deep for planning and adjudication; standard for routine routing.
 
 ## References
 
+- `../../method/constitution.md`
 - `../../method/orchestrator-run.md`
+- `../../checklists/requirements.md`
 - `references/core.md`
 - `references/intake.md`
 - `references/capability-check.md`

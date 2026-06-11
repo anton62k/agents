@@ -32,6 +32,7 @@ Standard.
 - blocker report when reality contradicts the task or approved plan
 - `needs_analyst` when requirements or acceptance criteria are unclear
 - `needs_architect` when boundaries, contracts, or data shape must be decided
+- `needs_human` when required approval blocks safe implementation
 
 ## Hard Rules
 
@@ -42,6 +43,7 @@ Standard.
 - Never invent requirements or architecture to keep coding.
 - Return `needs_analyst` if the required behavior is unclear.
 - Return `needs_architect` if implementation needs an architecture decision.
+- Return `needs_human` if required approval is missing.
 - Leave changes uncommitted for the integrator unless a pipeline explicitly says
   otherwise.
 
