@@ -38,6 +38,9 @@ repository.
   accounts, absolute home paths, hostnames, namespaces, token names that expose
   private infrastructure, passwords, API keys, or one-machine paths. Use
   placeholders and the env boundary in `method/env-boundary.md`.
+- Do not commit concrete provider model names, model pricing, or account-bound
+  runner configuration as canonical behavior. Use model levels and local
+  execution profiles from `method/execution-policy.md`.
 - Role and pipeline markdown is method, not run state. Runtime status, local
   account selection, approvals, PR numbers, and deployment coordinates belong in
   a run ledger or ignored local overlay.

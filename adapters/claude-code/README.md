@@ -21,6 +21,8 @@ Official surfaces used by this adapter:
 - `pipelines/<pipeline>/PIPELINE.md` becomes workflow skills when direct
   invocation is useful.
 - Human gates are handled by the main Claude Code session or deterministic hooks.
+- `method/execution-policy.md` maps portable model levels and consensus choices
+  to local Claude Code capabilities through local overlays or runtime config.
 
 ## Discovery
 
@@ -64,6 +66,8 @@ and analysis. Keep writes in the main session or in explicitly authorized roles.
 - Generated `.claude/*` files should be reproducible from canonical definitions.
 - Generated `.claude/*` files must include canonical source pointers when they
   mirror roles, pipelines, or skills.
+- Claude Code usage metadata belongs to the adapter/runtime attempt record; keep
+  portable role results free of cost fields.
 - Do not symlink canonical `roles/` directly into `.claude/agents`; use adapter
   wrappers.
 - If a platform limitation requires a deviation, record it here, not inside the

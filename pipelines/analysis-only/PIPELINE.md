@@ -25,6 +25,15 @@ Answer a technical question or produce a plan without editing code.
 5. Optional reviewer checks hallucinated paths, line claims, and edge cases.
 6. Orchestrator returns a concise decision or next-step proposal.
 
+## Execution Policy
+
+- Recommended model levels: analyst `deep`; architect `deep` when selected;
+  reviewer `standard` or `deep` when factual or architectural risk is high.
+- Default consensus: `none`.
+- Escalate to `single-reviewer` when the answer cites source paths, line
+  numbers, or irreversible architecture recommendations.
+- Default iteration cap: 1 review/fix loop for produced artifacts.
+
 ## Human Gates
 
 - Before converting analysis into code edits.

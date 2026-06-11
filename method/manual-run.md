@@ -22,16 +22,19 @@ future orchestrator imports roles and pipelines directly.
    human for it.
 4. Read `materialization.md` if the consuming repo has generated or linked
    adapter files.
-5. Follow `orchestrator-run.md` as the run lifecycle contract.
-6. Read `intake.md` and classify the request.
-7. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
-8. Run `capability-check.md` against the selected pipeline, roles, stack,
+5. Read `execution-policy.md` and `usage-accounting.md`.
+6. Follow `orchestrator-run.md` as the run lifecycle contract.
+7. Read `intake.md` and classify the request.
+8. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
+9. Run `capability-check.md` against the selected pipeline, roles, stack,
    references, and adapter.
-9. Build the `route_plan` from `route-plan.md` and
+10. Build the `route_plan` from `route-plan.md` and
    `../templates/artifacts/route-plan.md`.
-10. Show the route plan to the human and wait for `route-approval.md`.
-11. Execute only the approved pipeline.
-12. Keep run state in chat or in the consuming repo's run artifact according to
+11. Include execution policy, model recommendations, consensus policy, and
+    budget policy in the route plan before asking for approval.
+12. Show the route plan to the human and wait for `route-approval.md`.
+13. Execute only the approved pipeline.
+14. Keep run state in chat or in the consuming repo's run artifact according to
    `route-plan.md` and `../templates/artifacts/run-state.md`.
 
 ## Codex Runtime Shape
@@ -74,6 +77,7 @@ manual_run:
   approved: false
   execution_adapter: codex | claude-code
   run_state_location: chat | consuming-repo-artifact | future-revo-state
+  execution_policy: {}
   next_step: route-approval | execute-pipeline | ask-human | stop
 ```
 

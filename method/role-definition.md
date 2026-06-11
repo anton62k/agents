@@ -61,4 +61,13 @@ Portable roles return an agent result:
 ```
 
 Adapters may wrap this for a platform. For example, revo may add `nextSteps` or
-cost records around the portable result.
+attempt metadata around the portable result.
+
+Usage and cost metadata are recorded by the orchestrator or adapter according to
+`usage-accounting.md`; roles do not emit billing fields.
+
+## Model Policy
+
+`default_model_level` is a portable recommendation, not a concrete provider
+model. Concrete model names are selected from local execution profiles or future
+runtime config according to `execution-policy.md`.

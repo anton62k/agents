@@ -27,6 +27,8 @@ contract, but they are not the canonical source for roles or pipelines.
 - canonical checkout at `{{AGENTS_REPO_PATH}}`;
 - optional local overlay values from the consuming repo;
 - role, pipeline, stack, tooling, method, and adapter catalogs.
+- execution profile from ignored local overlay or future runtime config when
+  available.
 
 ## Phases
 
@@ -84,6 +86,9 @@ The plan must show:
 - verification capabilities;
 - local values needed later;
 - missing capabilities;
+- model-level recommendations and concrete-model source;
+- consensus policy for review gates;
+- iteration cap and budget policy;
 - human gates before and inside the selected pipeline.
 
 ### 6. Ask For Human Route Approval
@@ -95,6 +100,9 @@ Show a concise proposed route and wait for one of the route decisions:
 - `approve`;
 - `change pipeline`;
 - `change roles`;
+- `change models`;
+- `change consensus`;
+- `set budget`;
 - `analysis only`;
 - `method first`;
 - `stop`.
@@ -172,6 +180,11 @@ orchestrator_run:
     required: []
     alternative: []
     optional: []
+  execution_policy:
+    model_policy: {}
+    consensus_policy: {}
+    budget_policy: {}
+    usage_accounting: {}
   handoffs:
     task_spec: {} # see roles/analyst/references/core.md
     requirements_check: {} # see checklists/requirements.md
@@ -182,6 +195,11 @@ orchestrator_run:
   gates: []
   artifacts: []
   blockers: []
+  usage_summary:
+    attempts: []
+    totals_by_role: {}
+    totals_by_model_profile: {}
+    cost_unreported_for: []
   next_action: route-approval
   allowed_next_actions:
     - route-approval
@@ -208,13 +226,16 @@ Proposed route:
 - optional coverage: <included or omitted optional roles>
 - surfaces/stacks/tooling: <generic route summary>
 - verification capabilities: <ready, missing, or unknown gates>
+- model policy: <role -> model level, concrete source>
+- consensus policy: <none, single-reviewer, dual-model, adversarial-consensus>
+- budget policy: <iteration cap, token budget, reported-cost budget>
 - missing capabilities: <none or list>
 - clarification blockers: <none or list>
 - local values needed later: <placeholder names only>
 - first gate: route approval
 
-Decision needed: approve, change pipeline, change roles, analysis only,
-method first, or stop.
+Decision needed: approve, change pipeline, change roles, change models,
+change consensus, set budget, analysis only, method first, or stop.
 ```
 
 ## Rules
@@ -222,6 +243,8 @@ method first, or stop.
 - Route approval is required before every multi-role pipeline execution.
 - If a human changes pipeline or roles, regenerate the route plan and rerun
   capability check.
+- If a human changes model policy, consensus, or budget, regenerate the route
+  plan and rerun capability check.
 - If blocking capabilities are missing, recommend `method first` or
   `analysis only`.
 - Follow `constitution.md` section 3 for blocking clarification markers.

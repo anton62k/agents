@@ -14,12 +14,14 @@ pipeline, select roles, bootstrap a workspace, or continue a multi-role run.
    `.agents/local.context.md`, or the default workspace `agents/` checkout.
 2. Read `method/constitution.md`.
 3. Read `method/manual-run.md`.
-4. Read `method/bootstrap.md` when setup or materialization is involved.
-5. Read `method/materialization.md` before changing `.agents`, `.codex`, or
+4. Read `method/execution-policy.md`.
+5. Read `method/usage-accounting.md`.
+6. Read `method/bootstrap.md` when setup or materialization is involved.
+7. Read `method/materialization.md` before changing `.agents`, `.codex`, or
    `.claude` links.
-6. Discover roles from `roles/INDEX.md`.
-7. Discover pipelines from `pipelines/INDEX.md`.
-8. Use repo-local overlays for concrete commands, verification gates, review
+8. Discover roles from `roles/INDEX.md`.
+9. Discover pipelines from `pipelines/INDEX.md`.
+10. Use repo-local overlays for concrete commands, verification gates, review
    policy, domain facts, and environment boundaries.
 
 If the canonical source cannot be resolved, return

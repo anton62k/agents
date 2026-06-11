@@ -25,6 +25,12 @@ Run it before publishing a method PR.
   wrappers in Codex and Claude Code adapters, or the omission is documented.
 - [ ] Adapter wrappers point back to canonical sources and do not redefine role
   or pipeline behavior.
+- [ ] Route plan, run state, and artifact templates agree on execution policy,
+  consensus, budget, and usage fields.
+- [ ] Pipeline execution-policy defaults do not hardcode concrete provider model
+  names.
+- [ ] Usage accounting keeps cost and token metadata outside portable
+  `AgentResult`.
 - [ ] Source labels are present for new hard rules.
 - [ ] Core and conditional references are classified correctly.
 - [ ] Shared rules are not duplicated across many roles.

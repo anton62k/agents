@@ -24,6 +24,17 @@ optional `developer`, optional `integrator`, optional `watcher`, optional
 5. If QA finds environment or access blockers, escalate to human.
 6. Record final QA outcome.
 
+## Execution Policy
+
+- Recommended model levels: deploy-watcher `cheap`; watcher `cheap`;
+  qa-backend `standard`; qa-frontend `standard`; developer `standard` when
+  follow-up fixes are needed.
+- Default consensus: `none`.
+- Escalate to `single-reviewer` when QA findings require code-risk
+  classification or accepted-risk judgment.
+- Default iteration cap: 1 QA/follow-up classification loop before route back to
+  bugfix or feature-development.
+
 ## Human Gates
 
 - Any secret or live-system access beyond the pipeline grant.

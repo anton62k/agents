@@ -28,6 +28,8 @@ this repository:
   `pipelines/INDEX.md`;
 - route selection is defined by `intake.md`, `discovery.md`,
   `capability-check.md`, `route-plan.md`, and `route-approval.md`;
+- execution policy is defined by `execution-policy.md`;
+- usage accounting is defined by `usage-accounting.md`;
 - the orchestrator run lifecycle is defined by `orchestrator-run.md`;
 - manual execution and consuming-repo setup are defined by `manual-run.md` and
   `bootstrap.md`;
@@ -46,15 +48,16 @@ this repository:
 6. Establish pipelines with gates and handoff contracts.
 7. Require route approval and clarification gates before execution.
 8. Maintain catalogs for discovery and capability checks.
-9. Create a route plan and run-state contract.
-10. Add verification plan and result contracts.
-11. Add fillable artifact templates for the canonical contracts.
-12. Specify manual run and consuming-repo bootstrap.
-13. Describe adapter materialization for Codex and Claude Code.
-14. Set the orchestrator run contract.
-15. Exercise the method manually in Codex and Claude Code.
-16. Fold repeated lessons into references after human approval.
-17. Later, add a revo importer that loads the same definitions into
+9. Add execution policy, consensus, model-level, budget, and usage contracts.
+10. Create a route plan and run-state contract.
+11. Add verification plan and result contracts.
+12. Add fillable artifact templates for the canonical contracts.
+13. Specify manual run and consuming-repo bootstrap.
+14. Describe adapter materialization for Codex and Claude Code.
+15. Set the orchestrator run contract.
+16. Exercise the method manually in Codex and Claude Code.
+17. Fold repeated lessons into references after human approval.
+18. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals
