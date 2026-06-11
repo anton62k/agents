@@ -32,8 +32,11 @@ This file tells agents how to update the method safely.
 8. Run the adapter materialization gate when a routable role,
    `platform_invocation: skill-wrapper` pipeline, or platform discovery behavior
    changes.
-9. Add or update a checklist/reference when the rule changes what an agent does.
-10. Update artifact templates when canonical artifact schemas change.
+9. Run `checklists/role-development.md` when the change deepens, adds, splits,
+   or reroutes a role.
+10. Add or update a checklist/reference when the rule changes what an agent does.
+11. Update artifact templates when canonical artifact schemas change.
+12. Run `checklists/method-consistency.md` before publishing the PR.
 
 ## Adapter Materialization Gate
 
@@ -94,6 +97,7 @@ Every new hard rule needs a source label:
 
 ## Review Checklist For Method Changes
 
+- Run `checklists/method-consistency.md` for the full self-review gate.
 - Does this belong to role, stack, framework, pipeline, adapter, or local overlay?
 - Is each touched reference correctly classified as core or conditional?
 - Is the source label present?

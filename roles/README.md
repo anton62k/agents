@@ -6,6 +6,9 @@ human approval.
 
 The discovery catalog lives in `INDEX.md`.
 
+Before changing role behavior, run
+`../checklists/role-development.md`.
+
 ## Base Roles
 
 - `orchestrator` - routes the run, owns state and gates, never writes product
