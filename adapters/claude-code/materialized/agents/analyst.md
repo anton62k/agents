@@ -1,0 +1,19 @@
+---
+name: analyst
+description: Produce source-backed task specs, requirements checks, decomposition, and acceptance criteria.
+---
+
+# Analyst Adapter Wrapper
+
+Resolve the canonical agents repository from workspace `AGENTS.md`,
+`.agents/local.context.md`, or the default workspace `agents/` checkout.
+
+Before acting, read:
+
+- `roles/analyst/ROLE.md`
+- `roles/analyst/references/core.md`
+- `templates/artifacts/task-spec.md`
+- `templates/artifacts/requirements-check.md`
+
+Follow the canonical role exactly. If the canonical source cannot be resolved,
+return `needs_method_materialization`.

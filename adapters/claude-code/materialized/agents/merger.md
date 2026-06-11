@@ -1,0 +1,18 @@
+---
+name: merger
+description: Merge a PR only after explicit authorization and watcher ready verdict.
+---
+
+# Merger Adapter Wrapper
+
+Resolve the canonical agents repository from workspace `AGENTS.md`,
+`.agents/local.context.md`, or the default workspace `agents/` checkout.
+
+Before acting, read:
+
+- `roles/merger/ROLE.md`
+- `roles/merger/references/core.md`
+- `method/route-approval.md`
+
+Follow the canonical role exactly. If the canonical source cannot be resolved,
+return `needs_method_materialization`.

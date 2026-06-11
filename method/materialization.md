@@ -1,11 +1,11 @@
 # Adapter Materialization
 
-Materialization is the conversion from canonical method files into the small set
-of files a tool expects inside a consuming repository.
+Materialization converts canonical method files into the small set of files a
+tool expects inside a consuming workspace or standalone repository.
 
 Canonical behavior stays in this repository. Materialized files are pointers,
-wrappers, generated adapter files, or pinned copies used by Codex, Claude Code,
-or a future runtime.
+wrappers, generated adapter files, symlink targets, or pinned copies used by
+Codex, Claude Code, or a future runtime.
 
 ## Canonical Sources
 
@@ -19,50 +19,96 @@ or a future runtime.
 Generated adapter files must point back to these sources. They must not become a
 second source of truth.
 
-Consuming-repo overlays win for concrete repo facts: exact commands, paths,
+Workspace and repo overlays win for concrete repo facts: exact commands, paths,
 domain constraints, release policy, review policy, verification requirements,
 and environment boundaries.
 
-## Targets
+## Platform Discovery Facts
+
+Use only documented platform surfaces:
+
+- Codex persistent guidance: `AGENTS.md`.
+- Codex repo skills: `.agents/skills/<skill>/SKILL.md`; symlinked skill folders
+  are supported by Codex.
+- Codex project custom agents: `.codex/agents/*.toml`.
+- Claude Code guidance: `CLAUDE.md`; it may import `AGENTS.md` with `@AGENTS.md`.
+- Claude Code project subagents: `.claude/agents/*.md`.
+- Claude Code project skills: `.claude/skills/<skill>/SKILL.md`.
+
+Reference docs:
+
+- [Codex AGENTS.md](https://developers.openai.com/codex/guides/agents-md)
+- [Codex skills](https://developers.openai.com/codex/skills)
+- [Codex subagents](https://developers.openai.com/codex/subagents)
+- [Claude Code memory](https://code.claude.com/docs/en/memory)
+- [Claude Code subagents](https://code.claude.com/docs/en/sub-agents)
+- [Claude Code skills](https://code.claude.com/docs/en/skills)
+
+If a platform changes discovery behavior, update adapter docs before changing
+role or pipeline definitions.
+
+## Preferred Workspace Mode
+
+For multi-repo workspaces, materialize once at the workspace root and run Codex
+or Claude Code from that root when shared agents should be visible to all child
+repositories.
+
+```text
+workspace/
+  AGENTS.md
+  CLAUDE.md
+  .agents/
+    skills -> ../agents/adapters/codex/materialized/skills
+  .codex/
+    agents -> ../agents/adapters/codex/materialized/agents
+  .claude/
+    agents -> ../agents/adapters/claude-code/materialized/agents
+    skills -> ../agents/adapters/claude-code/materialized/skills
+  agents/
+  repo-a/
+  repo-b/
+```
+
+Child repositories should contain only repo-specific overlays when needed:
+`VERIFICATION.md`, `REVIEW.md`, `REPOSITORY.md`, or a thin `AGENTS.md` /
+`CLAUDE.md` when agents are commonly launched from inside that child repo.
+
+## Adapter Output Targets
 
 ### Codex
 
-Minimum committed files in the consuming repository:
+Workspace-level committed files:
 
-- `AGENTS.md`
-- `.agents/README.md`
+- `AGENTS.md`;
+- `.agents/README.md`;
+- `.agents/skills` symlink to adapter skill wrappers;
+- `.codex/agents` symlink to adapter custom-agent wrappers.
 
-Recommended shared repo docs:
+Optional repo-local overlays:
 
-- `REVIEW.md`
-- `VERIFICATION.md`
-- optional `REPOSITORY.md`
-
-Optional generated or linked files:
-
-- `.agents/skills/<skill>/SKILL.md`
-- `.agents/prompts/<prompt>.md`
+- `REVIEW.md`;
+- `VERIFICATION.md`;
+- `REPOSITORY.md`;
+- child `AGENTS.md` only when Codex is launched from that child repository.
 
 Codex can also read canonical files directly from `{{AGENTS_REPO_PATH}}`, so
 repo-local skills should wrap workflows rather than redefine role behavior.
 
 ### Claude Code
 
-Minimum committed files in the consuming repository:
+Workspace-level committed files:
 
-- `CLAUDE.md`
-- optional `.claude/agents/<role>.md` when subagents must be discoverable
+- `CLAUDE.md`;
+- `.claude/agents` symlink to adapter subagent wrappers;
+- `.claude/skills` symlink to adapter skill wrappers.
 
-Recommended shared repo docs:
+Optional repo-local overlays:
 
-- `REVIEW.md`
-- `VERIFICATION.md`
-- optional `REPOSITORY.md`
-
-Optional generated or linked files:
-
-- `.claude/skills/<skill>/SKILL.md`
-- `.claude/commands/<command>.md`
+- `REVIEW.md`;
+- `VERIFICATION.md`;
+- `REPOSITORY.md`;
+- child `CLAUDE.md` only when Claude Code is launched from that child
+  repository.
 
 Claude Code generated agents should include enough source pointers for the main
 session to reload canonical roles, references, and pipeline rules.
@@ -77,33 +123,45 @@ as source data.
 
 ### Pointer Mode
 
-The consuming repo commits entrypoints that point to `{{AGENTS_REPO_PATH}}`.
+The consuming root commits entrypoints that point to `{{AGENTS_REPO_PATH}}`.
 Agents read canonical files directly at runtime.
 
-Use this by default for local Codex and Claude Code runs.
+Use this as the conceptual base for local Codex and Claude Code runs.
 
-### Link Mode
+### Symlink Mode
 
-The consuming repo uses symlinks or equivalent links for generated adapter
-files. Links must target canonical files or generated output that can be rebuilt
-from canonical files.
+The consuming root uses symlinks for platform discovery folders. Symlinks must
+target adapter materialized output, not canonical role or pipeline files
+directly.
 
-Use this when the platform accepts linked files and the same filesystem is
+Use this by default for a local multi-repo workspace when the same filesystem is
 available.
+
+Validate symlink mode after setup:
+
+- Codex sees workspace `AGENTS.md`.
+- Codex lists expected skills from `.agents/skills`.
+- Codex can spawn custom agents from `.codex/agents` when requested.
+- Claude Code sees expected project subagents from `.claude/agents`.
+- Claude Code sees expected skills from `.claude/skills`.
+
+If the platform does not follow a symlinked discovery folder in the current
+environment, switch only that target to generated mode.
 
 ### Generated Mode
 
-The consuming repo stores generated adapter files. Generated files must have a
+The consuming root stores generated adapter files. Generated files must have a
 header that identifies their source and update rule.
 
-Use this when the platform requires files to exist inside the consuming repo.
+Use this when a platform requires files to exist physically inside the consuming
+root or when symlink mode is unreliable.
 
 ### Vendor Mode
 
-The consuming repo stores a pinned copy of canonical method files.
+The consuming root stores a pinned copy of canonical method files.
 
-Use this only when pointer, link, or generated mode is not practical. The pinned
-revision must be visible in repo-local docs or run state.
+Use this only when pointer, symlink, or generated mode is not practical. The
+pinned revision must be visible in repo-local docs or run state.
 
 ## Generated File Header
 
@@ -120,15 +178,29 @@ Update rule: regenerate from canonical agents method; do not edit manually.
 The header must not contain a concrete local path, account, token, host, or
 secret. Use placeholders from `env-boundary.md`.
 
+## Adapter Wrapper Rules
+
+- Do not symlink `roles/<role>/ROLE.md` directly into `.claude/agents` or
+  `.codex/agents`; platform agent formats are different from canonical role
+  files.
+- Do not symlink `pipelines/<pipeline>/PIPELINE.md` directly into
+  `.agents/skills` or `.claude/skills`; platform skill formats require
+  `SKILL.md` wrappers.
+- Adapter wrappers may summarize trigger conditions and then instruct the agent
+  to read canonical role, pipeline, and reference files.
+- Adapter wrappers must fail with `needs_method_materialization` when their
+  canonical source cannot be resolved.
+- Generated wrappers must preserve role rights and human gates.
+
 ## Update Flow
 
 1. Update or clone the canonical agents repository.
-2. Resolve `{{AGENTS_REPO_PATH}}` and `{{TARGET_REPO_PATH}}` from ignored local
-   overlays or human input.
+2. Resolve `{{WORKSPACE_ROOT}}`, `{{AGENTS_REPO_PATH}}`, and any child repo paths
+   from ignored local overlays or human input.
 3. Read `bootstrap.md`, this file, and the selected adapter README.
 4. Rebuild, relink, or refresh only files owned by the selected materialization
    mode.
-5. Review the consuming repo diff before committing.
+5. Review the consuming-root diff before committing.
 6. Keep local values in ignored overlays, never in generated committed files.
 7. If a generated file needs a behavior change, update the canonical role,
    pipeline, stack, or adapter first.
@@ -139,7 +211,7 @@ Before using materialized files, verify:
 
 - every generated file points to a canonical source;
 - source paths exist in `{{AGENTS_REPO_PATH}}`;
-- repo-local overlays are used for concrete commands and policies;
+- workspace and repo overlays are used for concrete commands and policies;
 - the selected role ids exist in `roles/INDEX.md`;
 - the selected pipeline id exists in `pipelines/INDEX.md`;
 - no generated file contains concrete local paths, accounts, tokens, hosts, or
@@ -148,8 +220,8 @@ Before using materialized files, verify:
 
 ## Rules
 
-- Prefer pointer mode unless the tool requires local generated files.
-- Do not copy the whole method tree into a consuming repo.
+- Prefer workspace symlink mode for local multi-repo workspaces.
+- Do not copy the whole method tree into a product repository.
 - Do not edit generated files directly except for emergency local debugging.
 - Do not let adapter files override canonical role or pipeline behavior.
 - Do not let generated templates override current repo-local overlays.

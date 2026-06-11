@@ -1,11 +1,6 @@
 # .agents
 
-This directory is a consuming-repo overlay for the canonical agents method.
-
-For multi-repo workspaces, prefer
-`{{AGENTS_REPO_PATH}}/templates/workspace/agents-README.md` at the workspace
-root. Use this repo-local file only when this repository is a standalone
-consuming root or needs a child-repo overlay.
+This directory is the workspace-local overlay for the canonical agents method.
 
 ## Source
 
@@ -15,6 +10,13 @@ consuming root or needs a child-repo overlay.
 - materialization protocol: `{{AGENTS_REPO_PATH}}/method/materialization.md`
 - artifact templates: `{{AGENTS_REPO_PATH}}/templates/artifacts/`
 
+## Expected Symlinks
+
+- `.agents/skills -> ../agents/adapters/codex/materialized/skills`
+- `.codex/agents -> ../agents/adapters/codex/materialized/agents`
+- `.claude/agents -> ../agents/adapters/claude-code/materialized/agents`
+- `.claude/skills -> ../agents/adapters/claude-code/materialized/skills`
+
 ## Local Files
 
 Use ignored files for concrete local values:
@@ -23,11 +25,14 @@ Use ignored files for concrete local values:
 - `.agents/local.context.md`
 - `.agents/runs/`
 
+If this workspace root is versioned, merge
+`{{AGENTS_REPO_PATH}}/templates/workspace/gitignore` into its ignore rules.
+
 Example `.agents/local.context.md`:
 
 ```md
 agents_repo_path: <local checkout of the canonical agents repository>
-target_repo_path: <local checkout of this repository>
+workspace_root: <local checkout of this workspace>
 ```
 
 ## Rules
@@ -35,5 +40,5 @@ target_repo_path: <local checkout of this repository>
 - Do not copy the full canonical method into this directory.
 - Keep generated skills or adapter files reproducible from
   `{{AGENTS_REPO_PATH}}`.
-- Keep run artifacts out of reusable method changes unless the repo explicitly
-  commits them.
+- Keep run artifacts out of reusable method changes unless the workspace
+  explicitly commits them.

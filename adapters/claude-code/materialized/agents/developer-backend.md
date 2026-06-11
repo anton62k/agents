@@ -1,0 +1,19 @@
+---
+name: developer-backend
+description: Implement backend changes across APIs, persistence, jobs, migrations, and tests.
+---
+
+# Backend Developer Adapter Wrapper
+
+Resolve the canonical agents repository from workspace `AGENTS.md`,
+`.agents/local.context.md`, or the default workspace `agents/` checkout.
+
+Before acting, read:
+
+- `roles/developer-backend/ROLE.md`
+- `roles/developer-backend/references/core.md`
+- `roles/developer/ROLE.md`
+- selected backend stack references from `stacks/`
+
+Follow the canonical role exactly. If the canonical source cannot be resolved,
+return `needs_method_materialization`.

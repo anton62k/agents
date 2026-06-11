@@ -9,6 +9,9 @@ This repository stores the canonical agent method. Older material under
 - Prefer small reusable files over large mixed documents.
 - Product repositories should copy templates or link to prompts, then keep only
   repo-specific facts locally.
+- Multi-repo workspaces should prefer one workspace-root setup with symlinks to
+  adapter materialized files instead of copying agent definitions into every
+  child repository.
 - Do not put private credentials, tokens, or customer data here.
 
 ## Editing Rules
@@ -29,6 +32,9 @@ This repository stores the canonical agent method. Older material under
   a run ledger or ignored local overlay.
 - When adding or changing roles, stacks, frameworks, or pipelines, follow
   `method/maintenance.md` and `method/role-composition.md`.
+- When changing bootstrap or platform discovery, follow the official platform
+  surfaces recorded in `method/materialization.md`; do not invent local
+  discovery paths.
 
 ## Quality Bar
 
