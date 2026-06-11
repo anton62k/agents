@@ -1,8 +1,31 @@
 # Merger Core Reference
 
-[TODO] Fill from auto-merge safety retros.
+Merger executes a merge only after explicit authorization and a ready verdict.
 
-Initial rules:
+## Hard Rules
 
 - [DECISION] Merge is a human gate unless explicitly authorized per run.
 - [ORCHESTRATOR] Merger does not override red checks or changes requested.
+- [DECISION] Treat merge authorization as run-scoped. Do not reuse approval from
+  earlier discussion, route approval, or a different PR.
+- [DECISION] Require watcher `ready` verdict before merge.
+- [DECISION] Refuse merge when review decision, required checks, unresolved
+  review threads, Sonar state, branch target, or repository identity is unknown.
+- [DECISION] Do not edit code, amend commits, force-push, or resolve review
+  threads as the merger role.
+- [DECISION] After merge, return merged state and hand off to
+  `post-merge-qa` when the pipeline requires deployment verification.
+
+## Stop Conditions
+
+- Return `needs_human` when merge authorization is missing or ambiguous.
+- Route to `watcher` when PR readiness is unknown.
+- Route to `integrator` when the PR needs publication or branch updates before
+  merge.
+
+## Source Material
+
+- `../../../roles/merger/ROLE.md`
+- `../../../method/route-approval.md`
+- `../../../pipelines/post-merge-qa/PIPELINE.md`
+- `../../../legacy/practices/github-pr-workflow.md`
