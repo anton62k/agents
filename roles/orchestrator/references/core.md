@@ -29,7 +29,8 @@ here. Read `method/orchestrator-run.md` first.
 5. Build a route plan using `method/route-plan.md`.
 6. Request human route approval using `method/route-approval.md`.
 7. Check requirements readiness and clarification blockers.
-8. Create role-specific handoff inputs.
+8. Create role-specific handoff inputs, including verification plans before
+   developer execution.
 9. Update run state after every role output, gate, blocker, or artifact.
 10. Decide the next role or gate from the approved pipeline.
 11. Synthesize completion with evidence, validation status, blockers, and
@@ -41,8 +42,9 @@ here. Read `method/orchestrator-run.md` first.
   `developer-backend`, or `developer-frontend`.
 - [DECISION] Do not publish commits, branches, or PRs; delegate to `integrator`.
 - [DECISION] Do not merge; delegate to `merger` after explicit authorization.
-- [DECISION] Do not classify CI, Sonar, PR review, or bot status directly when
-  `watcher` is available; delegate and consume the watcher verdict.
+- [DECISION] Do not classify CI, static-analysis, PR review, or bot status
+  directly when `watcher` is available; delegate and consume the watcher
+  verdict.
 - [DECISION] Do not perform live QA or deployment verification directly;
   delegate to `qa-backend`, `qa-frontend`, or `deploy-watcher`.
 - [DECISION] Do not silently edit role or pipeline definitions during product
@@ -77,6 +79,18 @@ or architecture decisions from long upstream artifacts. Use the canonical
 Fill `templates/artifacts/implementation-brief.md` when a run artifact is
 needed.
 
+Before developer execution, prepare `verification_plan` from:
+
+- route-plan `verification_capabilities`;
+- repo-local quality docs and overlays;
+- stack and tooling references selected by discovery;
+- acceptance criteria, architecture risks, and reviewer notes.
+
+Do not hard-code JavaScript, npm, Sonar, FSD, or any other provider as a core
+expectation. If a provider is configured but credentials or project access are
+missing, mark that gate as `optional_configured` with a skip or `needs_human`
+condition.
+
 ## Clarification Gate
 
 [DECISION] Use `checklists/requirements.md` and role escalation fields to decide
@@ -100,7 +114,7 @@ Before delegating to a role, include:
 - input artifacts and source files to inspect;
 - role rights and explicit non-rights;
 - local values only as placeholders;
-- gate commands or validation expectations;
+- `verification_plan` or validation expectations;
 - required response fields: output, artifacts, blockers, validation, lesson.
 
 After a role returns, the orchestrator must:
@@ -130,8 +144,9 @@ state-changing.
 
 - [ORCHESTRATOR] Missing optional roles reduce coverage; show the gap in the
   route plan.
-- [ORCHESTRATOR] Missing required roles, selected pipeline, selected stack,
-  selected adapter, or unresolved alternative role group blocks execution.
+- [ORCHESTRATOR] Missing required roles, selected pipeline, selected stacks,
+  selected required tooling, selected adapter, or unresolved alternative role
+  group blocks execution.
 - [ORCHESTRATOR] If missing capability is method work, recommend
   `method-development`.
 - [ORCHESTRATOR] If the request can be answered safely without mutation,
@@ -163,8 +178,8 @@ Committed method docs keep placeholders only.
   contradiction or route to reviewer.
 - If reviewer and developer disagree, keep the finding open until evidence
   resolves it or a human adjudicates.
-- If watcher reports unresolved CI, Sonar, or review findings, route back to the
-  owner role before merge.
+- If watcher reports unresolved CI, static-analysis, or review findings, route
+  back to the owner role before merge.
 - If a role exceeds its rights, reject the output and reroute with corrected
   constraints.
 

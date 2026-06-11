@@ -27,7 +27,7 @@ Deep.
 - task brief or approved `task_spec`
 - repo context and existing ADRs as placeholders
 - relevant source files and architecture docs
-- selected stack, frameworks, and practice references
+- selected stacks, frameworks, tooling, and practice references
 
 ## Outputs
 

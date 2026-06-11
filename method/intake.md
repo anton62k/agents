@@ -8,7 +8,8 @@ a candidate route before any pipeline executes.
 - Classify the work type.
 - Select a candidate pipeline.
 - Read catalog metadata for pipeline and role discovery.
-- Infer required roles, surface, stack, and frameworks.
+- Infer required roles, surfaces, stacks, frameworks, tooling categories, and
+  verification capabilities.
 - Identify local values that must be resolved from overlays.
 - Run a capability check.
 - Produce a proposed run plan for human review.
@@ -31,9 +32,24 @@ request_summary: ""
 work_type: feature-development
 selected_pipeline: feature-development
 why: ""
-surface: backend | frontend | infra | docs | library | unknown
-stack: js-ts | unknown
+surfaces: [] # backend | frontend | infra | docs | library | method | repo
+stack:
+  primary: unknown
+  secondary: []
 frameworks: []
+tooling:
+  static_analysis: []
+  structure_checks: []
+  ci_providers: []
+verification_capabilities:
+  primary_local_gate: available | missing | unknown
+  typecheck: available | missing | unknown | not-applicable
+  lint: available | missing | unknown | not-applicable
+  tests: available | missing | unknown | not-applicable
+  build_or_package: available | missing | unknown | not-applicable
+  architecture_or_structure: available | missing | unknown | not-applicable
+  static_analysis: configured | optional | unavailable | unknown
+  remote_ci: available | missing | unknown
 required_roles: []
 alternative_roles:
   - group_id: ""
@@ -53,6 +69,8 @@ recommended_next_step: route-approval | method-development | ask-human
   available for the route to proceed.
 - `ambiguity`: structured discovery notes with `field`, `reason`, and
   `candidates` when route selection cannot be made confidently.
+- `verification_capabilities`: generic availability signals. Do not put exact
+  commands here; exact commands belong to repo overlays or `verification_plan`.
 
 ## Rules
 
@@ -64,6 +82,7 @@ recommended_next_step: route-approval | method-development | ask-human
   `../pipelines/INDEX.md` for pipeline `triggers`, `required_roles`,
   `alternative_roles`, and `optional_roles`, then read `../roles/INDEX.md` to
   confirm role ids, surfaces, capabilities, and rights.
-- If the target stack or framework is unknown, do not guess silently; mark it
-  `unknown` and ask for route approval with the ambiguity visible.
+- If the target stack, framework, tool, or verification capability is unknown, do
+  not guess silently; mark it `unknown` and ask for route approval with the
+  ambiguity visible.
 - Do not resolve local values during intake. Only list what will be needed.

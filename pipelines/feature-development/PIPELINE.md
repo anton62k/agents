@@ -36,12 +36,13 @@ optional `architect`, optional `merger`, optional `deploy-watcher`, optional
    shape is not obvious.
 6. Reviewer consensus reviews the task spec and architecture plan when present.
 7. Human approves or rejects the task spec and significant architecture choices.
-8. Orchestrator prepares the implementation brief.
+8. Orchestrator prepares the implementation brief and verification plan.
 9. Developer implements from a fresh base/worktree.
 10. Reviewer consensus reviews code.
 11. Developer fixes blocking findings; repeat up to the configured cap.
 12. Integrator creates or updates the PR.
-13. Watcher polls and classifies CI, Sonar, bot, and human review state.
+13. Watcher polls and classifies CI, static-analysis, bot, and human review
+    state.
 14. Developer fixes watcher findings; repeat until ready or blocked.
 15. Human merge gate, unless explicit auto-merge is recorded for this run.
 16. Optional post-merge deploy and QA stages.

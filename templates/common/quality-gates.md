@@ -1,13 +1,28 @@
 # Quality Gates
 
-## Local
+## Local Primary Gate
 
-- `npm run verify` or repo equivalent.
+- Command: TODO
 
-## CI
+## Changed-Surface Gates
 
-CI must run install, verify, and Sonar when configured.
+- Typecheck: TODO / not applicable
+- Lint: TODO / not applicable
+- Tests: TODO / not applicable
+- Build or package: TODO / not applicable
+- Architecture or structure checks: TODO / not applicable
 
-## Sonar
+## Optional Static Analysis
 
-Quality Gate passed is not enough. Inspect unresolved issues and fix new ones.
+Configured providers: TODO / none
+
+Run locally only when credentials, provider config, and project access are
+available. A green aggregate provider gate is not enough by itself when the
+provider exposes issue-level findings; inspect unresolved new findings and fix
+valid ones.
+
+## Remote Gates
+
+- CI provider: TODO
+- Review threads: TODO
+- Static-analysis PR decoration: TODO / not applicable

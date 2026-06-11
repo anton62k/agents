@@ -16,6 +16,9 @@ These templates are fillable copies of canonical run artifacts.
 - `requirements-check.md` - readiness gate for `task_spec`.
 - `architecture-plan.md` - architect-owned technical-shape artifact.
 - `implementation-brief.md` - compact developer handoff.
+- `verification-plan.md` - generic local, conditional, optional, and remote gate
+  plan.
+- `verification-result.md` - developer or watcher evidence from executed gates.
 
 ## Canonical Sources
 
@@ -26,7 +29,8 @@ The templates mirror schemas from these source files:
 - `../../roles/analyst/references/core.md`;
 - `../../checklists/requirements.md`;
 - `../../roles/architect/references/core.md`;
-- `../../roles/developer/references/core.md`.
+- `../../roles/developer/references/core.md`;
+- `../../references/quality/verification.md`.
 
 If a template conflicts with a canonical schema, the canonical schema wins.
 

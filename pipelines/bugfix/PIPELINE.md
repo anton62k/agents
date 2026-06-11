@@ -21,11 +21,12 @@ optional `architect`, optional `qa-backend` or `qa-frontend`.
 3. Define the minimal expected behavior and affected scope.
 4. Optional architect checks boundary, contract, or data-shape impact for
    cross-module defects.
-5. Developer fixes the defect and adds regression coverage where practical.
-6. Reviewer verifies root cause, fix, and regression test.
-7. Integrator publishes.
-8. Watcher follows checks and review.
-9. Optional QA verifies the live/user-facing path.
+5. Orchestrator prepares the implementation brief and verification plan.
+6. Developer fixes the defect and adds regression coverage where practical.
+7. Reviewer verifies root cause, fix, and regression test.
+8. Integrator publishes.
+9. Watcher follows checks and review.
+10. Optional QA verifies the live/user-facing path.
 
 ## Human Gates
 

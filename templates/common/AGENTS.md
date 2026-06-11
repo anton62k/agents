@@ -14,12 +14,13 @@ This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 
 ## Repo Facts
 
-- Package manager: TODO
-- Runtime/framework: TODO
+- Primary stack: TODO
+- Package manager or build runner: TODO / not applicable
+- Runtime/framework: TODO / not applicable
 - Protected branch: TODO
 - Release branch: TODO
 - Local verify command: TODO
-- Sonar project key: TODO
+- Static-analysis providers: TODO / none
 
 ## Required Workflow
 
@@ -27,5 +28,6 @@ This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 - Keep changes scoped.
 - Run local verification before commit.
 - Check CI after push.
-- Treat Sonar unresolved issues as blockers when Sonar is configured.
+- Treat unresolved static-analysis findings as blockers when the provider is
+  configured and the repo policy makes it required.
 - Answer PR review threads in-thread and resolve only after validation.

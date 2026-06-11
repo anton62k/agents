@@ -17,7 +17,7 @@ The discovery catalog lives in `INDEX.md`.
 - `developer` - implements or fixes code in a working tree.
 - `reviewer` - adversarial read-only review; one voice in consensus.
 - `integrator` - commits, pushes, and opens or updates PRs.
-- `watcher` - classifies CI, Sonar, bot, and human review signals.
+- `watcher` - classifies CI, static-analysis, bot, and human review signals.
 - `merger` - merges only when explicitly authorized for a run.
 - `deploy-watcher` - verifies post-merge deployment.
 - `qa-backend` - live backend QA through public/API surfaces.

@@ -33,8 +33,8 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 ## How To Use
 
 For an existing project, add a small repo-local `AGENTS.md` that points here and
-records only local facts: package manager, branch policy, CI commands, release
-branch, deployment target, and domain-specific constraints.
+records only local facts: stack, build runner or package manager, branch policy,
+CI commands, release branch, deployment target, and domain-specific constraints.
 
 For multi-agent work, start with `method/README.md`. Keep role behavior in
 `roles/`, workflow order in `pipelines/`, and local values in ignored env/local

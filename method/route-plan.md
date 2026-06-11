@@ -19,9 +19,24 @@ route_plan:
   required_roles: []
   alternative_roles: [] # structure is defined in method/intake.md
   optional_roles: []
-  surface: backend | frontend | infra | docs | library | method | repo | unknown
-  stack: js-ts | unknown
+  surfaces: [] # backend | frontend | infra | docs | library | method | repo
+  stack:
+    primary: unknown
+    secondary: []
   frameworks: []
+  tooling:
+    static_analysis: []
+    structure_checks: []
+    ci_providers: []
+  verification_capabilities:
+    primary_local_gate: available | missing | unknown
+    typecheck: available | missing | unknown | not-applicable
+    lint: available | missing | unknown | not-applicable
+    tests: available | missing | unknown | not-applicable
+    build_or_package: available | missing | unknown | not-applicable
+    architecture_or_structure: available | missing | unknown | not-applicable
+    static_analysis: configured | optional | unavailable | unknown
+    remote_ci: available | missing | unknown
   local_values_needed: []
   missing_capabilities: []
   clarification_blockers: []
@@ -46,6 +61,13 @@ run_state:
   run_id: "{{RUN_ID}}"
   route_plan: {}
   current_pipeline_step: ""
+  handoffs:
+    task_spec: {}
+    requirements_check: {}
+    architecture_plan: {}
+    implementation_brief: {}
+    verification_plan: {}
+    verification_result: {}
   gates:
     - id: route-approval
       status: open | approved | rejected
@@ -66,6 +88,9 @@ run_state:
   `analysis only`.
 - If `clarification_blockers` contains blocking items, stop with
   `needs_analyst`, `needs_architect`, or `needs_human`.
+- Keep route planning generic. Do not encode stack-specific commands, package
+  managers, static-analysis vendors, or CI provider names as core assumptions.
+  Store exact commands in repo overlays or filled verification artifacts.
 - Store resolved local values only in run state, never in committed method docs.
 - Keep this schema portable; adapters may wrap it but must not rename canonical
   fields.

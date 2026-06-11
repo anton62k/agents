@@ -13,6 +13,13 @@ run_state:
   run_id: "{{RUN_ID}}"
   route_plan: {}
   current_pipeline_step: ""
+  handoffs:
+    task_spec: {}
+    requirements_check: {}
+    architecture_plan: {}
+    implementation_brief: {}
+    verification_plan: {}
+    verification_result: {}
   gates:
     - id: route-approval
       status: open | approved | rejected

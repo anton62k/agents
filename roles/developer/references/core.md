@@ -10,11 +10,14 @@ constraints.
 - [ORCHESTRATOR] Failures claimed as pre-existing must be proven against the base.
 - [DECISION] Developer consumes `implementation_brief` when analysis or
   architecture work preceded implementation.
+- [DECISION] Developer consumes `verification_plan` when provided and returns
+  `verification_result` with commands run, skipped gates, blockers, and residual
+  risk.
 - [DECISION] Developer decides local implementation details only inside the
   approved task and architecture constraints.
 - [DECISION] Developer must not start implementation when `task_spec`,
-  `requirements_check`, `architecture_plan`, or `implementation_brief` contains
-  blocking clarification markers.
+  `requirements_check`, `architecture_plan`, `implementation_brief`, or
+  `verification_plan` contains blocking clarification markers.
 - [DECISION] Return `needs_analyst` when required behavior, scope, or acceptance
   criteria are unclear.
 - [DECISION] Return `needs_architect` when coding would require changing module
@@ -42,6 +45,19 @@ implementation_brief:
   stop_and_escalate_if: []
 ```
 
+## `verification_plan` And `verification_result`
+
+Fillable templates:
+
+- `../../../templates/artifacts/verification-plan.md`;
+- `../../../templates/artifacts/verification-result.md`.
+
+Developer must run required gates that apply to the changed surface. Conditional
+and optional configured gates are executed only when their `applies_when` and
+capability requirements are met. Missing credentials, project access, or local
+tooling must be reported as skipped or `needs_human`; do not report such gates
+as passed.
+
 ## Clarification Gate
 
 Before editing files, inspect the brief and upstream artifacts for unresolved
@@ -51,6 +67,8 @@ state instead of guessing or widening scope.
 ## Source Material
 
 - `../../../templates/artifacts/implementation-brief.md`
+- `../../../templates/artifacts/verification-plan.md`
+- `../../../templates/artifacts/verification-result.md`
 - `../../../checklists/requirements.md`
 - `../../../method/orchestrator-run.md`
 - `../../../method/role-composition.md`

@@ -10,7 +10,8 @@ Merger executes a merge only after explicit authorization and a ready verdict.
   earlier discussion, route approval, or a different PR.
 - [DECISION] Require watcher `ready` verdict before merge.
 - [DECISION] Refuse merge when review decision, required checks, unresolved
-  review threads, Sonar state, branch target, or repository identity is unknown.
+  review threads, static-analysis state, branch target, or repository identity is
+  unknown.
 - [DECISION] Do not edit code, amend commits, force-push, or resolve review
   threads as the merger role.
 - [DECISION] After merge, return merged state and hand off to

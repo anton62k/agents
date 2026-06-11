@@ -20,6 +20,8 @@ this repository:
 - shared practice references live in `references/`;
 - stack knowledge lives in `stacks/<stack>/`;
 - requirements readiness is checked with `../checklists/requirements.md`;
+- verification planning is defined by
+  `../references/quality/verification.md`;
 - fillable run artifacts live in `../templates/artifacts/`;
 - pipelines live in `pipelines/<pipeline>/PIPELINE.md`;
 - catalog-backed discovery is defined by `discovery.md`, `roles/INDEX.md`, and
@@ -45,13 +47,14 @@ this repository:
 7. Require route approval and clarification gates before execution.
 8. Maintain catalogs for discovery and capability checks.
 9. Create a route plan and run-state contract.
-10. Add fillable artifact templates for the canonical contracts.
-11. Specify manual run and consuming-repo bootstrap.
-12. Describe adapter materialization for Codex and Claude Code.
-13. Set the orchestrator run contract.
-14. Exercise the method manually in Codex and Claude Code.
-15. Fold repeated lessons into references after human approval.
-16. Later, add a revo importer that loads the same definitions into
+10. Add verification plan and result contracts.
+11. Add fillable artifact templates for the canonical contracts.
+12. Specify manual run and consuming-repo bootstrap.
+13. Describe adapter materialization for Codex and Claude Code.
+14. Set the orchestrator run contract.
+15. Exercise the method manually in Codex and Claude Code.
+16. Fold repeated lessons into references after human approval.
+17. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals

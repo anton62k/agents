@@ -14,6 +14,7 @@ implementation_brief:
   implementation_slices: []
   acceptance_criteria: []
   required_tests: []
+  verification_plan_ref: ""
   risks_to_watch: []
   out_of_scope: []
   stop_and_escalate_if: []

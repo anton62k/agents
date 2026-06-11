@@ -34,8 +34,9 @@ Agent workflows should assume:
 
 - local verification before PR;
 - CI verification after push;
-- Sonar Quality Gate is not enough by itself;
-- unresolved Sonar issues must be inspected and fixed;
+- configured static-analysis aggregate gates are not enough by themselves;
+- unresolved provider findings must be inspected and fixed or explicitly
+  accepted with evidence;
 - PR review threads must be answered in-thread and resolved only after fixes are
   verified;
 - release commits and tags must be validated against registry/GitHub Actions.
