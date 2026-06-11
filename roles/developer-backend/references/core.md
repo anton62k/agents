@@ -1,9 +1,41 @@
 # Backend Developer Core Reference
 
-[TODO] Fill from backend developer runs and backend review skills.
+Backend developer work must preserve contracts, persistence behavior, and
+runtime boundaries.
 
-Initial rules:
+## Hard Rules
 
-- [TODO] Backend implementation must account for persistence and error paths.
-- [TODO] Migrations and generated artifacts follow repo-local rules.
-- [TODO] Queue/worker changes need runtime behavior checks when mocks hide risk.
+- [DECISION] Define API changes through request shape, response shape, auth
+  requirements, error model, retry or idempotency behavior, compatibility notes,
+  and contract tests.
+- [DECISION] Keep transport handlers thin when the framework supports separate
+  service, handler, or domain layers.
+- [DECISION] Put state-changing business intent in commands or services, and
+  keep read paths side-effect free when the repo uses CQRS.
+- [DECISION] Keep persistence details behind repo-approved boundaries when
+  domain rules are non-trivial.
+- [DECISION] Treat migrations and generated artifacts as reviewed artifacts that
+  follow repo-local rules.
+- [DECISION] Test database-specific query, JSON, transaction, and rollback
+  behavior when the implementation depends on it.
+- [DECISION] Do not leak raw persistence or infrastructure errors through public
+  APIs.
+- [DECISION] Queue, worker, auth, and integration changes need behavior checks
+  that cross the relevant boundary when mocks would hide risk.
+
+## Stop Conditions
+
+- Return `needs_architect` when the change requires new service boundaries,
+  public contracts, persistence ownership, or migration strategy.
+- Return `needs_analyst` when domain behavior, error behavior, or acceptance
+  criteria are unclear.
+- Return `needs_human` when the repo requires explicit approval for migrations,
+  auth changes, or compatibility breaks.
+
+## Source Material
+
+- `../../../legacy/backend/api-contracts.md`
+- `../../../legacy/backend/cqrs.md`
+- `../../../legacy/backend/integration-tests.md`
+- `../../../legacy/backend/nestjs.md`
+- `../../../legacy/backend/prisma.md`
