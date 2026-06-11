@@ -35,6 +35,9 @@ integration.
   changed.
 - Static-analysis findings are inspected at issue level when the provider
   exposes them, and unresolved findings have a decision or next owner.
+- PR feedback is classified by source. Review-thread findings need thread-scoped
+  decisions; top-level provider waiting or limit messages are remote status, not
+  code review findings.
 - Review threads are answered and resolved only after validation.
 
 ## Source Material
@@ -42,3 +45,4 @@ integration.
 - `../../../references/quality/readable-code.md`
 - `../../../references/quality/verification.md`
 - `../../../references/quality/static-analysis.md`
+- `../../../references/quality/pr-feedback-loop.md`

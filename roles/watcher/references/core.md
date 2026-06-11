@@ -13,6 +13,9 @@ plan.
 - [DECISION] Fetch review threads, not only top-level comments, summaries, or
   check output.
 - [DECISION] Build a queue of unresolved, non-outdated review threads.
+- [DECISION] Inspect top-level provider comments for processing, rate-limit,
+  quota-limit, permission, and wait-time status; classify them as provider
+  status, not review findings.
 - [DECISION] Classify each finding as valid, partially valid, already fixed,
   false positive, or requiring human clarification.
 - [DECISION] When a static-analysis provider is configured, inspect unresolved
@@ -24,8 +27,13 @@ plan.
 - [DECISION] Treat new unresolved provider findings as blockers unless the
   reviewer records a narrow, evidence-backed false-positive or accepted-risk
   decision.
-- [DECISION] Report terminal verdict as `ready`, `needs-work`, or `waiting`,
-  plus a next route recommendation; do not finish with "monitoring started".
+- [DECISION] When a provider says review is rate-limited, quota-limited, or must
+  wait until a stated time, return `waiting` with `resume_after`; return
+  `needs_human` when the provider requires account, billing, plan, permission, or
+  manual action the agent cannot perform.
+- [DECISION] Report terminal verdict as `ready`, `needs-work`,
+  `needs-reviewer`, `needs-human`, or `waiting`, plus a next route
+  recommendation; do not finish with "monitoring started".
 
 ## Stop Conditions
 
@@ -40,3 +48,4 @@ plan.
 
 - `../../../references/quality/verification.md`
 - `../../../references/quality/static-analysis.md`
+- `../../../references/quality/pr-feedback-loop.md`

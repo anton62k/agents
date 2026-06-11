@@ -54,6 +54,37 @@ verification_result:
       provider: ""
       status: passed | failed | pending | unavailable
       evidence: ""
+  pr_feedback:
+    verdict: ready | needs-work | needs-reviewer | needs-human | waiting | unknown
+    review_decision: >
+      approved | changes-requested | review-required | blocked | unknown
+    required_checks: passed | failed | pending | unavailable | unknown
+    unresolved_threads: 0
+    provider_waiting:
+      - provider: ""
+        reason: rate-limit | quota-limit | processing | provider-maintenance | unknown
+        resume_after: ""
+        evidence: ""
+    queue:
+      - id: ""
+        source: >
+          ci | static-analysis | review-thread | human-review |
+          bot-comment | provider-status
+        provider: ""
+        category: >
+          code | test | docs | config | security | coverage |
+          duplication | process | access | wait
+        severity: blocker | high | medium | low | info
+        state: >
+          valid | partial | already-fixed | false-positive |
+          accepted-risk | unclear | waiting
+        location: ""
+        summary: ""
+        evidence: ""
+        next_owner: developer | reviewer | human | watcher | waiting
+        reply_target: thread | none
+        resolve_after: fix-pushed | explanation-posted | wait-complete | human-decision
+        resume_after: ""
   blockers: []
   residual_risks: []
   next_action: continue | needs_developer | needs_reviewer | needs_human | waiting
@@ -70,5 +101,8 @@ verification_result:
 - For configured static analysis, record issue-level findings when available and
   preserve any access limitation as `partial`, `unavailable`, `skipped`, or
   `needs_human`.
+- For PR feedback, preserve unresolved threads separately from top-level
+  provider status comments. Provider rate limits, quota limits, or wait
+  instructions are `waiting` states with `resume_after` when available.
 - A missing credential, project access, or external permission is `needs_human`
   when the approved pipeline requires that gate.

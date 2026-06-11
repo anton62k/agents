@@ -24,11 +24,11 @@ Standard for judgment; cheap only for deterministic polling.
 - `{{GH_REPO}}`
 - PR reference placeholder
 - head commit
-- `{{SONAR_PROJECT_KEY}}`
+- static-analysis provider context placeholders, when configured
 
 ## Outputs
 
-- ready / needs-work / waiting verdict
+- ready / needs-work / needs-reviewer / needs-human / waiting verdict
 - classified findings
 - next route recommendation
 

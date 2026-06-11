@@ -74,6 +74,11 @@ findings by changing the source of truth inside the approved scope.
 False-positive and accepted-risk decisions belong to reviewer or human approval
 unless the repo contract explicitly grants Developer that right.
 
+When watcher routes PR feedback to Developer, Developer fixes only actionable
+items whose `next_owner` is `developer`. Provider waiting, rate limits, quota
+limits, missing permissions, and ambiguous human comments are not implementation
+tasks.
+
 When a `verification_plan` was inferred because `VERIFICATION.md` or an
 equivalent repo-local contract was missing, Developer must preserve that signal
 in `verification_result`. Do not present inferred gates as repo-declared gates.
@@ -91,6 +96,7 @@ state instead of guessing or widening scope.
 - `../../../templates/artifacts/verification-result.md`
 - `../../../references/quality/readable-code.md`
 - `../../../references/quality/static-analysis.md`
+- `../../../references/quality/pr-feedback-loop.md`
 - `../../../checklists/requirements.md`
 - `../../../method/orchestrator-run.md`
 - `../../../method/role-composition.md`

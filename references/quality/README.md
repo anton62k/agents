@@ -18,6 +18,8 @@ Quality references help agents decide whether a proposed change is safe enough.
 - `verification.md` - generic verification planning and result contract.
 - `static-analysis.md` - provider-backed findings, local/hosted modes, and
   issue-level triage rules.
+- `pr-feedback-loop.md` - remote PR feedback, review-thread, provider-status,
+  waiting, and merge-readiness loop.
 
 ## Used By
 
