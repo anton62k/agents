@@ -43,6 +43,9 @@ Standard; deep for state architecture, data flow, or high-risk UX workflows.
 
 - Keep UI, state, data loading, and generated API contracts aligned with repo
   conventions.
+- Keep React as view and event wiring. Move business behavior, derived state,
+  validation policy, URL construction, and non-React logic to view models,
+  stores, services, data sources, or utilities according to repo pattern.
 - Do not invent parallel state when the repo's state model already owns it.
 - Run frontend-specific gates from the repo overlay.
 - Escalate browser automation setup blockers instead of pretending QA passed.
@@ -50,3 +53,4 @@ Standard; deep for state architecture, data flow, or high-risk UX workflows.
 ## References
 
 - `references/core.md`
+- `../../references/quality/readable-code.md`

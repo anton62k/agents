@@ -41,6 +41,8 @@ Standard; deep for high-risk data, auth, migration, or workflow changes.
 ## Hard Rules
 
 - Respect backend module boundaries from repo context.
+- Keep handlers, services, persistence access, business policy, and transport
+  mapping at readable abstraction levels.
 - Validate persistence, state transitions, and error behavior.
 - Add or update behavior tests for non-trivial backend changes.
 - Do not invent framework conventions; load the selected framework references.
