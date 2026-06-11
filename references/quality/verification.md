@@ -49,6 +49,21 @@ verification_capabilities:
 Stack and tool references translate those capabilities into candidate checks.
 Repo overlays translate candidate checks into exact commands.
 
+## Source Priority
+
+Use repo-local evidence before generic assumptions:
+
+1. `VERIFICATION.md`, when present.
+2. Existing equivalent repo docs, for example `docs/quality-gates.md`, README
+   verification sections, or CI/review docs.
+3. Package/build scripts, static-analysis config, and CI workflow definitions.
+4. Stack references and shared quality references from the canonical method.
+5. Agent inference from source inspection.
+
+Repo overlay wins for exact commands, blocking status, provider requirements,
+and environment constraints. If a repo-local source is missing or stale, record
+the uncertainty in `verification_plan` instead of guessing.
+
 ## Provider Rules
 
 - Do not assume a provider exists because similar repos use it.
