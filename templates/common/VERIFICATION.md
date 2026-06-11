@@ -45,13 +45,22 @@ Run these only when the touched surface makes them relevant.
 ## Static Analysis
 
 - Providers: TODO / none
+- Blocking status: TODO / optional / blocking / not configured
 - Required before push: TODO / no
-- Local mode: TODO / not available
+- Scope: TODO / changed code / full project / new code
+- Local mode command: TODO / not available
+- Local mode environment: TODO / ignored overlay / not required
 - Hosted PR decoration: TODO / not available
+- Issue-level access: TODO / required / best effort / unavailable
+- Finding categories: TODO / security / reliability / maintainability /
+  duplication / coverage / dependency risk / quality gate
+- False-positive or accepted-risk policy: TODO
 
 Configured static analysis is optional unless this repository declares it
 blocking and the environment has the required access. Missing credentials or
 project access must be reported as skipped or `needs_human`, not as passed.
+When issue-level findings are available, agents must inspect them instead of
+using only the aggregate provider status.
 
 ## Remote Gates
 

@@ -8,7 +8,7 @@ Quality references help agents decide whether a proposed change is safe enough.
 - test strategy by behavior and blast radius;
 - verification gates;
 - residual risk reporting;
-- non-functional quality checks.
+- non-functional quality checks;
 - readable code and maintainability boundaries.
 
 ## Core References
@@ -16,6 +16,8 @@ Quality references help agents decide whether a proposed change is safe enough.
 - `readable-code.md` - stack-neutral readability, abstraction-level, SOLID, and
   business/system boundary rules.
 - `verification.md` - generic verification planning and result contract.
+- `static-analysis.md` - provider-backed findings, local/hosted modes, and
+  issue-level triage rules.
 
 ## Used By
 

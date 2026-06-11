@@ -65,6 +65,15 @@ capability requirements are met. Missing credentials, project access, or local
 tooling must be reported as skipped or `needs_human`; do not report such gates
 as passed.
 
+When static analysis is selected in the plan, Developer runs the local mode only
+when the repo contract gives an exact command and required environment is
+available through placeholders or ignored overlays. Provider findings that are
+available locally must be classified in `verification_result.static_analysis`.
+Developer fixes actionable code, test, docs, generated-artifact, and config
+findings by changing the source of truth inside the approved scope.
+False-positive and accepted-risk decisions belong to reviewer or human approval
+unless the repo contract explicitly grants Developer that right.
+
 When a `verification_plan` was inferred because `VERIFICATION.md` or an
 equivalent repo-local contract was missing, Developer must preserve that signal
 in `verification_result`. Do not present inferred gates as repo-declared gates.
@@ -81,6 +90,7 @@ state instead of guessing or widening scope.
 - `../../../templates/artifacts/verification-plan.md`
 - `../../../templates/artifacts/verification-result.md`
 - `../../../references/quality/readable-code.md`
+- `../../../references/quality/static-analysis.md`
 - `../../../checklists/requirements.md`
 - `../../../method/orchestrator-run.md`
 - `../../../method/role-composition.md`

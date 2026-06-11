@@ -73,6 +73,9 @@ input. Script names below are discovery hints, not commands to invent.
   blocking and the environment has access.
 - Detect provider config from repo-local evidence, for example scanner scripts,
   provider properties, CI jobs, or hosted PR decoration.
+- Use the shared static-analysis reference for provider states, categories,
+  local mode, hosted mode, issue-level inspection, false positives, and accepted
+  risks.
 - A hosted green status is not enough when issue-level findings are available;
   inspect new unresolved findings when access exists.
 - Local provider runs are allowed only when the repo documents a local mode and

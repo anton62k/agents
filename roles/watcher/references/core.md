@@ -18,6 +18,9 @@ plan.
 - [DECISION] When a static-analysis provider is configured, inspect unresolved
   findings, issues, and hotspots; do not infer safety from a green aggregate gate
   alone.
+- [DECISION] Classify provider findings by security, reliability,
+  maintainability, duplication, coverage, dependency risk, and quality-gate
+  impact when those categories are available.
 - [DECISION] Treat new unresolved provider findings as blockers unless the
   reviewer records a narrow, evidence-backed false-positive or accepted-risk
   decision.
@@ -36,3 +39,4 @@ plan.
 ## Source Material
 
 - `../../../references/quality/verification.md`
+- `../../../references/quality/static-analysis.md`
