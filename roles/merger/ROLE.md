@@ -38,4 +38,3 @@ Standard or deterministic script.
 ## References
 
 - `references/core.md`
-- `references/_learnings-candidate.md`

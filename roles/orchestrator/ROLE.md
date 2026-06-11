@@ -44,7 +44,7 @@ Deep for planning and adjudication; standard for routine routing.
 - conflict or blocker decisions
 - run ledger updates
 - final run summary
-- lesson candidates when the method needs improvement
+- method-change recommendations when the method needs improvement
 
 ## Hard Rules
 
@@ -73,4 +73,3 @@ Deep for planning and adjudication; standard for routine routing.
 - `references/intake.md`
 - `references/capability-check.md`
 - `references/route-approval.md`
-- `references/_learnings-candidate.md`

@@ -121,7 +121,7 @@ After a role returns, the orchestrator must:
 - destructive filesystem, git, database, deployment, or external-service action;
 - secret, credential, live-system, or production access;
 - merge, release, deploy, or auto-merge authorization;
-- promotion of candidate lessons into hard method rules.
+- approved method changes that add or change hard rules.
 
 Do not open a gate for every routine pipeline step. Keep gates meaningful and
 state-changing.
@@ -150,7 +150,7 @@ state-changing.
 - gates and decisions;
 - artifacts and validation results;
 - blockers and next action;
-- lesson candidates.
+- method-change recommendations.
 
 Resolved local values may be stored in run state only when needed for execution.
 Committed method docs keep placeholders only.

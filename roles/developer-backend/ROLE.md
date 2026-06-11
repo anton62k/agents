@@ -48,4 +48,3 @@ Standard; deep for high-risk data, auth, migration, or workflow changes.
 ## References
 
 - `references/core.md`
-- `references/_learnings-candidate.md`

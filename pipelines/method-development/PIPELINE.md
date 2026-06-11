@@ -9,7 +9,8 @@ pipelines, adapters, and maintenance rules.
 
 - A requested route is missing a required capability.
 - The user asks to improve roles, pipelines, or agent behavior.
-- A repeated run failure should be promoted from candidate lesson to a rule.
+- A repeated run failure has been aggregated outside this repository and
+  approved as a reusable rule.
 - A new language, framework, surface, or adapter is needed.
 
 ## Roles
@@ -37,8 +38,7 @@ pipelines, adapters, and maintenance rules.
 
 ## Human Gates
 
-- approval before promoting `[BEST-PRACTICE]` or candidate lessons to hard
-  rules;
+- approval before adding or changing hard method rules;
 - merge approval.
 
 ## Adapter Notes
