@@ -9,8 +9,14 @@ Initial rules:
 - [ORCHESTRATOR] Produce the development contract before code.
 - [ORCHESTRATOR] Include human-action items separately from code tasks.
 - [ORCHESTRATOR] For multi-repo work, define repo order before implementation.
+- [DECISION] Run `../../../checklists/requirements.md` before declaring
+  `task_spec` ready for architecture or development.
+- [DECISION] Treat `open_questions`, unresolved `human_actions`, and escalation
+  flags as clarification markers.
 - [DECISION] Return `needs_architect` when a task requires boundary, contract,
   data-shape, runtime-flow, or ADR decisions.
+- [DECISION] Return `needs_human` when requirements cannot be clarified from
+  available sources or when approval is needed before the next role acts.
 
 ## `task_spec`
 
@@ -44,3 +50,11 @@ task_spec:
     reason: ""
   suggested_roles_next: []
 ```
+
+## `requirements_check`
+
+The analyst emits this artifact next to `task_spec`; see
+`../../../checklists/requirements.md`.
+
+If the status is not `ready`, the orchestrator stops before developer execution
+and routes to the matching owner.

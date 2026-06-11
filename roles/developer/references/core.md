@@ -11,10 +11,16 @@ Initial rules:
   architecture work preceded implementation.
 - [DECISION] Developer decides local implementation details only inside the
   approved task and architecture constraints.
+- [DECISION] Developer must not start implementation when `task_spec`,
+  `requirements_check`, `architecture_plan`, or `implementation_brief` contains
+  blocking clarification markers.
 - [DECISION] Return `needs_analyst` when required behavior, scope, or acceptance
   criteria are unclear.
 - [DECISION] Return `needs_architect` when coding would require changing module
   boundaries, contracts, data model, runtime flow, or ADR direction.
+- [DECISION] Return `needs_human` when implementation requires approval for
+  product ambiguity, significant architecture, secret access, destructive
+  actions, merge, or deploy.
 
 ## `implementation_brief`
 
@@ -31,3 +37,9 @@ implementation_brief:
   out_of_scope: []
   stop_and_escalate_if: []
 ```
+
+## Clarification Gate
+
+Before editing files, inspect the brief and upstream artifacts for unresolved
+markers. If any marker blocks safe implementation, return the matching stop
+state instead of guessing or widening scope.

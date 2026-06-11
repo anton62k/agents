@@ -19,11 +19,14 @@ route_plan:
   frameworks: []
   local_values_needed: []
   missing_capabilities: []
+  clarification_blockers: []
   human_gates: []
   first_artifacts: []
   approval:
     status: proposed | approved | changed | rejected
-    decision: approve | change pipeline | change roles | analysis only | method first | stop
+    decision: >
+      approve | change pipeline | change roles | analysis only |
+      method first | stop
     notes: ""
 ```
 
@@ -42,6 +45,9 @@ run_state:
     - id: route-approval
       status: open | approved | rejected
       decision: ""
+    - id: clarification
+      status: open | cleared | blocked
+      decision: needs_analyst | needs_architect | needs_human | ""
   artifacts: []
   blockers: []
 ```
@@ -53,6 +59,8 @@ run_state:
   capability check before execution.
 - If `missing_capabilities` contains blocking items, recommend `method first` or
   `analysis only`.
+- If `clarification_blockers` contains blocking items, stop with
+  `needs_analyst`, `needs_architect`, or `needs_human`.
 - Store resolved local values only in run state, never in committed method docs.
 - Keep this schema portable; adapters may wrap it but must not rename canonical
   fields.

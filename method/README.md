@@ -14,10 +14,12 @@ The same source should drive three execution modes:
 The canonical source is not any one platform file. It is the method definition in
 this repository:
 
+- constitution rules live in `constitution.md`;
 - roles live in `roles/<role>/ROLE.md`;
 - role knowledge lives in `roles/<role>/references/`;
 - shared practice references live in `references/`;
 - stack knowledge lives in `stacks/<stack>/`;
+- requirements readiness is checked with `../checklists/requirements.md`;
 - pipelines live in `pipelines/<pipeline>/PIPELINE.md`;
 - catalog-backed discovery is defined by `discovery.md`, `roles/INDEX.md`, and
   `pipelines/INDEX.md`;
@@ -33,20 +35,21 @@ this repository:
 
 ## Build Order
 
-1. Keep the base schema small.
-2. Add thin role definitions with explicit references.
-3. Introduce shared practice references and role composition rules.
-4. Layer stack and specialization guidance through `role-composition.md`.
-5. Establish pipelines with gates and handoff contracts.
-6. Require route approval before execution.
-7. Maintain catalogs for discovery and capability checks.
-8. Create a route plan and run-state contract.
-9. Specify manual run and consuming-repo bootstrap.
-10. Describe adapter materialization for Codex and Claude Code.
-11. Set the orchestrator run contract.
-12. Exercise the method manually in Codex and Claude Code.
-13. Fold repeated lessons into references after human approval.
-14. Later, add a revo importer that loads the same definitions into
+1. Keep the constitution explicit and small.
+2. Keep the base schema small.
+3. Add thin role definitions with explicit references.
+4. Introduce shared practice references and role composition rules.
+5. Layer stack and specialization guidance through `role-composition.md`.
+6. Establish pipelines with gates and handoff contracts.
+7. Require route approval and clarification gates before execution.
+8. Maintain catalogs for discovery and capability checks.
+9. Create a route plan and run-state contract.
+10. Specify manual run and consuming-repo bootstrap.
+11. Describe adapter materialization for Codex and Claude Code.
+12. Set the orchestrator run contract.
+13. Exercise the method manually in Codex and Claude Code.
+14. Fold repeated lessons into references after human approval.
+15. Later, add a revo importer that loads the same definitions into
    agent-orchestrator.
 
 ## Non-Goals

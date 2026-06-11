@@ -36,4 +36,6 @@ Before execution, show the route plan defined in `route-plan.md`.
   `changed`, or `rejected`.
 - If `missing_capabilities` is not empty, default recommendation is
   `method first` or `analysis only`, not blind execution.
+- If clarification blockers are already visible, show them in the route plan and
+  route to analyst, architect, or human review before implementation.
 - Record the approved route in run state, not in method markdown.

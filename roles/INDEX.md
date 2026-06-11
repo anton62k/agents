@@ -20,7 +20,7 @@ Each record defines:
 
 - path: `roles/orchestrator/ROLE.md`
 - surface: any
-- capabilities: intake, routing, gates, state, handoffs
+- capabilities: intake, routing, gates, clarification, state, handoffs
 - rights: state and routing only
 
 ### `knowledge-engineer`
@@ -34,7 +34,7 @@ Each record defines:
 
 - path: `roles/analyst/ROLE.md`
 - surface: any
-- capabilities: task spec, requirements, decomposition, source-backed analysis
+- capabilities: task spec, requirements check, decomposition, source-backed analysis
 - rights: read-only
 
 ### `architect`

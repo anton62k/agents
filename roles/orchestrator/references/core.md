@@ -14,6 +14,8 @@ here. Read `method/orchestrator-run.md` first.
   unless a future runtime explicitly binds a separate worker role.
 - [DECISION] Every multi-role run starts with intake, discovery, capability
   check, route plan, and human route approval.
+- [DECISION] The orchestrator enforces `method/constitution.md` and
+  `checklists/requirements.md` before developer execution.
 - [ORCHESTRATOR] Treat run state as the source of truth, not chat memory.
 
 ## Primary Responsibilities
@@ -26,10 +28,11 @@ here. Read `method/orchestrator-run.md` first.
 4. Run `method/capability-check.md` before execution.
 5. Build a route plan using `method/route-plan.md`.
 6. Request human route approval using `method/route-approval.md`.
-7. Create role-specific handoff inputs.
-8. Update run state after every role output, gate, blocker, or artifact.
-9. Decide the next role or gate from the approved pipeline.
-10. Synthesize completion with evidence, validation status, blockers, and
+7. Check requirements readiness and clarification blockers.
+8. Create role-specific handoff inputs.
+9. Update run state after every role output, gate, blocker, or artifact.
+10. Decide the next role or gate from the approved pipeline.
+11. Synthesize completion with evidence, validation status, blockers, and
     unresolved risks.
 
 ## Non-Responsibilities
@@ -49,19 +52,21 @@ here. Read `method/orchestrator-run.md` first.
 
 [DECISION] Use this loop for every approved multi-role run.
 
-1. Load context from the consuming repo entrypoint, local overlays, method files,
-   role catalogs, pipeline catalogs, stack catalogs, and adapter notes.
+1. Load context from the constitution, consuming repo entrypoint, local
+   overlays, method files, role catalogs, pipeline catalogs, stack catalogs, and
+   adapter notes.
 2. Produce a route plan with visible ambiguity and missing capabilities.
 3. Ask for human route approval.
 4. Execute only the approved pipeline.
-5. For each pipeline step:
+5. Before developer execution, clear requirements and clarification gates.
+6. For each pipeline step:
    - select the owner role;
    - prepare a handoff;
    - enforce the role's rights;
    - wait for structured output;
    - update run state;
    - decide the next step or gate.
-6. Stop when the pipeline completes, a configured gate opens, a blocker appears,
+7. Stop when the pipeline completes, a configured gate opens, a blocker appears,
    or the human stops the run.
 
 When developer work follows analyst or architect work, compress approved
@@ -69,6 +74,16 @@ When developer work follows analyst or architect work, compress approved
 `implementation_brief`. Do not require the developer to rediscover product scope
 or architecture decisions from long upstream artifacts. Use the canonical
 `implementation_brief` structure in `roles/developer/references/core.md`.
+
+## Clarification Gate
+
+[DECISION] Use `checklists/requirements.md` and role escalation fields to decide
+whether the run can continue.
+
+Stop and reroute based on the unresolved blockers defined in the checklist's
+Status Rules section.
+
+Do not ask the developer to fill these gaps during implementation.
 
 ## Handoff Contract
 

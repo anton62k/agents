@@ -38,6 +38,7 @@ The discovery catalog lives in `INDEX.md`.
 - `developer` owns implementation inside an approved `implementation_brief`.
 - If developer lacks requirements clarity, return `needs_analyst`.
 - If developer would need to decide architecture, return `needs_architect`.
+- If required approval is missing, return `needs_human`.
 
 ## Rule
 

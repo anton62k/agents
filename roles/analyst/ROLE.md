@@ -30,10 +30,12 @@ Deep.
 ## Outputs
 
 - `task_spec` artifact
+- `requirements_check` artifact
 - dependency order
 - risks and human-action items
 - acceptance criteria
 - `needs_architect` when technical shape, boundaries, or contracts are unclear
+- `needs_human` when requirements or approvals cannot be resolved from sources
 
 ## Hard Rules
 
@@ -41,6 +43,7 @@ Deep.
 - If source reality contradicts the brief, report the contradiction.
 - Define `what` and `why`; do not make architecture decisions.
 - Return `needs_architect` using the criteria in `references/core.md`.
+- Return `needs_human` when human clarification or approval is required.
 - Do not write product code.
 
 ## References
