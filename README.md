@@ -35,6 +35,9 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 For an existing project, add a small repo-local `AGENTS.md` that points here and
 records only local facts: stack, build runner or package manager, branch policy,
 CI commands, release branch, deployment target, and domain-specific constraints.
+When useful, add `CLAUDE.md`, `REVIEW.md`, `VERIFICATION.md`, and optional
+`REPOSITORY.md` from `templates/common/`. These are recommended entrypoints, not
+a mandatory migration checklist; existing repo docs can serve as the overlay.
 
 For multi-agent work, start with `method/README.md`. Keep role behavior in
 `roles/`, workflow order in `pipelines/`, and local values in ignored env/local

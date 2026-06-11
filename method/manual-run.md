@@ -7,6 +7,8 @@ future orchestrator imports roles and pipelines directly.
 
 - user request;
 - consuming repo guidance, for example `AGENTS.md` or `CLAUDE.md`;
+- recommended repo overlay docs, for example `REVIEW.md`,
+  `VERIFICATION.md`, or `REPOSITORY.md`;
 - canonical method checkout at `{{AGENTS_REPO_PATH}}`;
 - optional local overlay values from the consuming repo;
 - selected execution adapter: Codex or Claude Code.
@@ -55,12 +57,14 @@ Agents discover available capabilities in this order:
 
 1. `method/constitution.md` for always-on rules.
 2. Consuming repo `AGENTS.md` or `CLAUDE.md` for local entrypoint instructions.
-3. `roles/INDEX.md` for role ids, surfaces, capabilities, and rights.
-4. `pipelines/INDEX.md` for route candidates and role requirements.
-5. `stacks/README.md` and selected stack files for language knowledge.
-6. `templates/artifacts/` for fillable handoff artifacts.
-7. `adapters/<platform>/README.md` for platform mechanics.
-8. Consuming repo overlay for local commands, paths, credentials, and targets.
+3. Consuming repo overlay docs such as `VERIFICATION.md`, `REVIEW.md`,
+   `REPOSITORY.md`, or existing equivalents such as `docs/quality-gates.md`.
+4. `roles/INDEX.md` for role ids, surfaces, capabilities, and rights.
+5. `pipelines/INDEX.md` for route candidates and role requirements.
+6. `stacks/README.md` and selected stack files for language knowledge.
+7. `templates/artifacts/` for fillable handoff artifacts.
+8. `adapters/<platform>/README.md` for platform mechanics.
+9. Ignored consuming repo overlays for local paths, credentials, and targets.
 
 ## Output
 
@@ -80,9 +84,13 @@ manual_run:
 - Do not copy concrete local values into canonical method files.
 - If generated platform files disagree with canonical roles or pipelines, the
   canonical method wins.
+- If canonical templates disagree with current repo-specific commands, review
+  policy, or structure, the repo overlay wins.
 - Manual runs implement `orchestrator-run.md` with the main session acting as
   orchestrator.
 - If the consuming repo lacks an entrypoint, create or propose a minimal
-  `AGENTS.md`, `CLAUDE.md`, and `.agents/README.md` bootstrap.
+  `AGENTS.md`, `CLAUDE.md`, and `.agents/README.md` bootstrap. Add
+  `REVIEW.md`, `VERIFICATION.md`, or `REPOSITORY.md` when the repository needs
+  explicit local review, verification, or structure guidance.
 - If generated adapter files are stale or ambiguous, refresh them from
   `materialization.md` before using them as instructions.

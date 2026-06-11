@@ -20,6 +20,9 @@ On a new device, do this before running agents:
 3. Add or verify the consuming repo's agent entrypoints:
    - `AGENTS.md` for Codex-facing repo guidance;
    - `CLAUDE.md` when Claude Code should read repo guidance;
+   - `REVIEW.md` for the repo's PR review rubric;
+   - `VERIFICATION.md` for exact local and remote quality gates;
+   - optional `REPOSITORY.md` for repo structure and source-of-truth order;
    - `.agents/` for repo-local overlays, generated links, and run artifacts.
 4. In the consuming repo, record only placeholders and links to
    `{{AGENTS_REPO_PATH}}`; do not record one-machine absolute paths in committed
@@ -41,8 +44,16 @@ Copy only entrypoint templates into a consuming repo:
 ```sh
 cp {{AGENTS_REPO_PATH}}/templates/common/AGENTS.md AGENTS.md
 cp {{AGENTS_REPO_PATH}}/templates/common/CLAUDE.md CLAUDE.md
+cp {{AGENTS_REPO_PATH}}/templates/common/REVIEW.md REVIEW.md
+cp {{AGENTS_REPO_PATH}}/templates/common/VERIFICATION.md VERIFICATION.md
 mkdir -p .agents
 cp {{AGENTS_REPO_PATH}}/templates/common/agents-README.md .agents/README.md
+```
+
+`REPOSITORY.md` is recommended for larger or less obvious repositories:
+
+```sh
+cp {{AGENTS_REPO_PATH}}/templates/common/REPOSITORY.md REPOSITORY.md
 ```
 
 Do not copy the full method tree into `.agents/`. Keep canonical roles,
@@ -71,11 +82,14 @@ The consuming repo vendors a pinned copy or submodule of this repository.
 Use only when link mode is not practical. Keep the pinned revision visible in
 repo-local docs or run state.
 
-## Minimal Consuming Repo Shape
+## Recommended Consuming Repo Shape
 
 ```text
 AGENTS.md
 CLAUDE.md
+REVIEW.md
+VERIFICATION.md
+REPOSITORY.md           # optional for small repos
 .agents/
   README.md
   local.env              # ignored
@@ -96,6 +110,8 @@ The consuming repo entrypoint should say:
 
 ```md
 Use the canonical agent method from {{AGENTS_REPO_PATH}}.
+Repo-local overlays win for concrete commands, paths, policies, and domain
+facts.
 Start every multi-role task with:
 1. {{AGENTS_REPO_PATH}}/method/constitution.md
 2. {{AGENTS_REPO_PATH}}/method/manual-run.md
@@ -119,6 +135,11 @@ Start every multi-role task with:
 
 - Keep committed consuming-repo files portable; concrete machine paths belong in
   ignored local overlays.
+- Treat `AGENTS.md`, `CLAUDE.md`, `REVIEW.md`, `VERIFICATION.md`, and
+  `REPOSITORY.md` as recommended entrypoints, not a mandatory migration
+  checklist for every existing repository.
+- If a consuming repo has an existing equivalent, for example
+  `docs/quality-gates.md`, use it as the repo overlay instead of duplicating it.
 - Keep `.agents/runs/` out of reusable method changes unless a product repo
   explicitly commits run artifacts.
 - Generated Codex or Claude Code files must be reproducible from this repository.

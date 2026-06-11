@@ -19,6 +19,10 @@ or a future runtime.
 Generated adapter files must point back to these sources. They must not become a
 second source of truth.
 
+Consuming-repo overlays win for concrete repo facts: exact commands, paths,
+domain constraints, release policy, review policy, verification requirements,
+and environment boundaries.
+
 ## Targets
 
 ### Codex
@@ -27,6 +31,12 @@ Minimum committed files in the consuming repository:
 
 - `AGENTS.md`
 - `.agents/README.md`
+
+Recommended shared repo docs:
+
+- `REVIEW.md`
+- `VERIFICATION.md`
+- optional `REPOSITORY.md`
 
 Optional generated or linked files:
 
@@ -42,6 +52,12 @@ Minimum committed files in the consuming repository:
 
 - `CLAUDE.md`
 - optional `.claude/agents/<role>.md` when subagents must be discoverable
+
+Recommended shared repo docs:
+
+- `REVIEW.md`
+- `VERIFICATION.md`
+- optional `REPOSITORY.md`
 
 Optional generated or linked files:
 
@@ -123,6 +139,7 @@ Before using materialized files, verify:
 
 - every generated file points to a canonical source;
 - source paths exist in `{{AGENTS_REPO_PATH}}`;
+- repo-local overlays are used for concrete commands and policies;
 - the selected role ids exist in `roles/INDEX.md`;
 - the selected pipeline id exists in `pipelines/INDEX.md`;
 - no generated file contains concrete local paths, accounts, tokens, hosts, or
@@ -135,6 +152,7 @@ Before using materialized files, verify:
 - Do not copy the whole method tree into a consuming repo.
 - Do not edit generated files directly except for emergency local debugging.
 - Do not let adapter files override canonical role or pipeline behavior.
+- Do not let generated templates override current repo-local overlays.
 - Do not store resolved env values in committed materialized files.
 - Record materialization problems in the selected adapter README or method
   maintenance flow, not inside a role definition.
