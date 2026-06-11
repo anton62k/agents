@@ -40,6 +40,14 @@ Core references:
 
 Conditional references:
 
+- `references/backend-testing.md`
+- `references/backend-api-layers.md`
+- `references/nestjs-backend.md`
+- `references/prisma-data-access.md`
+- `references/cqrs-backend.md`
+- `references/graphql-api.md`
+- `references/backend-integrations-jobs.md`
+- `references/nestjs-prisma-cqrs-graphql.md` as a composite route only
 - `references/react-ui-boundary.md`
 - `references/mobx-reactivity.md`
 - `references/mvvm-frontend.md`
