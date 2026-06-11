@@ -188,6 +188,8 @@ secret. Use placeholders from `env-boundary.md`.
   `SKILL.md` wrappers.
 - Adapter wrappers may summarize trigger conditions and then instruct the agent
   to read canonical role, pipeline, and reference files.
+- Markdown adapter frontmatter values must be quoted when they contain a colon
+  followed by a space.
 - Adapter wrappers must fail with `needs_method_materialization` when their
   canonical source cannot be resolved.
 - Generated wrappers must preserve role rights and human gates.
@@ -228,6 +230,7 @@ secret. Use placeholders from `env-boundary.md`.
 
 Before using materialized files, verify:
 
+- `node tools/validate.mjs` passes in this repository;
 - every generated file points to a canonical source;
 - source paths exist in `{{AGENTS_REPO_PATH}}`;
 - workspace and repo overlays are used for concrete commands and policies;

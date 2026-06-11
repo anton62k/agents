@@ -15,7 +15,7 @@ Git and GitHub mutating actions. No feature-code edits.
 
 ## Default Model Level
 
-Standard or deterministic script.
+Standard.
 
 ## Inputs
 

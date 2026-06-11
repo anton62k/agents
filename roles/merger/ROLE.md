@@ -16,7 +16,7 @@ GitHub merge action only. No code edits.
 
 ## Default Model Level
 
-Standard or deterministic script.
+Standard.
 
 ## Inputs
 

@@ -37,6 +37,17 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 - `legacy/` - archived older material. It is not runtime agent knowledge and
   should not be loaded by roles, stacks, pipelines, or adapters.
 
+## Validation
+
+Run the repository validator before publishing method changes:
+
+```sh
+node tools/validate.mjs
+```
+
+The validator checks adapter wrapper frontmatter, catalog coverage, wrapper
+coverage, and basic portable model-level vocabulary. CI runs the same command.
+
 ## How To Use
 
 For a multi-repo workspace, start with `templates/workspace/`. Clone this

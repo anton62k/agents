@@ -1,6 +1,6 @@
 ---
 name: orchestrator
-description: Own the run control plane: intake, routing, gates, role handoffs, run state, and completion.
+description: "Own the run control plane: intake, routing, gates, role handoffs, run state, and completion."
 ---
 
 # Orchestrator Adapter Wrapper
