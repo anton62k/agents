@@ -71,6 +71,7 @@ Missing optional roles reduce coverage but do not block by default.
 ### 5. Build Route Plan
 
 Create `route_plan` using `route-plan.md`.
+Use `../templates/artifacts/route-plan.md` as the fillable artifact.
 
 The plan must show:
 
@@ -102,6 +103,8 @@ Do not start mutating pipeline steps before route approval.
 ### 7. Prepare Run State And Check Clarification
 
 After approval, create or update `run_state` using `route-plan.md`.
+Use `../templates/artifacts/run-state.md` when run state is recorded outside
+chat.
 
 Resolved local values may enter run state only when the pipeline needs them.
 Committed method docs keep placeholders only.
@@ -111,9 +114,9 @@ available `task_spec`. If the requirements check is not `ready`, stop with the
 matching next action defined in the checklist's Status Rules section.
 
 When analysis or architecture steps ran and clarification is clear, prepare a
-compact
-`implementation_brief` for the developer from approved `task_spec`,
+compact `implementation_brief` for the developer from approved `task_spec`,
 `architecture_plan`, findings, and route constraints.
+Use `../templates/artifacts/implementation-brief.md` as the fillable artifact.
 
 Compact means 200-400 words or the equivalent in concise YAML. Include only:
 goal, required behavior, files or modules to inspect first, architecture

@@ -9,6 +9,7 @@ This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 - Use `{{AGENTS_REPO_PATH}}/method/materialization.md` for generated files.
 - Discover roles from `{{AGENTS_REPO_PATH}}/roles/INDEX.md`.
 - Discover pipelines from `{{AGENTS_REPO_PATH}}/pipelines/INDEX.md`.
+- Fill handoff artifacts from `{{AGENTS_REPO_PATH}}/templates/artifacts/`.
 - Generated `.claude/agents/*` files must point back to canonical roles.
 
 ## Repo Facts

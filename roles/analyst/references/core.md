@@ -20,6 +20,9 @@ Initial rules:
 
 ## `task_spec`
 
+Fillable template:
+`../../../templates/artifacts/task-spec.md`.
+
 ```yaml
 task_spec:
   summary: ""
@@ -55,6 +58,7 @@ task_spec:
 
 The analyst emits this artifact next to `task_spec`; see
 `../../../checklists/requirements.md`.
+Fillable template: `../../../templates/artifacts/requirements-check.md`.
 
 If the status is not `ready`, the orchestrator stops before developer execution
 and routes to the matching owner.

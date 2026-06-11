@@ -25,11 +25,12 @@ future orchestrator imports roles and pipelines directly.
 7. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
 8. Run `capability-check.md` against the selected pipeline, roles, stack,
    references, and adapter.
-9. Build the `route_plan` from `route-plan.md`.
+9. Build the `route_plan` from `route-plan.md` and
+   `../templates/artifacts/route-plan.md`.
 10. Show the route plan to the human and wait for `route-approval.md`.
 11. Execute only the approved pipeline.
 12. Keep run state in chat or in the consuming repo's run artifact according to
-   `route-plan.md`.
+   `route-plan.md` and `../templates/artifacts/run-state.md`.
 
 ## Codex Runtime Shape
 
@@ -57,8 +58,9 @@ Agents discover available capabilities in this order:
 3. `roles/INDEX.md` for role ids, surfaces, capabilities, and rights.
 4. `pipelines/INDEX.md` for route candidates and role requirements.
 5. `stacks/README.md` and selected stack files for language knowledge.
-6. `adapters/<platform>/README.md` for platform mechanics.
-7. Consuming repo overlay for local commands, paths, credentials, and targets.
+6. `templates/artifacts/` for fillable handoff artifacts.
+7. `adapters/<platform>/README.md` for platform mechanics.
+8. Consuming repo overlay for local commands, paths, credentials, and targets.
 
 ## Output
 

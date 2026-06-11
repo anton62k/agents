@@ -8,6 +8,7 @@ This directory is a consuming-repo overlay for the canonical agents method.
 - manual run protocol: `{{AGENTS_REPO_PATH}}/method/manual-run.md`
 - bootstrap protocol: `{{AGENTS_REPO_PATH}}/method/bootstrap.md`
 - materialization protocol: `{{AGENTS_REPO_PATH}}/method/materialization.md`
+- artifact templates: `{{AGENTS_REPO_PATH}}/templates/artifacts/`
 
 ## Local Files
 

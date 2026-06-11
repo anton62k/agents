@@ -4,6 +4,8 @@ This checklist is the readiness gate for `task_spec`. It helps the analyst and
 orchestrator decide whether implementation can proceed, architecture is needed,
 or clarification must stop the run.
 
+Fillable template: `../templates/artifacts/requirements-check.md`.
+
 ## When To Run
 
 - [DECISION] Analyst runs this checklist before marking `task_spec` ready.

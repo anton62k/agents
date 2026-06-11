@@ -17,6 +17,9 @@ Initial rules:
 
 ## `architecture_plan`
 
+Fillable template:
+`../../../templates/artifacts/architecture-plan.md`.
+
 ```yaml
 architecture_plan:
   summary: ""

@@ -24,6 +24,9 @@ Initial rules:
 
 ## `implementation_brief`
 
+Fillable template:
+`../../../templates/artifacts/implementation-brief.md`.
+
 ```yaml
 implementation_brief:
   goal: ""
