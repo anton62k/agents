@@ -3,6 +3,11 @@
 The route plan is the stable contract between intake, discovery, capability
 check, route approval, and pipeline execution.
 
+Fillable templates:
+
+- `../templates/artifacts/route-plan.md`;
+- `../templates/artifacts/run-state.md`.
+
 ## Route Plan Schema
 
 ```yaml

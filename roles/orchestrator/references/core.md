@@ -74,11 +74,15 @@ When developer work follows analyst or architect work, compress approved
 `implementation_brief`. Do not require the developer to rediscover product scope
 or architecture decisions from long upstream artifacts. Use the canonical
 `implementation_brief` structure in `roles/developer/references/core.md`.
+Fill `templates/artifacts/implementation-brief.md` when a run artifact is
+needed.
 
 ## Clarification Gate
 
 [DECISION] Use `checklists/requirements.md` and role escalation fields to decide
 whether the run can continue.
+Use `templates/artifacts/requirements-check.md` when the gate result is stored
+as a run artifact.
 
 Stop and reroute based on the unresolved blockers defined in the checklist's
 Status Rules section.

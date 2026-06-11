@@ -19,10 +19,12 @@ This file tells agents how to update the method safely.
    - framework behavior -> framework reference;
    - workflow order/gates -> `pipelines/<pipeline>/`;
    - platform mechanics -> `adapters/<platform>/`;
+   - fillable artifact shapes -> `templates/artifacts/`;
    - local values -> local overlay, never committed markdown.
 5. Update `roles/INDEX.md` or `pipelines/INDEX.md` when adding, removing, or
    changing routable roles or pipelines.
 6. Add or update a checklist/reference when the rule changes what an agent does.
+7. Update artifact templates when canonical artifact schemas change.
 
 ## Source Labels
 
@@ -56,4 +58,5 @@ Every new hard rule needs a source label:
 - Are placeholders used instead of local values?
 - Are discovery catalogs updated when routable roles or pipelines changed?
 - Is the rule short in dispatcher files and detailed in references?
+- Are fillable artifact templates updated when artifact schemas changed?
 - Does the change remain usable by Codex, Claude Code, and future revo?

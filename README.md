@@ -25,6 +25,7 @@ quality gates, Sonar checks, PR review, and CI repair.
 - `backend/` - backend-specific architecture and quality practices.
 - `libraries/` - library/package-specific practices.
 - `templates/` - starter files copied into product repositories.
+- `templates/artifacts/` - fillable route, run-state, and handoff artifacts.
 - `skills/` - agent skill definitions and operational workflows.
 - `checklists/` - short acceptance checklists.
 - `method/` - canonical rules for role, pipeline, and environment definitions.
