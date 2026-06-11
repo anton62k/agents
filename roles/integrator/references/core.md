@@ -17,6 +17,8 @@ feature-code decisions.
   threads during PR maintenance.
 - [DECISION] Resolve review threads only after the fix or explanation has been
   pushed, posted in-thread, and validated.
+- [DECISION] After publishing or updating a PR, route to watcher for the PR
+  feedback loop instead of treating PR creation as completion.
 
 ## Stop Conditions
 
@@ -25,3 +27,7 @@ feature-code decisions.
 - Route to `developer` when review or CI requires code changes.
 - Route to `watcher` when remote checks, review decision, or quality-gate state
   is unknown after publishing.
+
+## Source Material
+
+- `../../../references/quality/pr-feedback-loop.md`

@@ -12,6 +12,10 @@ Merger executes a merge only after explicit authorization and a ready verdict.
 - [DECISION] Refuse merge when review decision, required checks, unresolved
   review threads, static-analysis state, branch target, or repository identity is
   unknown.
+- [DECISION] Refuse merge while watcher reports provider waiting state, including
+  rate limits, quota limits, or provider-requested wait windows, unless the
+  required checks and review policy explicitly allow merging without that
+  provider.
 - [DECISION] Do not edit code, amend commits, force-push, or resolve review
   threads as the merger role.
 - [DECISION] After merge, return merged state and hand off to
@@ -29,3 +33,4 @@ Merger executes a merge only after explicit authorization and a ready verdict.
 - `../../../roles/merger/ROLE.md`
 - `../../../method/route-approval.md`
 - `../../../pipelines/post-merge-qa/PIPELINE.md`
+- `../../../references/quality/pr-feedback-loop.md`

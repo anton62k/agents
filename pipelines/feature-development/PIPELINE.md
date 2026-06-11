@@ -42,7 +42,7 @@ optional `architect`, optional `merger`, optional `deploy-watcher`, optional
 11. Developer fixes blocking findings; repeat up to the configured cap.
 12. Integrator creates or updates the PR.
 13. Watcher polls and classifies CI, static-analysis, bot, and human review
-    state.
+    state, including provider wait or limit messages in top-level comments.
 14. Developer fixes watcher findings; repeat until ready or blocked.
 15. Human merge gate, unless explicit auto-merge is recorded for this run.
 16. Optional post-merge deploy and QA stages.
