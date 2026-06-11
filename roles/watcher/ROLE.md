@@ -2,7 +2,8 @@
 
 ## Purpose
 
-Classify CI, Sonar, bot, and human review state into actionable next steps.
+Classify CI, static-analysis, bot, and human review state into actionable next
+steps.
 
 ## When To Use
 
@@ -35,7 +36,8 @@ Standard for judgment; cheap only for deterministic polling.
 
 - Terminal verdict required; do not return "monitoring started" as completion.
 - Check authoritative review decision, not only status checks.
-- Sonar issues and hotspots must be inspected, not inferred from comments.
+- Static-analysis issues and hotspots must be inspected, not inferred from
+  comments.
 
 ## References
 

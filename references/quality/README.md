@@ -10,10 +10,14 @@ Quality references help agents decide whether a proposed change is safe enough.
 - residual risk reporting;
 - non-functional quality checks.
 
+## Core References
+
+- `verification.md` - generic verification planning and result contract.
+
 ## Used By
 
 - `reviewer` as primary owner;
 - `architect` when quality attributes drive design;
 - `developer` when selecting tests and local verification;
-- `watcher` when classifying CI, Sonar, and review outcomes;
+- `watcher` when classifying CI, static-analysis, and review outcomes;
 - `orchestrator` when deciding whether a gate is satisfied.

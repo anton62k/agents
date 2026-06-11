@@ -28,3 +28,12 @@ Pipeline files should list only gates that are specific to that pipeline.
 Before developer execution, the orchestrator checks
 `../checklists/requirements.md` and any role escalation fields. The pipeline
 continues only when blocking clarification markers are resolved.
+
+## Standard Verification Planning
+
+Before developer execution, the orchestrator prepares `verification_plan` from
+route capabilities, repo-local quality docs, selected stack references, selected
+tooling references, and upstream risk notes.
+
+Developer and watcher results should be reported through `verification_result`
+or an equivalent run-state field.

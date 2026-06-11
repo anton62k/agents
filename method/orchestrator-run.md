@@ -26,7 +26,7 @@ contract, but they are not the canonical source for roles or pipelines.
 - consuming repo entrypoint, for example `AGENTS.md` or `CLAUDE.md`;
 - canonical checkout at `{{AGENTS_REPO_PATH}}`;
 - optional local overlay values from the consuming repo;
-- role, pipeline, stack, method, and adapter catalogs.
+- role, pipeline, stack, tooling, method, and adapter catalogs.
 
 ## Phases
 
@@ -47,9 +47,9 @@ working tree.
 
 Run `intake.md`.
 
-The output must include work type, candidate pipeline, surface, stack,
-frameworks, required roles, optional roles, alternative role groups, and local
-values needed later.
+The output must include work type, candidate pipeline, surfaces, stack
+candidates, frameworks, tooling categories, verification capabilities, required
+roles, optional roles, alternative role groups, and local values needed later.
 
 ### 3. Discover Route
 
@@ -63,8 +63,8 @@ pipeline ids. Unknown values stay visible in the candidate route.
 Run `capability-check.md`.
 
 Required roles, unresolved alternative role groups, selected stacks, selected
-framework references, selected pipeline, and selected adapter must be available
-before automatic execution can proceed.
+framework references, selected tooling references, selected pipeline, and
+selected adapter must be available before automatic execution can proceed.
 
 Missing optional roles reduce coverage but do not block by default.
 
@@ -80,7 +80,8 @@ The plan must show:
 - required roles;
 - alternative role groups and resolution;
 - optional roles and reduced coverage;
-- selected surface, stack, and frameworks;
+- selected surfaces, stacks, frameworks, and tooling categories;
+- verification capabilities;
 - local values needed later;
 - missing capabilities;
 - human gates before and inside the selected pipeline.
@@ -118,11 +119,21 @@ compact `implementation_brief` for the developer from approved `task_spec`,
 `architecture_plan`, findings, and route constraints.
 Use `../templates/artifacts/implementation-brief.md` as the fillable artifact.
 
+Before developer execution, also prepare `verification_plan` from the approved
+route, repo overlay, quality-gate docs, stack references, tooling references,
+and upstream risk notes. Use
+`../templates/artifacts/verification-plan.md` as the fillable artifact.
+
 Compact means 200-400 words or the equivalent in concise YAML. Include only:
 goal, required behavior, files or modules to inspect first, architecture
 constraints, implementation slices, acceptance criteria, required tests, risks,
 out-of-scope items, and stop conditions. Summarize findings; do not paste raw
 review text or full upstream artifacts.
+
+The verification plan is allowed to contain concrete commands only when they
+come from the consuming repo or run overlay. The canonical method records
+generic gate categories and placeholders, not JavaScript, package-manager,
+Sonar, CI-provider, or framework assumptions.
 
 ### 8. Execute Pipeline
 
@@ -166,6 +177,8 @@ orchestrator_run:
     requirements_check: {} # see checklists/requirements.md
     architecture_plan: {} # see roles/architect/references/core.md
     implementation_brief: {} # see roles/developer/references/core.md
+    verification_plan: {} # see references/quality/verification.md
+    verification_result: {} # see references/quality/verification.md
   gates: []
   artifacts: []
   blockers: []
@@ -193,6 +206,8 @@ Proposed route:
 - why: <short reason>
 - roles: <required and selected alternative roles>
 - optional coverage: <included or omitted optional roles>
+- surfaces/stacks/tooling: <generic route summary>
+- verification capabilities: <ready, missing, or unknown gates>
 - missing capabilities: <none or list>
 - clarification blockers: <none or list>
 - local values needed later: <placeholder names only>

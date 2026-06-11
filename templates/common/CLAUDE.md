@@ -14,10 +14,12 @@ This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 
 ## Repo Facts
 
-- Package manager: TODO
-- Runtime/framework: TODO
+- Primary stack: TODO
+- Package manager or build runner: TODO / not applicable
+- Runtime/framework: TODO / not applicable
 - Protected branch: TODO
 - Local verify command: TODO
+- Static-analysis providers: TODO / none
 
 ## Required Workflow
 

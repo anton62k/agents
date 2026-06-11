@@ -8,4 +8,5 @@ Use this checklist for branch review.
 - Docs are updated when public behavior changes.
 - Local verify passed.
 - CI passed.
-- Sonar has zero unresolved new issues.
+- Configured static-analysis providers have no unresolved new findings, or each
+  remaining finding has an approved false-positive or accepted-risk decision.

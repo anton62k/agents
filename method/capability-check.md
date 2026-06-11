@@ -10,9 +10,10 @@ available method definitions.
 - required role ids;
 - alternative role groups;
 - role and pipeline catalog rows;
-- selected surface;
-- selected stack;
+- selected surfaces;
+- selected stack catalogs;
 - selected framework references;
+- selected tooling references;
 - selected practice references;
 - adapter target: Codex, Claude Code, or revo.
 
@@ -26,11 +27,12 @@ available method definitions.
    `roles/INDEX.md`; groups with zero present roles are unresolved.
 6. Surface-specific role exists when required, for example
    `developer-backend` or `developer-frontend`.
-7. Stack exists at `stacks/<stack>/STACK.md` when a stack is selected.
+7. Each selected stack exists at `stacks/<stack>/STACK.md`.
 8. Framework references exist when the pipeline requires them.
-9. Practice references exist under `references/` when selected.
-10. Adapter notes exist for the selected execution mode.
-11. Local values are placeholders only and are listed for run-time resolution.
+9. Tooling references exist when the pipeline requires them.
+10. Practice references exist under `references/` when selected.
+11. Adapter notes exist for the selected execution mode.
+12. Local values are placeholders only and are listed for run-time resolution.
 
 ## Output
 
@@ -43,15 +45,15 @@ missing_capabilities:
 recommendation: proceed | run-method-development-first | ask-human
 ```
 
-Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `practice`,
-`pipeline`, `adapter`, `local-value`.
+Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
+`practice`, `pipeline`, `adapter`, `local-value`.
 
 ## Rules
 
 - Missing optional roles do not block the route; list them as reduced coverage.
-- Missing required roles, unresolved alternative role groups, selected stack, or
-  selected pipeline blocks execution. Unresolved means zero roles from the group
-  are present in `roles/INDEX.md`.
+- Missing required roles, unresolved alternative role groups, selected stacks,
+  selected required tooling, or selected pipeline blocks execution. Unresolved
+  means zero roles from the group are present in `roles/INDEX.md`.
 - If a missing capability is itself method work, route to
   `method-development`.
 - Do not substitute a generic role for a missing specialization without human

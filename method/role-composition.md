@@ -6,11 +6,16 @@ Roles are composed, not exploded into one role per technology.
 
 - `role`: what the agent owns, for example `developer`, `reviewer`, `analyst`,
   or `architect`.
-- `surface`: where the work happens, for example `backend`, `frontend`, `infra`,
-  `docs`, `library`.
-- `stack`: language and ecosystem, for example `js-ts`.
+- `surfaces`: where the work happens, for example `backend`, `frontend`,
+  `infra`, `docs`, `library`.
+- `stack.primary` and `stack.secondary`: language and ecosystem catalogs, for
+  example `js-ts`, `dotnet`, `python`, or `unknown`.
 - `frameworks`: concrete tools, for example `nestjs`, `prisma`, `react`,
   `graphql-codegen`.
+- `tooling`: optional tool/provider categories such as static analysis,
+  structure checks, browser automation, or CI providers.
+- `verification_capabilities`: generic availability signals used to build a
+  run-specific verification plan.
 - `practice_references`: reusable practices, for example `requirements`,
   `adr`, `c4`, `ddd`, `bpmn`, or `test-strategy`.
 - `repo_overlay`: local commands, paths, env values, and deployment facts.
@@ -19,8 +24,11 @@ Roles are composed, not exploded into one role per technology.
 
 ```yaml
 role: developer
-surface: backend
-stack: js-ts
+surfaces:
+  - backend
+stack:
+  primary: js-ts
+  secondary: []
 frameworks:
   - nestjs
   - prisma
@@ -33,11 +41,12 @@ The adapter builds context in this order:
 
 1. `roles/developer/ROLE.md`
 2. `roles/developer-backend/ROLE.md`
-3. `stacks/js-ts/STACK.md`
+3. selected `stacks/<stack>/STACK.md`
 4. framework references
-5. shared practice references
-6. repo-local overlay
-7. pipeline step input
+5. tooling references
+6. shared practice references
+7. repo-local overlay
+8. pipeline step input
 
 ## Rule
 
@@ -56,7 +65,8 @@ Use:
 - `developer` for the universal implementation contract;
 - `developer-backend` for backend responsibilities;
 - `developer-frontend` for frontend responsibilities;
-- `stacks/js-ts` for TypeScript/Node/package-manager/test/lint knowledge.
+- `stacks/<stack>` for language, ecosystem, package-manager, test, lint, build,
+  and stack-specific verification knowledge.
 
 Future languages add stacks, not new base developer roles.
 
