@@ -32,6 +32,8 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 - `templates/workspace/` - workspace-root entrypoints for multi-repo setups.
 - `templates/artifacts/` - fillable route, run-state, and handoff artifacts.
 - `checklists/requirements.md` - canonical requirements readiness gate.
+- `checklists/method-consistency.md` - self-review gate for method PRs.
+- `checklists/role-development.md` - preparation gate for role-focused PRs.
 - `legacy/` - archived older material. It is not runtime agent knowledge and
   should not be loaded by roles, stacks, pipelines, or adapters.
 
@@ -60,6 +62,33 @@ For a new device, start with `method/bootstrap.md`, then run the manual startup
 flow in `method/manual-run.md`.
 
 To update the method itself, follow `method/maintenance.md`.
+
+## After Clone
+
+If this repository was cloned into a workspace as `agents/`, launch Codex or
+Claude Code from the workspace root and give it this request:
+
+```md
+Set up this workspace to use the canonical agents method from ./agents.
+
+Read agents/method/bootstrap.md and agents/method/materialization.md. Prefer
+workspace symlink mode for Codex and Claude Code. Create or update only the
+workspace entrypoints and adapter links needed for discovery: AGENTS.md,
+CLAUDE.md, .agents/README.md, .agents/skills, .codex/agents, .claude/agents,
+and .claude/skills.
+
+Preserve existing repo-local overlays. Keep concrete local paths, accounts,
+tokens, hosts, and secrets in ignored local files such as .agents/local.*.
+Report what was created, linked, skipped, or needs human input before making
+ambiguous changes.
+```
+
+If the repository has a different checkout name or location, replace `./agents`
+with the local checkout path or record it in `.agents/local.context.md`.
+
+`AGENTS.md` is intentional. Codex reads it as persistent guidance, and
+`CLAUDE.md` can import it for Claude Code. README is for human onboarding;
+`AGENTS.md` is the runtime policy agents should follow.
 
 Do not link runtime behavior to `legacy/`. When an archived idea is still useful,
 rebuild it as new canonical behavior in `method/`, `roles/`, `pipelines/`,

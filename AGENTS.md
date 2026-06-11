@@ -3,6 +3,17 @@
 This repository stores the canonical agent method. Older material under
 `legacy/` is archived and must not be used as runtime agent knowledge.
 
+## Why This File Exists
+
+Keep this file. It is the runtime policy for agents working inside this method
+repository.
+
+- Codex uses `AGENTS.md` as persistent repository guidance.
+- Claude Code reads `CLAUDE.md`, which imports this file with `@AGENTS.md`.
+- README is human onboarding; this file is the agent-facing operating contract.
+- Detailed procedures belong in `method/`; this file keeps the top-level guard
+  rails that must always apply before an agent edits the method.
+
 ## Scope
 
 - Keep content project-agnostic unless it is explicitly an example.
@@ -32,6 +43,9 @@ This repository stores the canonical agent method. Older material under
   a run ledger or ignored local overlay.
 - When adding or changing roles, stacks, frameworks, or pipelines, follow
   `method/maintenance.md` and `method/role-composition.md`.
+- Before publishing method changes, run `checklists/method-consistency.md`.
+- Before deepening, adding, splitting, or rerouting roles, run
+  `checklists/role-development.md`.
 - When changing bootstrap or platform discovery, follow the official platform
   surfaces recorded in `method/materialization.md`; do not invent local
   discovery paths.
