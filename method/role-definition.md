@@ -14,6 +14,7 @@ Each portable role lives at `roles/<role>/ROLE.md`.
 - `outputs`: structured result and artifacts the role returns.
 - `hard_rules`: behavior that must always hold.
 - `references`: role knowledge files to read on demand.
+- `practice_references`: shared reusable practices loaded from `references/`.
 - `platform_notes`: adapter-specific constraints for Codex, Claude Code, and
   future revo.
 
@@ -21,6 +22,10 @@ Each portable role lives at `roles/<role>/ROLE.md`.
 
 `ROLE.md` is the dispatcher. It should stay short. Detailed knowledge lives in
 `roles/<role>/references/`.
+
+Shared practices that apply to multiple roles live in top-level `references/`.
+Role-local references describe duties and handoffs. Shared references describe
+methods such as requirements engineering, ADRs, C4, BPMN, DDD, or test strategy.
 
 Use this split:
 

@@ -14,7 +14,7 @@ pipelines, adapters, and maintenance rules.
 
 ## Roles
 
-`orchestrator`, `knowledge-engineer`, optional `reviewer`.
+`orchestrator`, `knowledge-engineer`, optional `architect`, optional `reviewer`.
 
 ## State
 

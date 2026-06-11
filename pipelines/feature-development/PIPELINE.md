@@ -14,8 +14,8 @@ human gates and autonomous review/fix/watch loops.
 ## Roles
 
 `orchestrator`, `analyst`, `reviewer`, `developer`, `integrator`, `watcher`,
-optional `merger`, optional `deploy-watcher`, optional `qa-backend`,
-optional `qa-frontend`.
+optional `architect`, optional `merger`, optional `deploy-watcher`, optional
+`qa-backend`, optional `qa-frontend`.
 
 ## State
 
@@ -31,16 +31,19 @@ optional `qa-frontend`.
 1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
 2. Orchestrator records approved run parameters.
 3. Analyst produces the task spec and human-action items.
-4. Reviewer consensus reviews the task spec.
-5. Human approves or rejects the task spec.
-6. Developer implements from a fresh base/worktree.
-7. Reviewer consensus reviews code.
-8. Developer fixes blocking findings; repeat up to the configured cap.
-9. Integrator creates or updates the PR.
-10. Watcher polls and classifies CI, Sonar, bot, and human review state.
-11. Developer fixes watcher findings; repeat until ready or blocked.
-12. Human merge gate, unless explicit auto-merge is recorded for this run.
-13. Optional post-merge deploy and QA stages.
+4. Optional architect produces architecture plan or ADR candidate when technical
+   shape is not obvious.
+5. Reviewer consensus reviews the task spec and architecture plan when present.
+6. Human approves or rejects the task spec and significant architecture choices.
+7. Orchestrator prepares the implementation brief.
+8. Developer implements from a fresh base/worktree.
+9. Reviewer consensus reviews code.
+10. Developer fixes blocking findings; repeat up to the configured cap.
+11. Integrator creates or updates the PR.
+12. Watcher polls and classifies CI, Sonar, bot, and human review state.
+13. Developer fixes watcher findings; repeat until ready or blocked.
+14. Human merge gate, unless explicit auto-merge is recorded for this run.
+15. Optional post-merge deploy and QA stages.
 
 ## Human Gates
 

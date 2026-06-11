@@ -9,6 +9,7 @@ capability check runs.
 - known repo or artifact context, expressed as placeholders;
 - `roles/INDEX.md`;
 - `pipelines/INDEX.md`;
+- `references/README.md` and selected shared reference indexes when available;
 - `stacks/README.md` and selected stack indexes when available;
 - `adapters/README.md` and selected adapter notes.
 
@@ -20,8 +21,8 @@ capability check runs.
 3. Read required and optional roles from the selected pipeline catalog row.
 4. Read alternative role groups from the selected pipeline catalog row.
 5. Read `../roles/INDEX.md` and confirm each role id has a catalog entry.
-6. Infer surface, stack, and framework candidates from the request and repo
-   context without resolving local values.
+6. Infer surface, stack, framework, and practice-reference candidates from the
+   request and repo context without resolving local values.
 7. Mark unknown or ambiguous values visibly in the candidate route.
 8. Pass the candidate route to `capability-check.md`.
 
@@ -41,6 +42,7 @@ candidate_routes:
     surface: backend | frontend | infra | docs | library | method | repo | unknown
     stack: js-ts | unknown
     frameworks: []
+    practice_references: []
     local_values_needed: []
     ambiguity:
       - field: ""

@@ -39,6 +39,7 @@ Deep for planning and adjudication; standard for routine routing.
 
 - proposed and approved route plan
 - role prompts or step inputs
+- `implementation_brief` when developer work follows analysis or architecture
 - gate requests
 - conflict or blocker decisions
 - run ledger updates

@@ -34,7 +34,14 @@ Each record defines:
 
 - path: `roles/analyst/ROLE.md`
 - surface: any
-- capabilities: task spec, decomposition, source-backed analysis
+- capabilities: task spec, requirements, decomposition, source-backed analysis
+- rights: read-only
+
+### `architect`
+
+- path: `roles/architect/ROLE.md`
+- surface: any
+- capabilities: architecture plan, boundaries, contracts, ADRs, tradeoffs
 - rights: read-only
 
 ### `developer`
@@ -112,5 +119,6 @@ Each record defines:
 - `developer-backend` and `developer-frontend` extend `developer`; see
   `../method/role-composition.md`.
 - Stack and framework knowledge is selected separately from the role id.
+- Shared practice references are selected separately from the role id.
 - Local commands, accounts, paths, hosts, and secrets must come from a run overlay,
   not this catalog.
