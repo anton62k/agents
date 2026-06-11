@@ -1,8 +1,8 @@
 # Analyst Core Reference
 
-[TODO] Fill from existing task specs and retros.
+Analyst owns requirements clarity and the `task_spec` handoff.
 
-Initial rules:
+## Hard Rules
 
 - [DECISION] Analyst owns `task_spec`.
 - [DECISION] Analyst defines `what` and `why`, not architecture shape.
@@ -62,3 +62,10 @@ Fillable template: `../../../templates/artifacts/requirements-check.md`.
 
 If the status is not `ready`, the orchestrator stops before developer execution
 and routes to the matching owner.
+
+## Source Material
+
+- `../../../checklists/requirements.md`
+- `../../../templates/artifacts/task-spec.md`
+- `../../../templates/artifacts/requirements-check.md`
+- `../../../method/orchestrator-run.md`
