@@ -10,6 +10,9 @@ verification_result:
   plan_ref: ""
   role: developer | integrator | watcher | qa-backend | qa-frontend
   status: passed | failed | partial | blocked | skipped
+  source:
+    repo_verification_contract_status: present | missing | stale | equivalent
+    fallback_used: false
   executed:
     - id: ""
       command: ""
@@ -35,6 +38,8 @@ verification_result:
 
 - Summarize evidence; do not paste full logs unless the consuming repo asks for
   them.
+- Preserve whether the plan came from `VERIFICATION.md`, an equivalent repo
+  contract, or fallback discovery.
 - Failed required gates block completion.
 - Skipped optional configured gates are acceptable only with a concrete reason.
 - A missing credential, project access, or external permission is `needs_human`

@@ -65,6 +65,10 @@ capability requirements are met. Missing credentials, project access, or local
 tooling must be reported as skipped or `needs_human`; do not report such gates
 as passed.
 
+When a `verification_plan` was inferred because `VERIFICATION.md` or an
+equivalent repo-local contract was missing, Developer must preserve that signal
+in `verification_result`. Do not present inferred gates as repo-declared gates.
+
 ## Clarification Gate
 
 Before editing files, inspect the brief and upstream artifacts for unresolved

@@ -1,6 +1,6 @@
 # VERIFICATION.md
 
-This file is the recommended repo-local verification contract for agents.
+This file is the default repo-local verification contract for agents.
 
 It records exact checks for this repository. If this repository already has an
 equivalent document, for example `docs/quality-gates.md`, link to it here and do
@@ -8,13 +8,15 @@ not duplicate the rules.
 
 ## Status
 
-- Recommended: yes
-- Required to exist in every repository: no
+- Default repo-local contract: yes
+- Required to exist in every repository: no, but absence requires fallback
+  discovery and a follow-up to add or link the contract.
 - Existing repo-specific verification docs override this template.
 
 If this file is absent or incomplete, agents should discover checks from
 package/build scripts, CI workflows, static-analysis config, and source layout,
-then report any remaining uncertainty in the verification plan.
+then report any remaining uncertainty in the verification plan with
+`fallback_used: true`.
 
 ## Primary Local Gate
 
@@ -62,6 +64,8 @@ project access must be reported as skipped or `needs_human`, not as passed.
 ## Rules
 
 - Use exact commands from this file when they are present.
+- If this file is missing, infer a temporary plan from repo evidence and add a
+  follow-up to create or link `VERIFICATION.md`.
 - If commands here disagree with current scripts or CI, report the mismatch and
   prefer the repo's current overlay after human approval.
 - Do not store tokens, account names, machine paths, hosts, namespaces, or other

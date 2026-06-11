@@ -35,5 +35,11 @@ Before developer execution, the orchestrator prepares `verification_plan` from
 route capabilities, repo-local quality docs, selected stack references, selected
 tooling references, and upstream risk notes.
 
+`VERIFICATION.md` is the default repo-local verification contract. The
+orchestrator looks for it or a repo-declared equivalent first. If neither exists,
+the orchestrator composes an inferred plan from scripts, CI config,
+static-analysis config, source layout, and selected stack references, then
+records `fallback_used: true` and a follow-up to add the repo-local contract.
+
 Developer and watcher results should be reported through `verification_result`
 or an equivalent run-state field.
