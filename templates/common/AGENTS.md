@@ -2,6 +2,10 @@
 
 This repository uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 
+For multi-repo workspaces, prefer the workspace templates in
+`{{AGENTS_REPO_PATH}}/templates/workspace/` and keep this file only as a thin
+child-repository overlay when agents are launched from inside this repository.
+
 ## Repo Overlay
 
 Repo-local instructions win for concrete commands, paths, release policy,

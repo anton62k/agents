@@ -13,6 +13,10 @@ the reusable method.
 
 Project repos contain context. `anton62k/agents` contains method.
 
+Prefer a workspace-first setup when several repositories are developed together.
+The workspace root contains the agent entrypoints and platform symlinks; child
+repositories contain only repo-specific overlays when they need them.
+
 Use this repository to standardize how agents route work, choose roles, produce
 handoff artifacts, apply gates, and keep platform-specific files reproducible.
 
@@ -25,6 +29,7 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 - `pipelines/` - portable multi-role workflows with gates and handoff contracts.
 - `adapters/` - notes for running the same method in Codex, Claude Code, and revo.
 - `templates/common/` - consuming-repo entrypoint templates.
+- `templates/workspace/` - workspace-root entrypoints for multi-repo setups.
 - `templates/artifacts/` - fillable route, run-state, and handoff artifacts.
 - `checklists/requirements.md` - canonical requirements readiness gate.
 - `legacy/` - archived older material. It is not runtime agent knowledge and
@@ -32,19 +37,27 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 
 ## How To Use
 
-For an existing project, add a small repo-local `AGENTS.md` that points here and
-records only local facts: stack, build runner or package manager, branch policy,
-CI commands, release branch, deployment target, and domain-specific constraints.
-When useful, add `CLAUDE.md`, `REVIEW.md`, `VERIFICATION.md`, and optional
-`REPOSITORY.md` from `templates/common/`. These are recommended entrypoints, not
-a mandatory migration checklist; existing repo docs can serve as the overlay.
+For a multi-repo workspace, start with `templates/workspace/`. Clone this
+repository under the workspace root, materialize platform wrappers once, and use
+symlinks from the workspace root:
+
+- `.agents/skills` for Codex skills;
+- `.codex/agents` for Codex custom agents;
+- `.claude/agents` for Claude Code subagents;
+- `.claude/skills` for Claude Code skills.
+
+For a standalone project, use `templates/common/` as a thinner repo-local
+overlay. In either mode, product repositories record only local facts: stack,
+build runner or package manager, branch policy, CI commands, release branch,
+deployment target, verification requirements, and domain-specific constraints.
+Existing repo docs can serve as the overlay.
 
 For multi-agent work, start with `method/README.md`. Keep role behavior in
 `roles/`, workflow order in `pipelines/`, and local values in ignored env/local
 overlays rather than committed markdown.
 
-For a new device or a new consuming repo, start with `method/bootstrap.md`, then
-run the manual startup flow in `method/manual-run.md`.
+For a new device, start with `method/bootstrap.md`, then run the manual startup
+flow in `method/manual-run.md`.
 
 To update the method itself, follow `method/maintenance.md`.
 
