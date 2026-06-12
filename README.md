@@ -61,6 +61,28 @@ node tools/validate.mjs --build-catalogs
 node tools/validate.mjs
 ```
 
+## Package
+
+The npm package is `@revisium/agent-playbook`. It exists so runtimes can install
+the same manifest, catalogs, method files, roles, pipelines, references, stacks,
+adapters, templates, and checklists from a versioned source.
+
+Before any package change, run:
+
+```sh
+npm run validate
+npm pack --dry-run
+```
+
+The package intentionally excludes `legacy/` and `tools/`. `legacy/` is archived
+source material, and `tools/` is repository maintenance code rather than runtime
+playbook content.
+
+Publishing target: public scoped package with GitHub Actions trusted publishing
+through OIDC. Until trusted publishing is configured and a human explicitly
+approves a release, agents must use dry-run packaging only and must not run a
+real `npm publish`.
+
 ## How To Use
 
 For a multi-repo workspace, start with `templates/workspace/`. Clone this

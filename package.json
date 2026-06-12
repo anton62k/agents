@@ -1,0 +1,32 @@
+{
+  "name": "@revisium/agent-playbook",
+  "version": "0.1.0-alpha.0",
+  "description": "Canonical Revisium agent playbook for roles, pipelines, references, and adapters.",
+  "license": "MIT",
+  "repository": "github:revisium/agent-playbook",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "revo-playbook",
+    "agent-playbook",
+    "revisium"
+  ],
+  "files": [
+    "playbook.json",
+    "catalog/",
+    "method/",
+    "roles/",
+    "pipelines/",
+    "references/",
+    "stacks/",
+    "adapters/",
+    "templates/",
+    "checklists/"
+  ],
+  "scripts": {
+    "validate": "node tools/validate.mjs",
+    "build:catalogs": "node tools/validate.mjs --build-catalogs",
+    "prepack": "npm run validate && npm run build:catalogs && npm run validate"
+  }
+}
