@@ -86,6 +86,10 @@ Before merging, verify that the active account is resolved in run state, and
 that watcher evidence is tied to the same PR reference, head commit, repository,
 and base branch that merger will use.
 
+Use `verification_result.pr_feedback.target` as the watcher-owned identity for
+the PR reference, base ref, head ref, and head SHA. If this target is missing,
+ambiguous, or does not match the intended merge target, readiness is unknown.
+
 Required watcher evidence:
 
 - terminal verdict is `ready`;
