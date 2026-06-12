@@ -34,8 +34,10 @@ the orchestrator composes an inferred plan from scripts, CI config,
 static-analysis config, source layout, and selected stack references, then
 records `fallback_used: true` and a follow-up to add the repo-local contract.
 
-Developer and watcher results should be reported through `verification_result`
-or an equivalent run-state field.
+Developer, integrator, and watcher gate results should be reported through
+`verification_result`. Developer implementation handoff, deploy-watcher
+verification, and QA scenario reports use their role-owned result contracts and
+are stored as separate run-state handoffs.
 
 When static analysis is selected by repo evidence, the plan records provider
 state, local or hosted mode, issue-level access, finding categories, and the

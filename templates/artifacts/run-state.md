@@ -20,6 +20,10 @@ run_state:
     implementation_brief: {}
     verification_plan: {}
     verification_result: {}
+    developer_result: {}
+    deploy_watcher_result: {}
+    qa_backend_result: {}
+    qa_frontend_result: {}
   gates:
     - id: route-approval
       status: open | approved | rejected
@@ -43,6 +47,9 @@ run_state:
 - Store resolved local values only when needed for the current run.
 - Store role handoffs as separate artifacts and reference them from
   `artifacts`.
+- Keep role-specific result schemas with the owning role reference:
+  `developer_result`, `deploy_watcher_result`, `qa_backend_result`, and
+  `qa_frontend_result` are stored here as handoff slots, not redefined here.
 - Keep secrets out of this artifact unless the consuming repo explicitly uses an
   ignored local run-state location.
 - Keep adapter-specific metadata outside the canonical fields or in a wrapper.

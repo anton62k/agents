@@ -196,6 +196,10 @@ orchestrator_run:
     implementation_brief: {} # see roles/developer/references/core.md
     verification_plan: {} # see references/quality/verification.md
     verification_result: {} # see references/quality/verification.md
+    developer_result: {} # see roles/developer/references/core.md
+    deploy_watcher_result: {} # see roles/deploy-watcher/references/core.md
+    qa_backend_result: {} # see roles/qa-backend/references/core.md
+    qa_frontend_result: {} # see roles/qa-frontend/references/core.md
   gates: []
   artifacts: []
   blockers: []

@@ -20,7 +20,8 @@ These templates are fillable copies of canonical run artifacts.
 - `implementation-brief.md` - compact developer handoff.
 - `verification-plan.md` - generic local, conditional, optional, and remote gate
   plan.
-- `verification-result.md` - developer or watcher evidence from executed gates.
+- `verification-result.md` - developer, integrator, or watcher evidence from
+  executed gates and PR feedback.
 
 ## Canonical Sources
 
@@ -34,6 +35,9 @@ The templates mirror schemas from these source files:
 - `../../checklists/requirements.md`;
 - `../../roles/architect/references/core.md`;
 - `../../roles/developer/references/core.md`;
+- `../../roles/deploy-watcher/references/core.md`;
+- `../../roles/qa-backend/references/core.md`;
+- `../../roles/qa-frontend/references/core.md`;
 - `../../references/quality/verification.md`.
 
 If a template conflicts with a canonical schema, the canonical schema wins.
