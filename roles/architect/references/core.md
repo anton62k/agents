@@ -20,6 +20,12 @@ implementation.
   tradeoff-free.
 - [DECISION] Architect produces constraints and implementation slices, not
   exhaustive code instructions.
+- [DECISION] Architect applies
+  `../../../references/quality/minimal-sufficient-code.md` to avoid
+  speculative boundaries, broad platform cleanup, and over-engineered handoffs.
+- [DECISION] Architect does not own idiomatic local code form. Leave function,
+  class, helper, and framework-expression details to developer and reviewer
+  unless they change boundaries or contracts.
 - [DECISION] Use `../../../method/escalation.md` for clarification markers and
   route stop actions.
 - [DECISION] If a decision is architecturally significant, return an ADR
@@ -243,4 +249,5 @@ from current sources.
 - `../../../method/orchestrator-run.md`
 - `../../../method/role-composition.md`
 - `../../../references/architecture/README.md`
+- `../../../references/quality/minimal-sufficient-code.md`
 - `../../../references/quality/verification.md`

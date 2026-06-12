@@ -82,6 +82,22 @@ Prisma should not own:
   the approved boundary. Preserve enough evidence for debugging without leaking
   persistence details through public APIs.
 
+## Idiomatic Form
+
+- [DECISION] Query shapes should be named or localized when `where`, `include`,
+  `select`, ordering, pagination, or relation traversal carries business or API
+  meaning.
+- [DECISION] Prefer generated Prisma types at the persistence boundary and
+  narrower explicit types at public boundaries that should hide database shape.
+- [DECISION] Keep Prisma calls in command, query, use-case, or data-access units
+  according to the repo pattern. Do not add a repository layer only to make code
+  look cleaner.
+- [DECISION] Use repo-approved pagination, transaction, and error-mapping
+  helpers instead of inventing parallel query conventions.
+- [DECISION] Keep migrations, schema, generated client expectations, and tests
+  visually synchronized in the diff. A schema-only change that hides required
+  migration or test updates is not idiomatic Prisma work.
+
 ## Verification Signals
 
 Prisma changes commonly require `tests` with real database behavior,

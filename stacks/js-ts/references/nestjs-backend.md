@@ -60,6 +60,23 @@ Nest application providers should own:
 - [DECISION] Keep generated DTOs, validation, and serialization in sync with the
   public API contract. API contract changes require corresponding tests.
 
+## Idiomatic Form
+
+- [DECISION] Modules should present a small public API through exports. Keep
+  internal providers private unless they are an approved module contract.
+- [DECISION] Controllers, resolvers, and gateways should look like transport
+  adapters: decorator metadata, request mapping, boundary call, response mapping.
+  If they read like use cases, move behavior into the approved provider.
+- [DECISION] Provider names and injection tokens should reflect their
+  responsibility at the call site. Avoid generic `Manager`, `Helper`, or
+  `Service` names when a narrower module concept exists.
+- [DECISION] Do not let decorators, framework exceptions, request objects, or
+  GraphQL/REST DTOs leak into domain policy unless the repo intentionally makes
+  that layer framework-bound.
+- [DECISION] Keep module test setup idiomatic: use the repo Nest test kit or
+  `TestingModule` pattern instead of ad hoc object graphs when Nest behavior or
+  DI is under test.
+
 ## Verification Signals
 
 NestJS changes commonly require `tests` for module or API behavior,

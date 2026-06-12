@@ -73,6 +73,21 @@ MobX units should not become:
   store should not mix transport mapping, UI rendering details, and domain
   policy in one abstraction.
 
+## Idiomatic Form
+
+- [DECISION] Observable fields should represent state owned by the model or
+  store. Do not make a store an observable bag for unrelated screen helpers.
+- [DECISION] Actions should be named as state transitions or user/application
+  operations. Computed values should be named as derived facts. Reactions should
+  name the external synchronization they perform.
+- [DECISION] Prefer computed derivation over duplicated observable state when
+  the value can be derived from existing observables.
+- [DECISION] Keep observable reads in `observer` components close to render, or
+  expose render-ready values through the selected view model. Hidden observable
+  reads in generic helpers make reactivity harder to reason about.
+- [DECISION] Lifecycle methods should be symmetrical: setup/init work has an
+  obvious dispose/stop owner when resources are created.
+
 ## Verification Signals
 
 When MobX is selected, verification may need `tests` for actions, computed

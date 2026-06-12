@@ -64,6 +64,11 @@ renderer-local business logic for that surface.
 
 - Always load:
   - `../../../references/quality/readable-code.md`
+  - `../../../references/quality/minimal-sufficient-code.md`
+  - `../../../references/quality/idiomatic-code.md`
+
+- Load when the selected stack is `js-ts`:
+  - `../../../stacks/js-ts/references/idiomatic-js-ts.md`
 
 - Load when selected by route evidence or repo overlay:
   - `../../../stacks/js-ts/references/react-ui-boundary.md`

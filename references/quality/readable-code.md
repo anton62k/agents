@@ -7,6 +7,11 @@ simulate unrelated layers at the same time.
 This reference is stack-neutral. Surface and stack references may add stricter
 rules, but they must not weaken these rules.
 
+Related quality lenses:
+
+- `minimal-sufficient-code.md` owns code-volume and abstraction-surface checks.
+- `idiomatic-code.md` owns stack-native and locally consistent code-form checks.
+
 ## Hard Rules
 
 - [DECISION] Write code for the reader first. Prefer explicit names, narrow

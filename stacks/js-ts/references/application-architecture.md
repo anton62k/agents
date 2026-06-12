@@ -13,6 +13,9 @@ Use evidence in this order:
 3. Package scripts, generated-code rules, and framework config.
 4. This stack reference.
 
+Load `idiomatic-js-ts.md` with this reference for plain JS/TS code shape,
+functions, classes, modules, async flow, and type-level fit.
+
 ## Layer Boundaries
 
 Common JS/TS layers:

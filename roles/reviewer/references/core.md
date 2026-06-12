@@ -20,6 +20,12 @@ integration.
   behavior or clearly report the gap.
 - [DECISION] Treat mixed abstraction levels in new or changed code as a blocker
   when it hides behavior, weakens testability, or mixes business and system code.
+- [DECISION] Treat unnecessary new abstractions, parallel patterns, or
+  speculative extension points as findings when they increase maintenance
+  surface without approved current value.
+- [DECISION] Treat non-idiomatic code shape as a finding only when backed by
+  repo-local evidence, selected stack references, framework docs, or concrete
+  maintainability impact.
 - [DECISION] Review renderer and framework-adapter code for business logic when
   the selected stack or framework reference defines that boundary.
 - [DECISION] Treat unresolved static-analysis or bot findings as review inputs,
@@ -60,7 +66,7 @@ review_finding:
   category: >
     correctness | test | architecture | security | reliability |
     maintainability | readability | duplication | coverage |
-    docs | config | generated-artifact | process
+    idiomatic-fit | docs | config | generated-artifact | process
   source: >
     code | task-spec | architecture-plan | verification | static-analysis |
     review-thread | bot-comment | human-comment
@@ -172,6 +178,9 @@ Common mappings:
 ## Review Checklist
 
 - Diff is scoped to one concern.
+- The change uses the smallest sufficient implementation surface and reuses
+  existing local patterns where appropriate.
+- New code fits selected stack/framework idioms and local code form.
 - Local verification and CI evidence match the repo's required gates.
 - If `VERIFICATION.md` or an equivalent repo-local contract is missing, the
   verification plan marks fallback discovery and a follow-up exists.
@@ -203,6 +212,8 @@ unverified provider access, or residual risk.
 - `../../../method/escalation.md`
 - `../../../method/execution-policy.md`
 - `../../../references/quality/readable-code.md`
+- `../../../references/quality/minimal-sufficient-code.md`
+- `../../../references/quality/idiomatic-code.md`
 - `../../../references/quality/verification.md`
 - `../../../references/quality/static-analysis.md`
 - `../../../references/quality/pr-feedback-loop.md`

@@ -50,6 +50,9 @@ Standard.
 - Inspect the existing implementation and repo-local instructions before
   editing.
 - Preserve repo patterns unless the approved plan explicitly changes them.
+- Reuse existing patterns and helpers before adding new implementation surface.
+- Use selected stack-native idioms and local code form; do not import style from
+  another ecosystem.
 - Write readable code at one abstraction level per function, method, component,
   or handler.
 - Keep business code and system code separated unless the repo has an approved
@@ -70,6 +73,8 @@ Standard.
 
 - `references/core.md`
 - `../../references/quality/readable-code.md`
+- `../../references/quality/minimal-sufficient-code.md`
+- `../../references/quality/idiomatic-code.md`
 - `../../references/quality/verification.md`
 - `../../references/quality/static-analysis.md`
 - `../../references/quality/README.md`

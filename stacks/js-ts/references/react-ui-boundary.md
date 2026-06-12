@@ -73,6 +73,27 @@ React components should not own:
 - [DECISION] Interactive UI must preserve semantic controls, labels, visible
   focus, keyboard navigation, contrast, and common-viewport text fit.
 
+## Idiomatic Form
+
+- [DECISION] Components should read as render functions over a small, explicit
+  view contract. If a component needs many derived values before returning JSX,
+  move that derivation to the selected view model, store, loader, selector, or
+  pure utility.
+- [DECISION] Event props and local handlers should name user intent, for example
+  `onSubmit`, `onClose`, `selectItem`, or `openDetails`, not framework mechanics
+  or vague work such as `handleData`.
+- [DECISION] Keep hooks near React lifecycle concerns. If a hook reads like a
+  use case, domain policy, transport mapper, or validation engine, move that
+  behavior behind a non-React boundary.
+- [DECISION] Keep JSX visually shallow enough to scan. Extract a component,
+  render helper, or data-ready child when nested conditionals, mapping, and
+  inline formatting obscure the UI structure.
+- [DECISION] Do not pass broad stores, services, generated clients, or raw DTOs
+  through component trees when a render-ready prop contract would express the
+  same screen state with less coupling. A narrow view model or presenter object
+  is acceptable when the selected architecture defines it as the render-ready
+  contract.
+
 ## Verification Signals
 
 When React is selected, frontend verification may need `tests`,
