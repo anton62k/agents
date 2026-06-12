@@ -89,14 +89,17 @@ phase order still belongs to `method/orchestrator-run.md`.
   bootstrap behavior.
 - Prefer `bugfix` for a concrete failing behavior, regression, CI/review defect,
   or QA finding whose desired outcome is already known.
+- Prefer `local-change` for a small implementation, docs, config, or test
+  change when requirements, architecture boundaries, and verification
+  expectations are already clear.
 - Prefer `feature-development` when the work needs requirements definition,
   architecture choices, implementation, PR publication, and watcher feedback in
   one route.
 - Prefer `post-merge-qa` only after merge or deployment when the primary
   question is runtime evidence, not implementation.
-- If a small local implementation can be done safely by one role but no
-  cataloged pipeline represents that route, stop with `method-development` to
-  add or approve the missing route instead of hiding the mismatch.
+- If a small local implementation does not fit `local-change`, stop with
+  `method-development` to add or approve the missing route instead of hiding the
+  mismatch.
 - Do not let model availability, missing local tooling, or a desire to reduce
   review cost change the route silently. Surface the tradeoff in route approval.
 
