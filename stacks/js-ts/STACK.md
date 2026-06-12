@@ -51,6 +51,7 @@ framework-specific evidence, repo overlay, or human approval.
 Core references:
 
 - `references/typescript.md`
+- `references/idiomatic-js-ts.md`
 - `references/package-managers.md`
 - `references/testing.md`
 - `references/lint-format.md`

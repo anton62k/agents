@@ -67,4 +67,6 @@ Standard; deep for state architecture, data flow, or high-risk UX workflows.
 
 - `references/core.md`
 - `../../references/quality/readable-code.md`
+- `../../references/quality/minimal-sufficient-code.md`
+- `../../references/quality/idiomatic-code.md`
 - `../../references/quality/verification.md`

@@ -84,6 +84,21 @@ Utility should own:
   requires choosing a new ownership model, return `needs_architect` instead of
   creating a precedent.
 
+## Idiomatic Form
+
+- [DECISION] View models should expose render-ready state and named actions,
+  not raw transport objects that force JSX to reconstruct business meaning.
+- [DECISION] Keep action names in user or workflow language, for example
+  `submit`, `retryLoad`, `selectCompany`, or `applyFilters`.
+- [DECISION] Keep pure formatting and predicates outside the view model when
+  they are reusable and not tied to screen state. Keep one-off screen behavior in
+  the view model instead of creating premature shared utilities.
+- [DECISION] Constructor or factory shape should match local lifecycle style.
+  Do not mix dependency composition, data loading, and first render derivation
+  unless the repo pattern explicitly does so.
+- [DECISION] If a view model becomes a large mixed helper bag, split by
+  responsibility or return `needs_architect` when ownership is unclear.
+
 ## Verification Signals
 
 When MVVM is selected, verification may need targeted `tests` for derived state,

@@ -62,4 +62,6 @@ Standard; deep for high-risk data, auth, migration, or workflow changes.
 
 - `references/core.md`
 - `../../references/quality/readable-code.md`
+- `../../references/quality/minimal-sufficient-code.md`
+- `../../references/quality/idiomatic-code.md`
 - `../../references/quality/verification.md`

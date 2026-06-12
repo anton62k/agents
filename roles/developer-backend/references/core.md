@@ -76,9 +76,12 @@ for the risk being tested.
 
 - Always load:
   - `../../../references/quality/readable-code.md`
+  - `../../../references/quality/minimal-sufficient-code.md`
+  - `../../../references/quality/idiomatic-code.md`
 
 - Load when the selected stack is `js-ts`:
   - `../../../stacks/js-ts/references/application-architecture.md`
+  - `../../../stacks/js-ts/references/idiomatic-js-ts.md`
   - `../../../stacks/js-ts/references/backend-testing.md`
 
 - Load when selected by route evidence or repo overlay:

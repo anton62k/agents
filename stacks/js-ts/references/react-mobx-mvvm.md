@@ -19,6 +19,8 @@ granular references below.
    roots.
 5. `frontend-fsd.md` when Feature-Sliced Design is selected by repo docs,
    structure checks, config, overlay, or human approval.
+6. `idiomatic-js-ts.md` for plain TypeScript functions, classes, modules,
+   async flow, and type-level code form.
 
 ## Route Responsibilities
 
@@ -61,6 +63,9 @@ granular references below.
 - [DECISION] Keep user-visible behavior, state ownership, data access, and
   structure boundaries testable outside JSX whenever the repo architecture
   supports it.
+- [DECISION] Preserve idiomatic form at each selected boundary: React renders,
+  view models present screen behavior, MobX owns observable consistency, DI owns
+  object graph assembly, and plain TypeScript helpers stay narrow and named.
 
 ## Verification Signals
 

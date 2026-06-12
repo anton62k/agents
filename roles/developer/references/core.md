@@ -14,6 +14,12 @@ constraints.
   architecture work preceded implementation.
 - [DECISION] Developer applies
   `../../../references/quality/readable-code.md` for all code-producing work.
+- [DECISION] Developer applies
+  `../../../references/quality/minimal-sufficient-code.md` to avoid bloated
+  implementation surfaces and speculative abstractions.
+- [DECISION] Developer applies
+  `../../../references/quality/idiomatic-code.md` and selected stack references
+  so new code fits the language, framework, and local codebase.
 - [DECISION] Developer consumes `verification_plan` when provided and returns
   `verification_result` with commands run, skipped gates, blockers, and residual
   risk.
@@ -55,14 +61,17 @@ Use this sequence for code-producing work:
    stack or practice references.
 4. Identify the smallest implementation slice that satisfies the approved
    behavior or finding.
-5. Edit source of truth first; regenerate derived files only through approved
+5. Reuse existing local patterns, helpers, test kits, and stack-native idioms
+   before adding new abstractions.
+6. Edit source of truth first; regenerate derived files only through approved
    commands.
-6. Add or update behavior tests where risk, business behavior, persistence,
+7. Add or update behavior tests where risk, business behavior, persistence,
    contracts, or user-visible behavior changed.
-7. Run required and applicable conditional gates from the verification plan.
-8. Self-review the working tree diff for scope creep, abstraction mixing,
-   missing tests, stale generated artifacts, and local-style drift.
-9. Return a verification result and the next route action.
+8. Run required and applicable conditional gates from the verification plan.
+9. Self-review the working tree diff for code bloat, abstraction mixing,
+   missing tests, stale generated artifacts, idiomatic drift, and local-style
+   drift.
+10. Return a verification result and the next route action.
 
 If any step reveals that the approved plan does not match repo reality, stop and
 route to the smallest correct owner instead of broadening the task locally.
@@ -144,6 +153,8 @@ Allowed local refactoring examples:
 - moving renderer or transport logic into an existing approved state, service,
   use-case, or adapter boundary;
 - removing duplication introduced by the current change;
+- replacing a local custom helper with an existing repo-approved helper when it
+  reduces surface area and does not widen scope;
 - aligning a touched test with the repo's current test helper pattern.
 
 Not allowed without a separate approved task:
@@ -204,6 +215,8 @@ state instead of guessing or widening scope.
 - `../../../templates/artifacts/verification-plan.md`
 - `../../../templates/artifacts/verification-result.md`
 - `../../../references/quality/readable-code.md`
+- `../../../references/quality/minimal-sufficient-code.md`
+- `../../../references/quality/idiomatic-code.md`
 - `../../../references/quality/verification.md`
 - `../../../references/quality/static-analysis.md`
 - `../../../references/quality/pr-feedback-loop.md`

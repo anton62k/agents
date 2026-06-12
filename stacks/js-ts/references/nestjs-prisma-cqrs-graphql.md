@@ -19,6 +19,8 @@ granular references below.
    GraphQL tests are present.
 7. `backend-integrations-jobs.md` when queues, workers, jobs, webhooks, or
    external integrations are involved.
+8. `idiomatic-js-ts.md` for plain TypeScript functions, classes, modules,
+   async flow, and type-level code form.
 
 ## Route Evidence
 
@@ -63,6 +65,10 @@ change ownership.
   query for data returned after writes.
 - [DECISION] Real database tests are required when the change depends on Prisma,
   transactions, generated SQL, migrations, constraints, JSON, or pagination.
+- [DECISION] Preserve idiomatic form at each selected boundary: transport maps,
+  API service exposes the module surface, commands and queries read as
+  application operations, Prisma code stays at the persistence boundary, and
+  plain TypeScript helpers stay narrow and named.
 
 ## Verification Signals
 

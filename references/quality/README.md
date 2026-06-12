@@ -9,12 +9,17 @@ Quality references help agents decide whether a proposed change is safe enough.
 - verification gates;
 - residual risk reporting;
 - non-functional quality checks;
-- readable code and maintainability boundaries.
+- readable code and maintainability boundaries;
+- minimal sufficient code and idiomatic code form.
 
 ## Core References
 
 - `readable-code.md` - stack-neutral readability, abstraction-level, SOLID, and
   business/system boundary rules.
+- `minimal-sufficient-code.md` - smallest justified implementation surface,
+  reuse order, and anti-bloat review rules.
+- `idiomatic-code.md` - stack-native, locally consistent code form without
+  subjective style fights.
 - `verification.md` - generic verification planning and result contract.
 - `static-analysis.md` - provider-backed findings, local/hosted modes, and
   issue-level triage rules.

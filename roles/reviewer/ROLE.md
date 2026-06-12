@@ -59,6 +59,8 @@ Deep.
 - Calibrate severity to actual gate and product risk.
 - Keep findings actionable and tied to source evidence, gate output, or approved
   artifacts.
+- Review whether the implementation surface is minimal, justified, and aligned
+  with selected stack idioms.
 - Do not change code, stage files, publish branches, poll PR state as watcher,
   or make human approval decisions.
 - Do not mark false positive or accepted risk without narrow evidence.
@@ -71,6 +73,8 @@ Deep.
 - `../../method/escalation.md`
 - `../../method/execution-policy.md`
 - `../../references/quality/readable-code.md`
+- `../../references/quality/minimal-sufficient-code.md`
+- `../../references/quality/idiomatic-code.md`
 - `../../references/quality/verification.md`
 - `../../references/quality/static-analysis.md`
 - `../../references/quality/pr-feedback-loop.md`

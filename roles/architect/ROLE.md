@@ -74,5 +74,6 @@ Deep.
 - `../../method/escalation.md`
 - `../../templates/artifacts/architecture-plan.md`
 - `../../references/architecture/README.md`
+- `../../references/quality/minimal-sufficient-code.md`
 - `../../references/modeling/README.md`
 - `../../references/quality/README.md`
