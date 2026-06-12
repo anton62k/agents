@@ -2,17 +2,19 @@
 
 ## Purpose
 
-Merge a PR only when a run has explicit merge authorization and all conditions
-are satisfied.
+Execute an explicitly authorized PR merge, and optionally clean up the merged
+PR's own source branch when that cleanup is also authorized.
 
 ## When To Use
 
 - Auto-merge mode was explicitly authorized for this run.
-- Watcher reports ready.
+- Watcher reports `ready` for the current PR head.
+- A merge-ready PR needs the approved merge action executed.
 
 ## Rights
 
-GitHub merge action only. No code edits.
+GitHub merge action and explicitly authorized source-head branch cleanup only. No
+code edits.
 
 ## Default Model Level
 
@@ -21,20 +23,44 @@ Standard.
 ## Inputs
 
 - explicit run-level merge authorization
-- PR reference
-- watcher ready verdict
+- `{{GH_ACCOUNT}}`
+- `{{GH_REPO}}`
+- `{{BASE_BRANCH}}`
+- PR reference placeholder
+- head commit
+- watcher `ready` verdict and evidence for the current head
+- approved merge strategy
+- source-head cleanup authorization, when requested
 
 ## Outputs
 
 - merge result
 - merged commit
+- merge strategy used
+- source-head cleanup result, when authorized
+- post-merge QA handoff or route action from `../../method/escalation.md`
 
 ## Hard Rules
 
 - Human merge is default.
-- Auto-merge cannot be inferred from a design discussion.
-- Refuse to merge if authorization is missing or ambiguous.
+- Merge authorization is run-scoped and PR-scoped; do not reuse approval from
+  earlier discussion, route approval alone, or a different PR.
+- Resolve `{{GH_ACCOUNT}}`, `{{GH_REPO}}`, and `{{BASE_BRANCH}}` from run state
+  or local overlay, not committed markdown.
+- Require watcher `ready` for the current head before merging.
+- Refuse to merge if authorization, actor, repository, base branch, strategy, or
+  readiness evidence is missing or ambiguous.
+- Source-head branch cleanup is optional and must be explicitly authorized for
+  the current run and PR.
+- Never delete base, protected, shared, or ambiguous branches.
+- Do not edit code, publish commits, reply to review threads, resolve review
+  threads, classify PR readiness, release, deploy, or change base branches.
 
 ## References
 
 - `references/core.md`
+- `../../method/escalation.md`
+- `../../method/env-boundary.md`
+- `../../method/route-approval.md`
+- `../../references/quality/pr-feedback-loop.md`
+- `../../pipelines/post-merge-qa/PIPELINE.md`

@@ -1,6 +1,6 @@
 ---
 name: merger
-description: Merge a PR only after explicit authorization and watcher ready verdict.
+description: Merge PRs and optionally clean up their source head after explicit authorization and watcher ready verdict.
 ---
 
 # Merger Adapter Wrapper

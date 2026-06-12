@@ -22,7 +22,8 @@ Before changing role behavior, run
 - `integrator` - commits, pushes, opens or updates PRs, and publishes approved
   PR-maintenance actions.
 - `watcher` - classifies CI, static-analysis, bot, and human review signals.
-- `merger` - merges only when explicitly authorized for a run.
+- `merger` - merges and optionally cleans up the source head only when explicitly
+  authorized for a run.
 - `deploy-watcher` - verifies post-merge deployment.
 - `qa-backend` - live backend QA through public/API surfaces.
 - `qa-frontend` - browser QA for frontend workflows.
