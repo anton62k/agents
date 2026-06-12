@@ -12,11 +12,27 @@ analysts, and integrators.
 - TypeScript libraries.
 - Repos using npm, pnpm, or compatible package-manager scripts.
 
+## Route Evidence
+
+Select this stack when discovery finds one or more of these repo-local signals:
+
+- JavaScript or TypeScript package metadata.
+- JavaScript, TypeScript, JSX, or TSX source files.
+- TypeScript, bundler, test-runner, lint, format, or code-generation config.
+- Workspace metadata that points to JavaScript or TypeScript packages.
+- CI jobs or repo docs that run JavaScript or TypeScript package scripts.
+
+This stack alone does not select React, NestJS, Prisma, GraphQL, FSD, MobX,
+MVVM, or any other framework reference. Load those references only from
+framework-specific evidence, repo overlay, or human approval.
+
 ## Inputs
 
 - package manager from repo overlay.
-- script names from repo overlay.
-- TypeScript, lint, format, test, build commands as placeholders.
+- selected package or workspace scope from repo evidence.
+- script names from repo overlay or package metadata.
+- TypeScript, lint or format, test, build, package, structure, and
+  static-analysis candidates as placeholders.
 
 ## Hard Rules
 
@@ -26,6 +42,9 @@ analysts, and integrators.
 - Keep package-manager migration rules in references, not role dispatchers.
 - Do not encode concrete Node versions in this stack unless the rule is
   ecosystem-wide; repo Node versions belong to overlays.
+- [DECISION] Translate JS/TS checks into the generic verification capability
+  fields from the canonical route plan. Do not add stack-specific capability
+  names to route planning.
 
 ## References
 
