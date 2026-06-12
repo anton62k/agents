@@ -11,6 +11,12 @@ GraphQL, REST, MCP, CLI, webhooks, or workers.
 3. Protocol-specific references selected by the route.
 4. This reference.
 
+## Route Evidence
+
+Select this reference when a backend surface exposes protocol entrypoints,
+generated API contracts, controllers, resolvers, tools, webhooks, workers,
+module API services, or compatibility-sensitive public behavior.
+
 ## Responsibilities
 
 Transport layer should own:
@@ -46,8 +52,21 @@ Domain or application units should own:
 - [DECISION] A module may support several protocols, but they should converge on
   the same application API service unless protocol behavior intentionally
   differs.
+- [DECISION] Generated DTOs, schemas, clients, or protocol contracts are public
+  API evidence. Keep them synchronized with the application boundary and review
+  them with the code that changed the contract.
+- [DECISION] Transport-specific auth, validation, serialization, and error
+  mapping should be explicit at the protocol boundary. Do not let generic
+  helpers hide compatibility behavior.
 - [DECISION] Breaking contract changes, auth changes, and compatibility changes
   require human approval.
+
+## Verification Signals
+
+API-layer changes commonly require `tests` for contract behavior,
+`architecture_or_structure` for layer boundaries, and `build_or_package` when
+generated contracts or clients must stay in sync. Exact gates are owned by
+`verification.md`.
 
 ## Stop Conditions
 

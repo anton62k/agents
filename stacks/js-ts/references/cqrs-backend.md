@@ -13,6 +13,12 @@ repo-specific command/query pattern.
    - `https://docs.nestjs.com/recipes/cqrs`
 4. This reference.
 
+## Route Evidence
+
+Select this reference when repo evidence shows commands, queries, handlers,
+buses, command/query type files, read/write model separation, API-service
+facades over commands and queries, or route approval selecting CQRS.
+
 ## Responsibilities
 
 Command should own:
@@ -50,12 +56,24 @@ API service should own:
 - [DECISION] Put command and query input/return types in explicit type files near
   the command/query. Reuse Prisma generated types when they are the correct data
   boundary; otherwise define narrower public types.
+- [DECISION] Command and query types are contracts for the application boundary.
+  Do not let transport DTOs or raw persistence shapes become those contracts by
+  accident.
 - [DECISION] Keep handlers readable as one use case or read model. Split raw
   query details, domain policy, transport mapping, and integration calls when
   abstraction levels mix.
 - [DECISION] Do not use commands for read-only work or queries for writes.
+- [DECISION] Commands that enqueue work, publish events, or call integrations
+  must make idempotency and transaction ordering explicit.
 - [DECISION] Events, sagas, and process managers require idempotency, retry, and
   ordering tests when they cross process or transaction boundaries.
+
+## Verification Signals
+
+CQRS changes commonly require `tests` for command/query behavior and
+`architecture_or_structure` for boundary, type, and handler ownership. Generated
+or package-visible contracts may require `build_or_package` through
+`verification.md`.
 
 ## Stop Conditions
 

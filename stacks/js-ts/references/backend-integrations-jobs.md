@@ -12,6 +12,12 @@ integration boundaries.
 3. Selected framework references.
 4. This reference.
 
+## Route Evidence
+
+Select this reference when repo evidence shows workers, queues, scheduled jobs,
+webhooks, external API clients, outbox or inbox tables, cache invalidation,
+notifications, retries, or integration-specific observability.
+
 ## Responsibilities
 
 Integration boundary should own:
@@ -40,8 +46,21 @@ Application layer should own:
 - [DECISION] Queue and worker handlers should call application API services,
   commands, or use cases. They should not duplicate transport, persistence, or
   domain policy from API handlers.
+- [DECISION] When a database write and async delivery must be coordinated,
+  choose an approved durable handoff pattern such as outbox, inbox, or
+  repo-specific job scheduling. Do not rely on implicit ordering without naming
+  the failure mode.
+- [DECISION] Integration adapters should separate client/protocol mapping from
+  application decisions. Business code should not know low-level retry or
+  serialization mechanics unless they are part of the product rule.
 - [DECISION] Observability is part of the contract for long-running or async
   work: log enough context to debug without leaking secrets.
+
+## Verification Signals
+
+Integration and job changes commonly require `tests` for idempotency, retry,
+partial failure, persistence coordination, and serialization. Boundary checks
+map to `architecture_or_structure` through `verification.md`.
 
 ## Stop Conditions
 

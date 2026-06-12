@@ -15,6 +15,12 @@ metadata, route approval, or overlay config.
    - `https://docs.nestjs.com/graphql/quick-start`
 4. This reference.
 
+## Route Evidence
+
+Select this reference when repo evidence shows GraphQL schema files, resolvers,
+queries, mutations, subscriptions, connection types, generated GraphQL clients,
+GraphQL codegen, or route approval selecting GraphQL.
+
 ## Responsibilities
 
 GraphQL layer should own:
@@ -62,8 +68,21 @@ GraphQL layer should not own:
 - [DECISION] Field resolvers should be explicit about auth, batching, and N+1
   risk. Add loader or batched query boundaries when repeated per-field access
   would be expensive.
+- [DECISION] Nullability is a public contract. Do not change nullable vs
+  non-null behavior without matching resolver behavior, generated artifacts,
+  tests, and compatibility review.
+- [DECISION] GraphQL error mapping should preserve the public error contract
+  while keeping internal persistence and infrastructure details out of the
+  response.
 - [DECISION] Keep generated GraphQL clients and schema artifacts in sync with
   API changes through repo-approved scripts.
+
+## Verification Signals
+
+GraphQL changes commonly require `tests` for schema, resolver, pagination, auth,
+nullability, and error behavior; `build_or_package` for schema/codegen output;
+and `architecture_or_structure` for resolver/API-service boundaries through
+`verification.md`.
 
 ## Stop Conditions
 
