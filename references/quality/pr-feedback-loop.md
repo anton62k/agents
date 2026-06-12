@@ -37,7 +37,7 @@ status, or instructions to wait before retrying.
 
 - `ready`: required checks passed, no unresolved blocking review threads, no
   unresolved required provider findings, review decision does not block, and no
-  waiting provider state is active.
+  required waiting provider state is active.
 - `needs-work`: at least one valid actionable finding needs code, tests, docs,
   generated-artifact source, config, or verification changes.
 - `needs-reviewer`: a finding needs adversarial judgment before coding, for
@@ -48,6 +48,15 @@ status, or instructions to wait before retrying.
   explicitly instruct the agent to wait until a stated time.
 
 Do not return "monitoring started" as a terminal result.
+
+## Current Head Contract
+
+Each watcher verdict applies only to the observed PR reference, base ref, head
+ref, and head SHA. Store those values in `pr_feedback.target`.
+
+If a new commit is pushed, the base changes, the PR target changes, or the
+repository identity is ambiguous, the previous watcher verdict is stale. Route
+back to watcher before merge instead of reusing old readiness evidence.
 
 ## Queue Item Schema
 
@@ -100,10 +109,13 @@ Rules:
 - Do not route provider waiting states to Developer.
 - Do not post a top-level "waiting" comment back to the PR.
 - Recheck after `resume_after` when the run policy allows waiting.
-- Return `needs_human` when the provider requires account, billing, plan,
+- Return `needs_human` when a required provider needs account, billing, plan,
   permission, or manual re-run action that the agent cannot perform.
 - Return `needs_human` when the wait exceeds the run's approved time budget or
   blocks a required merge/deploy decision.
+- When the provider is optional for the current route and repo policy allows
+  progress without it, record the waiting or unavailable provider state as
+  residual risk instead of blocking the route.
 
 If a provider has both waiting state and actionable threads or failed checks,
 preserve both. The next route is the most blocking actionable state unless the

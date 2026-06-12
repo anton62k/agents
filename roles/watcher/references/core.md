@@ -86,6 +86,8 @@ Watcher fills it with:
 - `role: watcher`;
 - `remote` entries for observed provider/check status;
 - `static_analysis` entries when hosted, CI, or PR-decoration evidence exists;
+- `pr_feedback.target` with the observed PR reference, base ref, head ref, and
+  head SHA;
 - `pr_feedback.verdict`;
 - `pr_feedback.review_decision`;
 - `pr_feedback.required_checks`;
@@ -98,6 +100,10 @@ Do not create a separate `watcher_cycle` or role-local artifact schema. If the
 template is missing a required field, return `needs_method_materialization`
 through the orchestrator instead of inventing a new contract in the role.
 
+Watcher verdicts are head-scoped. If the PR head, base, target repository, or
+PR reference changes after a watcher cycle, the previous verdict is stale and a
+new watcher cycle is required before merger consumes readiness evidence.
+
 ## Verdict To Route Action
 
 Terminal verdicts belong to `../../../references/quality/pr-feedback-loop.md`.
@@ -109,9 +115,14 @@ Route actions belong to `../../../method/escalation.md`.
 - `needs-human` maps to `needs_human`.
 - `waiting` maps to `waiting`.
 
-Use `needs_human` instead of `waiting` when the remote state requires account,
-billing, plan, permission, approval, security acceptance, or a wait longer than
-the approved run budget.
+Use `needs_human` instead of `waiting` when required remote evidence needs
+account, billing, plan, permission, approval, security acceptance, or a wait
+longer than the approved run budget.
+
+If a provider is optional for the approved route and repo policy allows progress
+without that provider, preserve the waiting or unavailable provider state in
+`provider_waiting` and `residual_risks`, but do not block an otherwise ready
+route on that provider alone.
 
 ## Feedback Queue Classification
 

@@ -241,6 +241,11 @@ verification_result:
       status: passed | failed | pending | unavailable
       evidence: ""
   pr_feedback:
+    target:
+      pr_ref: ""
+      base_ref: ""
+      head_ref: ""
+      head_sha: ""
     verdict: ready | needs-work | needs-reviewer | needs-human | waiting | unknown
     review_decision: >
       approved | changes-requested | review-required | blocked | unknown
@@ -290,6 +295,9 @@ verification_result:
 - For PR feedback, preserve unresolved threads separately from top-level
   provider status comments. Provider rate limits, quota limits, or wait
   instructions are `waiting` states with `resume_after` when available.
+- Tie `pr_feedback` to the exact PR reference, base ref, head ref, and head SHA
+  observed during the watcher cycle. A later head change makes the verdict
+  stale.
 - A missing credential, project access, or external permission is `needs_human`
   when the approved pipeline requires that gate.
 - Use `continue`, `needs_developer`, `needs_reviewer`, `needs_human`, and
