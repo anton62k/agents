@@ -42,6 +42,7 @@ route_plan:
       task_spec_review: none | single-reviewer | dual-model | adversarial-consensus
       architecture_review: none | single-reviewer | dual-model | adversarial-consensus
       code_review: none | single-reviewer | dual-model | adversarial-consensus
+      other_gates: {}
       provider_requirements: []
       missing_consensus_capabilities: []
     budget_policy:
@@ -50,6 +51,7 @@ route_plan:
       reported_cost_budget: null
       reported_currency: null
       budget_exhaustion_action: needs_human | stop | degrade_models
+      approved_model_downgrades: []
     usage_accounting:
       record_attempts: true
       record_usage: when_available
@@ -73,6 +75,9 @@ route_plan:
 - Keep `missing_capabilities` and `clarification_blockers` visible.
 - Keep recommended model levels, consensus mode, and budget policy visible before
   approval.
+- Put pipeline-specific review gates in `consensus_policy.other_gates`.
+- Fill `approved_model_downgrades` when `budget_exhaustion_action` is
+  `degrade_models`; otherwise model downgrades require a new route approval.
 - Keep commands and provider-specific settings out of this route artifact unless
   they are placeholders copied from the consuming repo overlay.
 - Concrete model names may be filled only from a local overlay or runtime config.

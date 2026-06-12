@@ -50,8 +50,9 @@ On a new device, do this before running agents in workspace mode:
    record one-machine absolute paths.
 7. Create ignored local overlay files for concrete values, for example
    `.agents/local.env` or `.agents/local.context.md`. When model, runner,
-   consensus, or budget defaults are needed, use
-   `templates/artifacts/execution-profile.md` as the local profile template.
+   consensus, or budget defaults are needed, copy
+   `templates/artifacts/execution-profile.md` to
+   `.agents/local.execution-profile.md`.
 8. Read `materialization.md` before linking adapter files.
 9. Start work with `manual-run.md` until a future orchestrator imports these
    definitions directly.

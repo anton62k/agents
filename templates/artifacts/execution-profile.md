@@ -9,6 +9,8 @@ are actually available in the current workspace.
 Do not commit a filled profile with personal accounts, concrete local paths,
 private hostnames, tokens, secrets, or provider credentials.
 
+Recommended ignored filled profile path: `.agents/local.execution-profile.md`.
+
 ```yaml
 execution_profile:
   execution_modes:
@@ -52,4 +54,5 @@ execution_profile:
     reported_cost_budget: null
     reported_currency: null
     budget_exhaustion_action: needs_human | stop | degrade_models
+    approved_model_downgrades: []
 ```

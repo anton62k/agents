@@ -47,6 +47,7 @@ route_plan:
       task_spec_review: none | single-reviewer | dual-model | adversarial-consensus
       architecture_review: none | single-reviewer | dual-model | adversarial-consensus
       code_review: none | single-reviewer | dual-model | adversarial-consensus
+      other_gates: {} # gate id -> consensus mode
       provider_requirements: []
       missing_consensus_capabilities: []
     budget_policy:
@@ -55,6 +56,7 @@ route_plan:
       reported_cost_budget: null
       reported_currency: null
       budget_exhaustion_action: needs_human | stop | degrade_models
+      approved_model_downgrades: [] # required when action is degrade_models
     usage_accounting:
       record_attempts: true
       record_usage: when_available
@@ -115,6 +117,8 @@ run_state:
   capability check before execution.
 - If the human changes models, consensus, or budget, regenerate the route plan
   and rerun capability check before execution.
+- Use `consensus_policy.other_gates` for pipeline-specific review gates that do
+  not fit task spec, architecture, or code review.
 - If `missing_capabilities` contains blocking items, recommend `method first` or
   `analysis only`.
 - If `clarification_blockers` contains blocking items, stop with
@@ -127,5 +131,7 @@ run_state:
   fields.
 - Concrete model names may enter run state only from local overlays or runtime
   config.
+- `budget_exhaustion_action: degrade_models` may run without another human gate
+  only when `approved_model_downgrades` names the pre-approved downgrade path.
 - Usage accounting follows `usage-accounting.md`; do not compute costs from a
   committed provider price table.
