@@ -16,25 +16,12 @@ future orchestrator imports roles and pipelines directly.
 ## Startup Sequence
 
 1. Read `constitution.md`; its rules apply to every manual run.
-2. Read `bootstrap.md` to confirm how the consuming repo points to the canonical
-   method and which adapter entrypoints are present.
-3. Resolve `{{AGENTS_REPO_PATH}}` from the consuming repo overlay or ask the
+2. Resolve `{{AGENTS_REPO_PATH}}` from the consuming repo overlay or ask the
    human for it.
-4. Read `materialization.md` if the consuming repo has generated or linked
-   adapter files.
-5. Read `execution-policy.md` and `usage-accounting.md`.
-6. Follow `orchestrator-run.md` as the run lifecycle contract.
-7. Read `intake.md` and classify the request.
-8. Read `discovery.md`, `../pipelines/INDEX.md`, and `../roles/INDEX.md`.
-9. Run `capability-check.md` against the selected pipeline, roles, stack,
-   references, and adapter.
-10. Build the `route_plan` from `route-plan.md` and
-   `../templates/artifacts/route-plan.md`.
-11. Include execution policy, model recommendations, consensus policy, and
-    budget policy in the route plan before asking for approval.
-12. Show the route plan to the human and wait for `route-approval.md`.
-13. Execute only the approved pipeline.
-14. Keep run state in chat or in the consuming repo's run artifact according to
+3. Read `bootstrap.md` and `materialization.md` to confirm how the consuming repo
+   points to the canonical method and adapter entrypoints.
+4. Follow `orchestrator-run.md` as the run lifecycle contract.
+5. Keep run state in chat or in the consuming repo's run artifact according to
    `route-plan.md` and `../templates/artifacts/run-state.md`.
 
 ## Codex Runtime Shape

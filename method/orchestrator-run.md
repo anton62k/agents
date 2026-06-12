@@ -3,6 +3,10 @@
 This contract defines how an orchestrator turns a user request into an approved
 pipeline run.
 
+This file is the canonical owner of run lifecycle phase order. Other method,
+role, and pipeline files may point here, but they must not restate the full
+phase sequence.
+
 For manual Codex and Claude Code execution, the main session acts as the
 orchestrator. For future revo execution, the runtime owns the same state machine
 and may add transport, worker, attempt, or cost fields around it.
