@@ -2,6 +2,19 @@
 
 Each portable pipeline lives at `pipelines/<pipeline>/PIPELINE.md`.
 
+## Frontmatter
+
+Each pipeline file starts with YAML frontmatter:
+
+```yaml
+---
+id: <pipeline-id>
+---
+```
+
+[DECISION] `id` must equal the pipeline directory name and the
+`pipelines/INDEX.md` record. Routing metadata stays in `pipelines/INDEX.md`.
+
 ## Required Sections
 
 - `# Pipeline: <id>`: stable kebab-case pipeline id.
@@ -19,6 +32,14 @@ Each portable pipeline lives at `pipelines/<pipeline>/PIPELINE.md`.
 Long-running or artifact-heavy pipelines may include `State` between `Roles`
 and `Steps`.
 
+## Optional Sections
+
+- `State`: run-state artifacts or ledgers used by long-running pipelines.
+
+[DECISION] Do not require a separate `Handoff` or `Handoffs` section in each
+pipeline file. Express handoffs in ordered `Steps` and artifact templates unless
+this format is changed first and all pipeline files are updated in the same PR.
+
 ## Catalog Metadata
 
 `pipelines/INDEX.md` owns discovery metadata:
@@ -32,7 +53,7 @@ and `Steps`.
 
 Do not duplicate catalog metadata as separate sections in every pipeline file.
 Future machine-readable imports should validate `pipelines/INDEX.md` against
-pipeline files and adapter wrappers.
+pipeline frontmatter, pipeline files, and adapter wrappers.
 
 ## Gate Rule
 

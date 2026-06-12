@@ -1,3 +1,10 @@
+---
+id: developer-backend
+surface: backend
+rights: write-working-tree
+default_model_level: standard
+---
+
 # Role: developer-backend
 
 ## Purpose

@@ -1,3 +1,10 @@
+---
+id: developer-frontend
+surface: frontend
+rights: write-working-tree
+default_model_level: standard
+---
+
 # Role: developer-frontend
 
 ## Purpose

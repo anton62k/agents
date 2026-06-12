@@ -1,3 +1,10 @@
+---
+id: qa-frontend
+surface: frontend
+rights: qa-live
+default_model_level: standard
+---
+
 # Role: qa-frontend
 
 ## Purpose

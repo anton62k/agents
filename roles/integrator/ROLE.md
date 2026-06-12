@@ -1,3 +1,10 @@
+---
+id: integrator
+surface: repo
+rights: git-gh
+default_model_level: standard
+---
+
 # Role: integrator
 
 ## Purpose

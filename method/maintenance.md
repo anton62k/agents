@@ -29,6 +29,8 @@ This file tells agents how to update the method safely.
    be selected by route evidence, repo overlay, config, or human approval.
 7. Update `roles/INDEX.md` or `pipelines/INDEX.md` when adding, removing, or
    changing routable roles or pipelines.
+   Keep role and pipeline frontmatter aligned with the catalog and definition
+   formats.
 8. Run the adapter materialization gate when a routable role,
    `platform_invocation: skill-wrapper` pipeline, or platform discovery behavior
    changes.

@@ -1,3 +1,7 @@
+---
+id: analysis-only
+---
+
 # Pipeline: analysis-only
 
 ## Purpose

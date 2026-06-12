@@ -1,3 +1,10 @@
+---
+id: watcher
+surface: repo
+rights: read-only
+default_model_level: standard
+---
+
 # Role: watcher
 
 ## Purpose

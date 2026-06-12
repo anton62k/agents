@@ -1,3 +1,10 @@
+---
+id: analyst
+surface: any
+rights: read-only
+default_model_level: deep
+---
+
 # Role: analyst
 
 ## Purpose

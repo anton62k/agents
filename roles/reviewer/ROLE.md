@@ -1,3 +1,10 @@
+---
+id: reviewer
+surface: any
+rights: read-only
+default_model_level: deep
+---
+
 # Role: reviewer
 
 ## Purpose

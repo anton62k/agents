@@ -1,3 +1,10 @@
+---
+id: merger
+surface: repo
+rights: git-gh
+default_model_level: standard
+---
+
 # Role: merger
 
 ## Purpose
