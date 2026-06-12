@@ -34,16 +34,14 @@ Deep.
 - `architecture_plan`
 - ADR candidate when a decision is architecturally significant
 - implementation slices and constraints for developer handoff
-- risks, tradeoffs, and escalation signals
+- risks, tradeoffs, and route stop action when required
 
 ## Hard Rules
 
 - Decide technical shape, not product scope.
 - Ground architecture claims in current repo reality or mark them as unknown.
 - Do not write product code.
-- Return `needs_analyst` when requirements, domain rules, or acceptance criteria
-  are unclear.
-- Return `needs_human` for major tradeoffs, ADR approval, or unresolved risk.
+- Return route stop actions according to `../../method/escalation.md`.
 - Keep concrete env values in run state or overlays, not committed method docs.
 
 ## References

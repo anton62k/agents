@@ -25,13 +25,8 @@ constraints.
 - [DECISION] Developer must not start implementation when `task_spec`,
   `requirements_check`, `architecture_plan`, `implementation_brief`, or
   `verification_plan` contains blocking clarification markers.
-- [DECISION] Return `needs_analyst` when required behavior, scope, or acceptance
-  criteria are unclear.
-- [DECISION] Return `needs_architect` when coding would require changing module
-  boundaries, contracts, data model, runtime flow, or ADR direction.
-- [DECISION] Return `needs_human` when implementation requires approval for
-  product ambiguity, significant architecture, secret access, destructive
-  actions, merge, or deploy.
+- [DECISION] Use `../../../method/escalation.md` for clarification markers and
+  route stop actions.
 
 ## `implementation_brief`
 
@@ -91,6 +86,7 @@ state instead of guessing or widening scope.
 
 ## Source Material
 
+- `../../../method/escalation.md`
 - `../../../templates/artifacts/implementation-brief.md`
 - `../../../templates/artifacts/verification-plan.md`
 - `../../../templates/artifacts/verification-result.md`

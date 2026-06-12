@@ -11,12 +11,8 @@ Analyst owns requirements clarity and the `task_spec` handoff.
 - [ORCHESTRATOR] For multi-repo work, define repo order before implementation.
 - [DECISION] Run `../../../checklists/requirements.md` before declaring
   `task_spec` ready for architecture or development.
-- [DECISION] Treat `open_questions`, unresolved `human_actions`, and escalation
-  flags as clarification markers.
-- [DECISION] Return `needs_architect` when a task requires boundary, contract,
-  data-shape, runtime-flow, or ADR decisions.
-- [DECISION] Return `needs_human` when requirements cannot be clarified from
-  available sources or when approval is needed before the next role acts.
+- [DECISION] Use `../../../method/escalation.md` for clarification markers and
+  route stop actions.
 
 ## `task_spec`
 
@@ -65,6 +61,7 @@ and routes to the matching owner.
 
 ## Source Material
 
+- `../../../method/escalation.md`
 - `../../../checklists/requirements.md`
 - `../../../templates/artifacts/task-spec.md`
 - `../../../templates/artifacts/requirements-check.md`

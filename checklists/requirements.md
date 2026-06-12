@@ -5,6 +5,7 @@ orchestrator decide whether implementation can proceed, architecture is needed,
 or clarification must stop the run.
 
 Fillable template: `../templates/artifacts/requirements-check.md`.
+Escalation vocabulary owner: `../method/escalation.md`.
 
 ## When To Run
 
@@ -49,26 +50,10 @@ requirements_check:
 
 - [DECISION] Use `ready` only when requirements are implementable without
   guessing and no blocking clarification markers remain.
-- [DECISION] Use `needs_analyst` when the analyst must resolve requirements,
-  scope, behavior, acceptance criteria, or product ambiguity from available
-  sources.
-- [DECISION] Use `needs_architect` when requirements are clear enough, but
-  technical shape requires architecture work before implementation.
-- [DECISION] Use `needs_human` when a human must approve a product,
-  architecture, security, merge, deploy, secret, or destructive-action decision.
+- [DECISION] Use route stop actions according to `../method/escalation.md`.
 
 ## Clarification Markers
 
-Blocking clarification markers are:
-
-- unresolved `task_spec.open_questions`;
-- unapproved `task_spec.human_actions`;
-- `task_spec.escalation.needs_human`;
-- `task_spec.escalation.needs_architect`;
-- `architecture_plan.escalation.needs_analyst`;
-- `architecture_plan.escalation.needs_human`;
-- missing required capabilities or unresolved alternative roles;
-- local values required for the current step but not supplied in run state or an
-  ignored local overlay.
+Blocking clarification markers are defined by `../method/escalation.md`.
 
 Developer execution must not start while any blocking marker remains.

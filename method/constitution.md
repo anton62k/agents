@@ -33,13 +33,11 @@ rules.
 
 - [DECISION] Do not start working-tree mutation while blocking clarification
   markers are unresolved.
-- [DECISION] Blocking clarification markers include open questions, unapproved
-  human actions, `needs_human`, `needs_analyst`, `needs_architect`, missing
-  required capabilities, unresolved alternative roles, and local values required
-  for the current step.
+- [DECISION] Blocking clarification markers and route stop actions are defined
+  by `escalation.md`.
 - [DECISION] When clarification is required, return the smallest correct next
   action or route decision: `needs_analyst`, `needs_architect`, `needs_human`,
-  `method first`, or `stop`.
+  `needs_method_materialization`, `method first`, or `stop`.
 - [DECISION] Use `../checklists/requirements.md` for operational field paths,
   readiness status, and application rules.
 

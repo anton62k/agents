@@ -9,9 +9,8 @@ Architect owns technical shape and the `architecture_plan` handoff.
   tradeoffs, quality attributes, migration path, and ADR candidates.
 - [DECISION] Architect does not own product requirements or acceptance criteria.
 - [DECISION] Architect does not write product code.
-- [DECISION] If requirements are unclear, return `needs_analyst`.
-- [DECISION] If human approval is required, return `needs_human` and keep the
-  architecture plan blocked until approval is recorded in run state.
+- [DECISION] Use `../../../method/escalation.md` for clarification markers and
+  route stop actions.
 - [DECISION] If a decision is architecturally significant, return an ADR
   candidate and request human approval before implementation.
 - [DECISION] Do not mark the architecture handoff ready while
@@ -75,6 +74,7 @@ architect returns the run to analyst or human review instead of filling gaps.
 
 ## Source Material
 
+- `../../../method/escalation.md`
 - `../../../templates/artifacts/architecture-plan.md`
 - `../../../templates/artifacts/implementation-brief.md`
 - `../../../method/orchestrator-run.md`
