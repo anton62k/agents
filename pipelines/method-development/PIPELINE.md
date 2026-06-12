@@ -15,7 +15,8 @@ pipelines, adapters, and maintenance rules.
 
 ## Roles
 
-`orchestrator`, `knowledge-engineer`, optional `architect`, optional `reviewer`.
+`orchestrator`, `knowledge-engineer`, optional `architect`, optional
+`reviewer`, optional `integrator`, optional `watcher`.
 
 ## State
 
@@ -34,7 +35,8 @@ pipelines, adapters, and maintenance rules.
 5. Reviewer checks structure, source labels, env-boundary compliance, and
    adapter neutrality.
 6. Knowledge-engineer fixes blocking findings.
-7. Integrator/PR workflow publishes the small method change when requested.
+7. Integrator publishes the small method change when requested.
+8. Optional watcher follows CI and review state after publication.
 
 ## Execution Policy
 
