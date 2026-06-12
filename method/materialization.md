@@ -213,6 +213,31 @@ secret. Use placeholders from `env-boundary.md`.
 - Wrapper coverage is adapter output coverage only. Canonical behavior still
   belongs in `roles/`, `pipelines/`, `references/`, and `stacks/`.
 
+## Refresh Triggers
+
+Run the materialization gate when any change can affect platform discovery:
+
+- a routable role is added, removed, renamed, split, or merged;
+- a routable role's rights, human gates, or required core references change in a
+  way the platform wrapper summarizes;
+- a pipeline changes `platform_invocation`, is added as a directly invokable
+  skill, or is removed from direct invocation;
+- adapter discovery paths, wrapper headers, or bootstrap symlink targets change;
+- a generated or vendored consuming root is refreshed from a newer canonical
+  agents revision.
+
+In symlink mode, normal content updates in this repository do not require
+copying files into the consuming root. They still require freshness validation:
+
+- symlinks point to the expected adapter materialized directories;
+- `node tools/validate.mjs` passes in `{{AGENTS_REPO_PATH}}`;
+- newly routable roles or skill-wrapper pipelines are visible through the
+  adapter materialized directories.
+
+In generated or vendor mode, refresh the physical generated files and update the
+recorded source revision. Do not edit generated files by hand to satisfy
+discovery.
+
 ## Update Flow
 
 1. Update or clone the canonical agents repository.
@@ -225,6 +250,9 @@ secret. Use placeholders from `env-boundary.md`.
 6. Keep local values in ignored overlays, never in generated committed files.
 7. If a generated file needs a behavior change, update the canonical role,
    pipeline, stack, or adapter first.
+8. When the change added, removed, renamed, or rerouted a role or directly
+   invokable pipeline, verify wrapper coverage before declaring the consuming
+   root ready.
 
 ## Validation
 

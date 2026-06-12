@@ -17,6 +17,21 @@ This directory is the workspace-local overlay for the canonical agents method.
 - `.claude/agents -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents`
 - `.claude/skills -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills`
 
+## Refresh After Method Update
+
+After pulling or changing the canonical agents repository, validate the source
+before using newly added roles, pipelines, agents, or skills:
+
+```sh
+cd {{AGENTS_REPO_PATH}}
+node tools/validate.mjs
+```
+
+Then verify this workspace still links to adapter materialized directories, not
+to canonical `roles/` or `pipelines/`. If wrappers are stale or missing, follow
+`{{AGENTS_REPO_PATH}}/method/materialization.md`; do not patch generated files
+directly in the workspace.
+
 ## Local Files
 
 Use ignored files for concrete local values:
