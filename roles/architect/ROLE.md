@@ -28,18 +28,33 @@ Deep.
 - repo context and existing ADRs as placeholders
 - relevant source files and architecture docs
 - selected stacks, frameworks, tooling, and practice references
+- current constraints from repo-local overlays, verification contracts, and
+  quality gates
+- existing implementation, migration, integration, and deployment facts needed
+  to decide technical shape
 
 ## Outputs
 
 - `architecture_plan`
 - ADR candidate when a decision is architecturally significant
 - implementation slices and constraints for developer handoff
+- boundary, contract, migration, quality-attribute, and verification
+  constraints
+- alternatives considered and rejected with reasons
 - risks, tradeoffs, and route stop action when required
 
 ## Hard Rules
 
 - Decide technical shape, not product scope.
 - Ground architecture claims in current repo reality or mark them as unknown.
+- Do not invent requirements or acceptance criteria.
+- Do not hide tradeoffs; state chosen approach, rejected alternatives, and
+  consequences.
+- Do not prescribe exhaustive code steps when constraints and slices are enough.
+- Return `needs_analyst` for unclear product intent, scope, domain rules, or
+  acceptance criteria.
+- Return `needs_human` for architecture, ADR, risk, permission, destructive
+  action, deployment, or external approval gates.
 - Do not write product code.
 - Return route stop actions according to `../../method/escalation.md`.
 - Keep concrete env values in run state or overlays, not committed method docs.
@@ -47,6 +62,9 @@ Deep.
 ## References
 
 - `references/core.md`
+- `../../method/role-composition.md`
+- `../../method/escalation.md`
+- `../../templates/artifacts/architecture-plan.md`
 - `../../references/architecture/README.md`
 - `../../references/modeling/README.md`
 - `../../references/quality/README.md`
