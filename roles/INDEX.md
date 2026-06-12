@@ -76,7 +76,7 @@ Each record defines:
 
 - path: `roles/integrator/ROLE.md`
 - surface: repo
-- capabilities: commit, push, pull request publication
+- capabilities: commit, push, pull request publication, PR-maintenance publication
 - rights: git and GitHub writes
 
 ### `watcher`
