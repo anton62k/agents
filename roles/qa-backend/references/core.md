@@ -48,6 +48,10 @@ Return a compact QA result:
 
 ```yaml
 qa_backend_result:
+  source_refs:
+    deploy_watcher_result_ref: ""
+    verification_plan_ref: ""
+    task_or_finding_ref: ""
   target_env: "{{TARGET_ENV}}"
   scenarios:
     - name: ""
@@ -66,6 +70,17 @@ Use `next_route_action` from `../../../method/escalation.md`. Reproducible
 application failures route to developer. Risk classification and accepted-risk
 questions route to reviewer. Access, credentials, target, and approval blockers
 route to human.
+
+## Runtime Evidence Boundary
+
+Backend QA consumes deploy-watcher evidence and approved scenario sources. Do
+not run live scenarios when deployment evidence is missing, stale, or points to
+a different target environment or revision than the run expects.
+
+Use `source_refs` to keep the QA result tied to the deploy result, verification
+plan, and accepted task, bug, or finding. Keep raw logs, payloads, credentials,
+and personally sensitive data out of the result unless the repo-local policy
+explicitly requires a redacted artifact reference.
 
 ## Stop Conditions
 

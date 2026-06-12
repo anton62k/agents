@@ -25,7 +25,8 @@ Verify that merged work deployed and behaves correctly in the target environment
    to the smallest owner: human for access/approval gaps, developer for
    application bugs with evidence, or `waiting` for provider progress.
 5. QA role runs approved scenarios only after deploy-watcher returns
-   `deployed-ready`.
+   `deployed-ready` for the expected target environment and revision or release
+   marker.
 6. If QA finds reproducible code bugs, route to developer or the selected
    developer specialization and repeat the PR cycle.
 7. If QA findings need risk classification, false-positive judgment, accepted
@@ -33,7 +34,8 @@ Verify that merged work deployed and behaves correctly in the target environment
    reviewer or human according to the run gate.
 8. If QA finds environment, access, credential, target, or tool blockers,
    escalate to human unless the blocker is a provider wait state.
-9. Record final deploy and QA outcome with evidence and residual risk.
+9. Record final deploy and QA outcome with source refs, evidence, and residual
+   risk.
 
 ## Execution Policy
 

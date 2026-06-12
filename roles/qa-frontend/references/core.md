@@ -54,6 +54,10 @@ Return a compact QA result:
 
 ```yaml
 qa_frontend_result:
+  source_refs:
+    deploy_watcher_result_ref: ""
+    verification_plan_ref: ""
+    task_or_finding_ref: ""
   target_env: "{{TARGET_ENV}}"
   scenarios:
     - name: ""
@@ -74,6 +78,17 @@ Use `next_route_action` from `../../../method/escalation.md`. Reproducible
 frontend behavior failures route to developer-frontend. Risk classification,
 accepted-risk, visual approval, accessibility judgment, and compatibility
 questions route to reviewer or human according to the run gate.
+
+## Runtime Evidence Boundary
+
+Frontend QA consumes deploy-watcher evidence and approved scenario sources. Do
+not run browser scenarios when deployment evidence is missing, stale, or points
+to a different target environment or revision than the run expects.
+
+Use `source_refs` to keep the QA result tied to the deploy result, verification
+plan, and accepted task, bug, or finding. Keep screenshots, traces, cookies,
+tokens, and personally sensitive data out of the result unless the repo-local
+policy explicitly requires a redacted artifact reference.
 
 ## Stop Conditions
 
