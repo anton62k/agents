@@ -72,19 +72,33 @@ route to the smallest correct owner instead of broadening the task locally.
 Fillable template:
 `../../../templates/artifacts/implementation-brief.md`.
 
+The brief is a compact contract, not a replacement for upstream artifacts. Use
+it to locate approved behavior, constraints, source areas, verification
+expectations, and stop conditions. Reload `task_spec`, `architecture_plan`, or
+repo-local docs only when the brief references them or implementation evidence
+contradicts them.
+
 ```yaml
 implementation_brief:
   goal: ""
+  upstream_artifacts:
+    task_spec_ref: ""
+    architecture_plan_ref: ""
+    verification_plan_ref: ""
   required_behavior: []
   files_or_modules_to_inspect_first: []
   architecture_constraints: []
   implementation_slices: []
   acceptance_criteria: []
   required_tests: []
-  risks_to_watch: []
   out_of_scope: []
+  risks_to_watch: []
   stop_and_escalate_if: []
 ```
+
+Developer must stop before editing when the brief is missing required behavior,
+acceptance criteria, architecture constraints needed by the touched surface, or
+verification expectations for a non-trivial change.
 
 ## `verification_plan` And `verification_result`
 

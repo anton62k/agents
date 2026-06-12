@@ -113,6 +113,11 @@ be resolved from the current method source. This is a route stop action, not a
 
 The analyst handoff should make downstream work smaller, not more speculative.
 
+It must not become a hidden implementation plan. Keep source evidence,
+requirements, acceptance criteria, open questions, human actions, and
+architecture need explicit so the orchestrator can decide the next role without
+guessing.
+
 For architect handoff, include:
 
 - source-backed problem and goal;
@@ -130,6 +135,13 @@ For developer handoff when architecture is not needed, include:
 Developer-local choices remain with the developer. The analyst may point to
 existing repo patterns as evidence, but must not invent a new design or require
 a specific implementation shape.
+
+Set `requirements_check.status` to `needs_architect` when a developer-ready
+brief would otherwise need to contain decisions about boundaries, contracts,
+data ownership, migrations, runtime flow, quality-attribute tradeoffs, or ADR
+direction. Set it to `needs_human` when the next role would need an approval,
+access, external action, or product decision that is not available from source
+material.
 
 ## Multi-Repo Decomposition
 
@@ -198,6 +210,9 @@ task_spec:
   that a developer cannot complete by editing code.
 - `suggested_roles_next` should name the smallest next role set, not a fixed
   pipeline.
+- Do not put implementation slices, class names, private helper structure, or
+  persistence mechanics in `task_spec` unless they are already source-backed
+  requirements.
 
 ## `requirements_check`
 
