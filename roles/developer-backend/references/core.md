@@ -34,6 +34,31 @@ runtime boundaries.
   APIs.
 - [DECISION] Queue, worker, auth, and integration changes need behavior checks
   that cross the relevant boundary when mocks would hide risk.
+- [DECISION] Prefer behavior and integration evidence for persistence,
+  transaction, migration, contract, auth, queue, and external-integration changes.
+  Unit-only evidence is insufficient when it hides the real risk.
+- [DECISION] Generated backend contracts, clients, schemas, and migrations must
+  be updated through repo-approved commands. Do not hand-edit generated outputs
+  or migration artifacts unless the repo contract explicitly permits it.
+- [DECISION] Keep transport mapping, application intent, domain policy, data
+  access, and integration mechanics independently readable in the changed path.
+
+## Work Focus
+
+For backend work, inspect:
+
+- public API contract and compatibility expectations;
+- application-layer owner for the use case or workflow;
+- persistence boundary, transaction model, and migration rules;
+- error mapping and expected failure behavior;
+- test fixtures, database kit, integration harness, or contract-test pattern;
+- queues, jobs, auth, permissions, and external integrations touched by the
+  change.
+
+Prefer a real dependency or repo-approved integration kit when the behavior
+depends on database semantics, generated clients, transactions, auth, queues, or
+external contracts. Use mocks only when the repo pattern says they are adequate
+for the risk being tested.
 
 ## Stop Conditions
 
@@ -41,6 +66,9 @@ runtime boundaries.
   public contracts, persistence ownership, or migration strategy.
 - Return `needs_analyst` when domain behavior, error behavior, or acceptance
   criteria are unclear.
+- Return `needs_reviewer` when security, compatibility, data-loss,
+  false-positive, accepted-risk, or provider-rule judgment is needed before code
+  should change.
 - Return `needs_human` when the repo requires explicit approval for migrations,
   auth changes, or compatibility breaks.
 

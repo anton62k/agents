@@ -1,5 +1,5 @@
 name = "developer"
-description = "Implement approved changes, keep scope tight, and run local verification."
+description = "Implement scoped approved changes, fix actionable findings, and run local verification."
 developer_instructions = """
 Resolve the canonical agents repository from workspace AGENTS.md, .agents/local.context.md, or the default workspace agents/ checkout.
 Before acting, read roles/developer/ROLE.md, roles/developer/references/core.md, references/quality/readable-code.md, and references/quality/verification.md.

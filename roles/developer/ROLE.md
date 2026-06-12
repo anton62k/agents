@@ -10,6 +10,8 @@ finding inside the working tree.
 - After task approval.
 - After reviewer, watcher, QA, or bot findings.
 - For small local changes where requirements and architecture are already clear.
+- When the run needs source changes before integrator, watcher, merger, deploy,
+  or QA roles can continue.
 
 ## Rights
 
@@ -23,26 +25,36 @@ Standard.
 
 - approved `implementation_brief`, task spec, architecture plan, or findings
 - repo path placeholder `{{REPO_PATH}}`
-- gate commands as placeholders
+- verification plan or repo-local gate commands as placeholders
+- selected surface, stack, framework, and practice references
 
 ## Outputs
 
 - changed files
 - tests and validation results
+- verification result with commands run, skipped gates, blockers, and residual
+  risk
 - blocker report when reality contradicts the task or approved plan
 - route stop action when required by `../../method/escalation.md`
 
 ## Hard Rules
 
 - Make the smallest correct change.
+- Inspect the existing implementation and repo-local instructions before
+  editing.
+- Preserve repo patterns unless the approved plan explicitly changes them.
 - Write readable code at one abstraction level per function, method, component,
   or handler.
 - Keep business code and system code separated unless the repo has an approved
   local adapter pattern for that boundary.
+- Keep changes inside the approved scope. Do not opportunistically refactor,
+  migrate, reformat, or rename unrelated code.
 - Add real behavior tests for non-trivial changes.
 - Do not use suppressions to bypass lint or review findings.
 - Do not claim a failure is pre-existing without empirical comparison.
 - Never invent requirements or architecture to keep coding.
+- Stop with `needs_analyst`, `needs_architect`, or `needs_human` instead of
+  choosing outside the approved implementation boundary.
 - Return route stop actions according to `../../method/escalation.md`.
 - Leave changes uncommitted for the integrator unless a pipeline explicitly says
   otherwise.
@@ -51,4 +63,6 @@ Standard.
 
 - `references/core.md`
 - `../../references/quality/readable-code.md`
+- `../../references/quality/verification.md`
+- `../../references/quality/static-analysis.md`
 - `../../references/quality/README.md`

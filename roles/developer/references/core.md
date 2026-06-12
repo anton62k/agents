@@ -7,6 +7,8 @@ constraints.
 
 - [ORCHESTRATOR] Developer owns working tree changes and local verification.
 - [ORCHESTRATOR] Developer does not own git/gh publishing.
+- [ORCHESTRATOR] Developer must read repo-local agent instructions, local
+  verification contracts, and the relevant existing code before editing.
 - [ORCHESTRATOR] Failures claimed as pre-existing must be proven against the base.
 - [DECISION] Developer consumes `implementation_brief` when analysis or
   architecture work preceded implementation.
@@ -17,16 +19,53 @@ constraints.
   risk.
 - [DECISION] Developer decides local implementation details only inside the
   approved task and architecture constraints.
+- [DECISION] Developer may choose names, decomposition, local control flow, test
+  placement, and adapter usage when those choices preserve existing boundaries
+  and do not create new architecture.
+- [DECISION] Developer must not introduce new module boundaries, public
+  contracts, data ownership, migration strategy, error model, or cross-cutting
+  abstraction without an approved architecture plan.
 - [DECISION] Developer treats mixed abstraction levels in new or changed code as
   a blocker to fix before handoff.
 - [DECISION] Developer keeps business rules out of system adapters and keeps
   system mechanics out of business logic unless the repo pattern explicitly
   combines them.
+- [DECISION] Developer keeps changes scoped to the approved task, explicit
+  findings, and required verification fixes. Unrelated cleanup is a separate
+  task.
+- [DECISION] Developer must update generated artifacts only through the
+  repo-approved source and command. Do not hand-edit generated outputs unless the
+  repo contract explicitly says so.
 - [DECISION] Developer must not start implementation when `task_spec`,
   `requirements_check`, `architecture_plan`, `implementation_brief`, or
   `verification_plan` contains blocking clarification markers.
+- [DECISION] Developer returns empirical evidence, not confidence language:
+  files changed, commands run, results, skipped gates, and remaining risk.
 - [DECISION] Use `../../../method/escalation.md` for clarification markers and
   route stop actions.
+
+## Work Cycle
+
+Use this sequence for code-producing work:
+
+1. Resolve the repo context and load repo-local instructions.
+2. Inspect the approved task artifacts and stop on blocking clarification
+   markers.
+3. Inspect the existing code path, tests, verification contract, and relevant
+   stack or practice references.
+4. Identify the smallest implementation slice that satisfies the approved
+   behavior or finding.
+5. Edit source of truth first; regenerate derived files only through approved
+   commands.
+6. Add or update behavior tests where risk, business behavior, persistence,
+   contracts, or user-visible behavior changed.
+7. Run required and applicable conditional gates from the verification plan.
+8. Self-review the working tree diff for scope creep, abstraction mixing,
+   missing tests, stale generated artifacts, and local-style drift.
+9. Return a verification result and the next route action.
+
+If any step reveals that the approved plan does not match repo reality, stop and
+route to the smallest correct owner instead of broadening the task locally.
 
 ## `implementation_brief`
 
@@ -78,11 +117,71 @@ When a `verification_plan` was inferred because `VERIFICATION.md` or an
 equivalent repo-local contract was missing, Developer must preserve that signal
 in `verification_result`. Do not present inferred gates as repo-declared gates.
 
+## Scope And Refactoring
+
+Refactoring is implementation work only when it is necessary to satisfy the
+approved behavior, fix a finding, reduce risk in the touched path, or preserve a
+repo boundary that the change would otherwise violate.
+
+Allowed local refactoring examples:
+
+- extracting a named function so the changed behavior reads at one abstraction
+  level;
+- moving renderer or transport logic into an existing approved state, service,
+  use-case, or adapter boundary;
+- removing duplication introduced by the current change;
+- aligning a touched test with the repo's current test helper pattern.
+
+Not allowed without a separate approved task:
+
+- broad formatting, renames, directory moves, or import churn outside the touched
+  behavior;
+- replacing an established local pattern with a preferred generic pattern;
+- introducing a new shared abstraction because it might be useful later;
+- changing public contracts, data ownership, migration strategy, or release
+  behavior to make implementation easier.
+
+## Handoff Result
+
+Return a compact implementation handoff:
+
+```yaml
+developer_result:
+  changed_files: []
+  behavior_changed: []
+  tests_added_or_updated: []
+  commands_run: []
+  skipped_gates: []
+  generated_artifacts: []
+  blockers: []
+  residual_risk: []
+  next_route_action: continue
+```
+
+Use `next_route_action` from `../../../method/escalation.md`. Do not invent a new
+status word for handoff.
+
 ## Clarification Gate
 
 Before editing files, inspect the brief and upstream artifacts for unresolved
 markers. If any marker blocks safe implementation, return the matching stop
 state instead of guessing or widening scope.
+
+## Stop Conditions
+
+- Return `needs_analyst` when required behavior, acceptance criteria, product
+  language, edge cases, or expected errors are unclear.
+- Return `needs_architect` when implementation requires new boundaries, public
+  contracts, ownership changes, migration strategy, concurrency model, error
+  model, or cross-cutting abstractions.
+- Return `needs_human` when a required approval, secret, external permission,
+  destructive action, compliance decision, or product tradeoff is missing.
+- Return `needs_reviewer` when a finding needs false-positive judgment,
+  accepted-risk judgment, security interpretation, or adversarial risk review
+  before code should change.
+- Return `waiting` only for an external process with no actionable local owner.
+- Return `continue` only after implementation and applicable local verification
+  are complete or when another approved role should proceed.
 
 ## Source Material
 
@@ -91,6 +190,7 @@ state instead of guessing or widening scope.
 - `../../../templates/artifacts/verification-plan.md`
 - `../../../templates/artifacts/verification-result.md`
 - `../../../references/quality/readable-code.md`
+- `../../../references/quality/verification.md`
 - `../../../references/quality/static-analysis.md`
 - `../../../references/quality/pr-feedback-loop.md`
 - `../../../checklists/requirements.md`
