@@ -4,19 +4,31 @@ Each portable role lives at `roles/<role>/ROLE.md`.
 
 ## Required Sections
 
-- `id`: stable kebab-case role id.
-- `purpose`: what this role owns.
-- `when_to_use`: trigger phrases and pipeline steps.
-- `rights`: read-only, write-working-tree, git-gh, deploy-read, qa-live, or
-  deterministic-script.
-- `default_model_level`: cheap, standard, or deep.
-- `inputs`: artifacts and placeholders the role needs.
-- `outputs`: structured result and artifacts the role returns.
-- `hard_rules`: behavior that must always hold.
-- `references`: role knowledge files to read on demand.
-- `practice_references`: shared reusable practices loaded from `references/`.
-- `platform_notes`: adapter-specific constraints for Codex, Claude Code, and
-  future revo.
+- `# Role: <id>`: stable kebab-case role id.
+- `Purpose`: what this role owns.
+- `When To Use`: trigger phrases and pipeline steps.
+- `Rights`: read/write and external-action boundary summary.
+- `Default Model Level`: portable recommendation using cheap, standard, or deep.
+- `Inputs`: artifacts and placeholders the role needs.
+- `Outputs`: structured result and artifacts the role returns.
+- `Hard Rules`: behavior that must always hold.
+- `References`: role-local and shared knowledge files to read on demand.
+
+Specialized roles may include `Extends` between `Purpose` and `When To Use`.
+
+## Catalog Metadata
+
+`roles/INDEX.md` owns routable metadata:
+
+- stable role id;
+- role file path;
+- primary surface;
+- routing capabilities;
+- rights summary for route planning.
+
+Do not duplicate catalog metadata as separate sections in every role file.
+Future machine-readable imports should validate `roles/INDEX.md` against
+`ROLE.md` files and adapter wrappers.
 
 ## Knowledge References
 
@@ -26,6 +38,10 @@ Each portable role lives at `roles/<role>/ROLE.md`.
 Shared practices that apply to multiple roles live in top-level `references/`.
 Role-local references describe duties and handoffs. Shared references describe
 methods such as requirements engineering, ADRs, C4, BPMN, DDD, or test strategy.
+
+Role `References` sections may include both role-local files and shared
+practice references. Do not create a separate `practice_references` section
+unless the role format is changed in this file first.
 
 Use this split:
 
@@ -71,3 +87,6 @@ Usage and cost metadata are recorded by the orchestrator or adapter according to
 `default_model_level` is a portable recommendation, not a concrete provider
 model. Concrete model names are selected from local execution profiles or future
 runtime config according to `execution-policy.md`.
+
+Runner types such as deterministic scripts are not model levels. Put them in
+rights, adapter docs, or execution profiles.
