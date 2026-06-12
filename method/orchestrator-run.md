@@ -137,10 +137,10 @@ and upstream risk notes. Use
 `../templates/artifacts/verification-plan.md` as the fillable artifact.
 
 Compact means 200-400 words or the equivalent in concise YAML. Include only:
-goal, required behavior, files or modules to inspect first, architecture
-constraints, implementation slices, acceptance criteria, required tests, risks,
-out-of-scope items, and stop conditions. Summarize findings; do not paste raw
-review text or full upstream artifacts.
+goal, upstream artifact references, required behavior, files or modules to
+inspect first, architecture constraints, implementation slices, acceptance
+criteria, required tests, risks, out-of-scope items, and stop conditions.
+Summarize findings; do not paste raw review text or full upstream artifacts.
 
 The verification plan is allowed to contain concrete commands only when they
 come from the consuming repo or run overlay. The canonical method records

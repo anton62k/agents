@@ -206,6 +206,17 @@ Do not choose class names, helper functions, private method structure, or local
 refactoring steps unless the current repo source or approved ADR already fixes
 that shape.
 
+When implementation can proceed without architecture work, state that explicitly
+instead of producing a speculative plan. When architecture work is required,
+make the chosen constraints compact enough for an implementation brief and keep
+the evidence path reloadable through `task_spec.sources`,
+`architecture_plan.boundaries`, `architecture_plan.contracts`, and
+`architecture_plan.migration_plan`.
+
+The architect may recommend implementation slices, but each slice must be tied
+to an approved requirement or technical constraint. Do not add backlog ideas,
+nice-to-have refactors, or broader platform cleanup to the developer handoff.
+
 ## Clarification Gate
 
 The architect can clear architecture clarification only for technical shape. If
@@ -218,6 +229,11 @@ criteria, or source contradictions prevent a defensible technical decision.
 Return `needs_human` when the design requires architecture approval, ADR
 approval, accepted risk, external permission, secret access, destructive action,
 deployment decision, or other approval outside the architect's authority.
+
+Request reviewer involvement through the orchestrator when the next decision is
+risk classification, false-positive handling, accepted-risk judgment, or
+provider-rule interpretation, not when the architect can decide technical shape
+from current sources.
 
 ## Source Material
 

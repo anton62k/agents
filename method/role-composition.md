@@ -95,3 +95,28 @@ Use:
 If a developer cannot proceed without requirements clarity, return
 `needs_analyst`. If a developer would need to decide architecture, return
 `needs_architect`.
+
+## Handoff Contract
+
+Each role hands off the smallest artifact that lets the next role proceed
+without rereading every upstream source.
+
+- Analyst produces `task_spec` and `requirements_check`. This owns product
+  intent, scope, acceptance criteria, open questions, human actions, and whether
+  architecture is required.
+- Architect consumes an approved or source-backed `task_spec` and produces
+  `architecture_plan`. This owns technical shape, constraints, implementation
+  slices, tradeoffs, ADR candidates, and architecture stop conditions.
+- Orchestrator prepares `implementation_brief` only after blocking markers are
+  resolved. This compresses approved requirements and architecture into a
+  developer-ready contract.
+- Developer consumes the brief and owns local code-shape decisions inside the
+  approved scope and constraints.
+
+Do not duplicate entire upstream artifacts into downstream handoffs. Preserve
+stable identifiers, paths, short summaries, constraints, and stop conditions so
+the receiving role can reload evidence only when needed.
+
+Developer execution is blocked when the handoff asks the developer to decide
+product behavior, public contracts, data ownership, migration strategy, security
+acceptance, release policy, or skipped verification gates.
