@@ -63,10 +63,12 @@ Each record defines:
 
 - path: `pipelines/post-merge-qa/PIPELINE.md`
 - triggers: merged PR, deployed behavior verification, runtime-only confirmation
-- required_roles: `orchestrator`, `deploy-watcher`, `qa-backend`
-- alternative_roles: []
-- optional_roles: `qa-frontend`, `developer`, `integrator`, `watcher`,
-  `merger`
+- required_roles: `orchestrator`, `deploy-watcher`
+- alternative_roles:
+  - group_id: live-qa
+    roles: `qa-backend`, `qa-frontend`
+    resolution: at_least_one
+- optional_roles: `developer`, `integrator`, `watcher`, `merger`
 - route_gates: extra live-system access, infra mutation, follow-up PR merge
   approval
 - platform_invocation: `canonical-only`
@@ -78,7 +80,7 @@ Each record defines:
   new stack or adapter
 - required_roles: `orchestrator`, `knowledge-engineer`
 - alternative_roles: []
-- optional_roles: `architect`, `reviewer`
+- optional_roles: `architect`, `reviewer`, `integrator`, `watcher`
 - route_gates: approved hard-rule changes, merge approval
 - platform_invocation: `canonical-only`
 

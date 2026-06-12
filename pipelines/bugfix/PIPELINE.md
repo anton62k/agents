@@ -17,8 +17,9 @@ optional `architect`, optional `qa-backend` or `qa-frontend`.
 ## Steps
 
 1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
-2. Reproduce or source-check the defect.
-3. Define the minimal expected behavior and affected scope.
+2. Resolved defect-analysis role reproduces or source-checks the defect.
+3. Resolved defect-analysis role defines the minimal expected behavior and
+   affected scope.
 4. Optional architect checks boundary, contract, or data-shape impact for
    cross-module defects.
 5. Orchestrator prepares the implementation brief and verification plan.

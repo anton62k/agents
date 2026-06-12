@@ -11,9 +11,8 @@ Verify that merged work deployed and behaves correctly in the target environment
 
 ## Roles
 
-`orchestrator`, `deploy-watcher`, `qa-backend`, optional `qa-frontend`,
-optional `developer`, optional `integrator`, optional `watcher`, optional
-`merger`.
+`orchestrator`, `deploy-watcher`, `qa-backend` or `qa-frontend`, optional
+`developer`, optional `integrator`, optional `watcher`, optional `merger`.
 
 ## Steps
 
