@@ -13,6 +13,12 @@ not a frontend default.
    - `https://feature-sliced.design/docs/reference/public-api`
 4. This reference.
 
+## Route Evidence
+
+Select this reference when repo evidence shows Feature-Sliced Design docs,
+layer/slice/segment naming, public API rules, import-boundary config, structure
+checks, or human-approved FSD adoption.
+
 ## Responsibilities
 
 FSD should own:
@@ -41,12 +47,25 @@ FSD should not own:
 - [DECISION] Keep dependency direction explicit. Higher-level composition may
   depend on lower-level reusable units according to repo rules; lower-level code
   must not reach upward into app/page/widget orchestration.
+- [DECISION] Treat public APIs as architectural contracts. Adding exports should
+  be deliberate; importing private internals to avoid a public API decision is a
+  structure finding, not a convenience.
+- [DECISION] Keep slice placement tied to repo domain language and existing
+  ownership. Do not move code between layers or slices to satisfy generic FSD
+  examples without route approval.
 - [DECISION] Avoid creating slices or segments that contain only one trivial file
   unless repo structure checks require them.
 - [DECISION] Do not move files just to satisfy generic FSD shape inside an
   unrelated change. Structure migrations require route approval.
 - [DECISION] If structure checks such as Steiger or custom lint rules exist, run
   the repo-approved command before claiming FSD compliance.
+
+## Verification Signals
+
+When FSD is selected, configured structure checks map to
+`architecture_or_structure` through `verification.md`. Component, model, or
+slice behavior still requires the appropriate `tests`, `typecheck`, `lint`, and
+`build_or_package` gates from the repo contract.
 
 ## Stop Conditions
 
