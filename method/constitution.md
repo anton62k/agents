@@ -90,6 +90,25 @@ rules.
 - [DECISION] If generated Codex or Claude Code files conflict with canonical
   method files, the canonical method wins.
 
+## Conflict Order
+
+When instructions conflict, resolve them in this order:
+
+1. `constitution.md` sets non-weakening principles.
+2. The canonical owner file listed in `README.md` wins for that concern.
+3. Catalogs own discovery metadata; role, pipeline, stack, and reference files
+   own their behavior content.
+4. Adapter files own platform mechanics only and cannot override canonical
+   behavior.
+5. Consuming repo overlays win for concrete repo facts such as commands, paths,
+   review policy, verification gates, source-of-truth order, and environment
+   boundaries, but they cannot weaken constitution rules.
+6. Ignored local overlays and runtime config win only for local values in the
+   current run.
+
+When a conflict is found, update the owner file and turn duplicate copies into
+references.
+
 ## Change Rule
 
 Changes to this constitution require an explicit human-approved method change.

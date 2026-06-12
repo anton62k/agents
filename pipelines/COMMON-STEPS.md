@@ -5,16 +5,8 @@ instead of restating the same orchestration gates.
 
 ## Standard Startup
 
-Every multi-role pipeline starts with the orchestrator running:
-
-1. Constitution: see `../method/constitution.md`.
-2. Run lifecycle: see `../method/orchestrator-run.md`.
-3. Intake: see `../method/intake.md`.
-4. Discovery: see `../method/discovery.md`.
-5. Capability check: see `../method/capability-check.md`.
-6. Execution policy: see `../method/execution-policy.md`.
-7. Route plan: see `../method/route-plan.md`.
-8. Route approval: see `../method/route-approval.md`.
+Every multi-role pipeline starts with the lifecycle in
+`../method/orchestrator-run.md`. This file is the canonical owner of phase order.
 
 The selected pipeline continues only after the route, model policy, consensus
 policy, and budget policy are approved or changed by the human.
@@ -27,7 +19,7 @@ Pipeline files should list only gates that are specific to that pipeline.
 ## Standard Clarification Gate
 
 Before developer execution, the orchestrator checks
-`../checklists/requirements.md` and any role escalation fields. The pipeline
+`../checklists/requirements.md` and `../method/escalation.md`. The pipeline
 continues only when blocking clarification markers are resolved.
 
 ## Standard Verification Planning

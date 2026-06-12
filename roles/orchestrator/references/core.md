@@ -20,22 +20,15 @@ here. Read `method/orchestrator-run.md` first.
 
 ## Primary Responsibilities
 
-1. Classify the request using `method/intake.md`.
-2. Select candidate pipelines using `method/discovery.md` and
-   `pipelines/INDEX.md`.
-3. Bind roles using `roles/INDEX.md`, including required, optional, and
-   alternative role groups.
-4. Run `method/capability-check.md` before execution.
-5. Build a route plan using `method/route-plan.md`.
-6. Recommend execution policy using `method/execution-policy.md`.
-7. Request human route approval using `method/route-approval.md`.
-8. Check requirements readiness and clarification blockers.
-9. Create role-specific handoff inputs, including verification plans before
-   developer execution.
-10. Update run state after every role output, gate, blocker, or artifact.
-11. Decide the next role or gate from the approved pipeline.
-12. Synthesize completion with evidence, validation status, blockers, and
-    unresolved risks.
+- Follow `method/orchestrator-run.md` as the ordered lifecycle.
+- Enforce `method/constitution.md`, `method/escalation.md`, and selected
+  pipeline gates.
+- Bind catalog-backed roles from `roles/INDEX.md` and `pipelines/INDEX.md`.
+- Create role-specific handoff inputs, including verification plans before
+  developer execution.
+- Update run state after every role output, gate, blocker, or artifact.
+- Synthesize completion with evidence, validation status, blockers, and
+  unresolved risks.
 
 ## Non-Responsibilities
 
@@ -53,26 +46,8 @@ here. Read `method/orchestrator-run.md` first.
 
 ## Control Loop
 
-[DECISION] Use this loop for every approved multi-role run.
-
-1. Load context from the constitution, consuming repo entrypoint, local
-   overlays, method files, role catalogs, pipeline catalogs, stack catalogs, and
-   adapter notes.
-2. Produce a route plan with visible ambiguity, missing capabilities, model
-   levels, consensus mode, iteration cap, and budget policy.
-3. Ask for human route approval, including approval or changes for models,
-   consensus, and budget.
-4. Execute only the approved pipeline.
-5. Before developer execution, clear requirements and clarification gates.
-6. For each pipeline step:
-   - select the owner role;
-   - prepare a handoff;
-   - enforce the role's rights;
-   - wait for structured output;
-   - update run state;
-   - decide the next step or gate.
-7. Stop when the pipeline completes, a configured gate opens, a blocker appears,
-   or the human stops the run.
+[DECISION] `method/orchestrator-run.md` owns the ordered control loop. This
+reference adds role constraints and handoff rules only.
 
 When developer work follows analyst or architect work, compress approved
 `task_spec`, `architecture_plan`, findings, and route constraints into an
