@@ -19,7 +19,8 @@ Before changing role behavior, run
   candidates.
 - `developer` - implements or fixes code in a working tree.
 - `reviewer` - adversarial read-only review; one voice in consensus.
-- `integrator` - commits, pushes, and opens or updates PRs.
+- `integrator` - commits, pushes, opens or updates PRs, and publishes approved
+  PR-maintenance actions.
 - `watcher` - classifies CI, static-analysis, bot, and human review signals.
 - `merger` - merges only when explicitly authorized for a run.
 - `deploy-watcher` - verifies post-merge deployment.

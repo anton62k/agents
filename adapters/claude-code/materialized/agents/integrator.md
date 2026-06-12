@@ -1,6 +1,6 @@
 ---
 name: integrator
-description: Commit, push, and create or update PRs for already-approved work.
+description: Commit, push, create or update PRs, and publish approved PR-maintenance actions.
 ---
 
 # Integrator Adapter Wrapper
