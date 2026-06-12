@@ -22,18 +22,24 @@ Standard.
 - `{{TARGET_ENV}}`
 - deployment system placeholders
 - service health check placeholders
+- merged revision, release marker, or deployment artifact placeholder
+- selected post-merge QA requirement
 
 ## Outputs
 
-- deployed-ready / problem verdict
+- `deployed-ready`, `waiting`, or `problem` verdict
 - evidence and blocker details
+- route action for QA, developer, watcher, or human
 
 ## Hard Rules
 
 - Do not mutate infrastructure.
 - Do not store concrete environment coordinates in method docs.
+- Verify the merged revision or release marker before QA handoff.
+- Keep deployment evidence read-only and secret-free.
 - Escalate infra ambiguity.
 
 ## References
 
 - `references/core.md`
+- `../../pipelines/post-merge-qa/PIPELINE.md`

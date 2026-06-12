@@ -100,21 +100,22 @@ Each record defines:
 
 - path: `roles/deploy-watcher/ROLE.md`
 - surface: deployment
-- capabilities: deployment verification, health checks
+- capabilities: deployment verification, revision checks, health checks,
+  post-merge QA handoff
 - rights: read-only deployment inspection
 
 ### `qa-backend`
 
 - path: `roles/qa-backend/ROLE.md`
 - surface: backend
-- capabilities: live API QA, runtime behavior checks
+- capabilities: live API QA, runtime behavior checks, backend scenario evidence
 - rights: approved API access
 
 ### `qa-frontend`
 
 - path: `roles/qa-frontend/ROLE.md`
 - surface: frontend
-- capabilities: browser QA, workflow smoke checks
+- capabilities: browser QA, workflow smoke checks, frontend scenario evidence
 - rights: approved browser automation
 
 ## Composition Notes
