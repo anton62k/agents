@@ -46,20 +46,13 @@ Consensus is a pipeline or route policy, not hidden behavior inside the
 `reviewer` role. A reviewer is one review voice. The orchestrator decides how
 many voices are required for the current route.
 
-## Default Recommendations
+## Pipeline Defaults
 
-- `analysis-only`: analyst `deep`; architect `deep` when selected; reviewer
-  `standard` or `deep` only when factual risk is high.
-- `bugfix`: developer `standard`; reviewer `single-reviewer`; use `deep` when
-  root cause, data, security, or architecture risk is unclear.
-- `feature-development`: analyst `deep`; architect `deep` when selected;
-  developer `standard`; task-spec and code review use `dual-model` by default.
-- `method-development`: knowledge-engineer `deep`; reviewer `single-reviewer`
-  or `dual-model` when role/pipeline boundaries change.
-- `post-merge-qa`: deploy-watcher and watcher `cheap`; QA `standard`; escalate
-  to `deep` only for unexplained runtime or data-risk findings.
+Per-pipeline defaults live in each `pipelines/<pipeline>/PIPELINE.md`
+`Execution Policy` section. This file defines the policy vocabulary and
+approval rules only.
 
-Repo overlays and human route approval may override these defaults.
+Repo overlays and human route approval may override pipeline defaults.
 
 ## Route Approval Choices
 
@@ -101,6 +94,9 @@ Use these fields:
 - `token_budget` - optional run budget in provider-reported tokens.
 - `reported_cost_budget` - optional run budget in provider-reported currency.
 - `budget_exhaustion_action` - `needs_human`, `stop`, or `degrade_models`.
+  `degrade_models` is allowed only when route approval explicitly pre-approves
+  the downgrade path; otherwise changing model levels because of budget
+  exhaustion requires route-plan regeneration and human approval.
 
 Do not compute cost from a committed price table. Use `usage-accounting.md`.
 
@@ -109,10 +105,13 @@ Do not compute cost from a committed price table. Use `usage-accounting.md`.
 - If a required role is unavailable, recommend `method first`, `change roles`,
   or `analysis only`.
 - If a recommended model level is unavailable, propose the closest available
-  fallback and make reduced coverage visible.
+  fallback and make reduced coverage visible before route approval.
 - If `dual-model` or `adversarial-consensus` cannot be satisfied, ask the human
   to approve `single-reviewer`, change providers, or stop.
 - Do not silently increase model level, consensus width, live access, write
   rights, or budget after route approval.
+- Do not silently decrease model level after route approval unless
+  `budget_exhaustion_action: degrade_models` and the specific downgrade path
+  were approved in the route plan.
 - Concrete model and runner names may appear in run state only when they come
   from local overlays or runtime config.

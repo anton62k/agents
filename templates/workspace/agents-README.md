@@ -27,8 +27,9 @@ Use ignored files for concrete local values:
 
 Use `{{AGENTS_REPO_PATH}}/templates/artifacts/execution-profile.md` as the
 template for available roles, runners, model profiles, consensus providers, and
-budget defaults. Keep the filled profile ignored unless the workspace
-explicitly wants to commit non-sensitive defaults.
+budget defaults. Save the filled profile as
+`.agents/local.execution-profile.md`. Keep the filled profile ignored unless the
+workspace explicitly wants to commit non-sensitive defaults.
 
 If this workspace root is versioned, merge
 `{{AGENTS_REPO_PATH}}/templates/workspace/gitignore` into its ignore rules.
@@ -38,7 +39,7 @@ Example `.agents/local.context.md`:
 ```md
 agents_repo_path: <local checkout of the canonical agents repository>
 workspace_root: <local checkout of this workspace>
-execution_profile: <ignored local execution profile or runtime config>
+execution_profile: .agents/local.execution-profile.md
 ```
 
 ## Rules
