@@ -1,0 +1,15 @@
+{
+  "id": "revisium-agent-playbook",
+  "name": "Revisium Agent Playbook",
+  "schema_version": 1,
+  "package": "@revisium/agent-playbook",
+  "catalogs": {
+    "roles": "catalog/roles.json",
+    "pipelines": "catalog/pipelines.json"
+  },
+  "supported_runtimes": [
+    "codex",
+    "claude-code",
+    "revo"
+  ]
+}

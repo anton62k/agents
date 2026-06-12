@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import {
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { basename, dirname, extname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const failures = [];
+const shouldBuildCatalogs = process.argv.includes("--build-catalogs");
 const markdownValidationRoots = [
   "README.md",
   "AGENTS.md",
@@ -269,6 +276,311 @@ function stripFragmentAndQuery(destination) {
 
 function normalizeCatalogValue(value) {
   return value.trim().replace(/^`([^`]+)`$/, "$1");
+}
+
+function parseCatalogRecords(path) {
+  const records = new Map();
+  const lines = read(path).split(/\r?\n/);
+  let current = null;
+  let currentField = null;
+
+  for (const line of lines) {
+    const header = line.match(/^### `([^`]+)`/);
+    if (header) {
+      current = { id: header[1], fields: {} };
+      records.set(current.id, current.fields);
+      currentField = null;
+      continue;
+    }
+
+    const field = line.match(/^- ([a-z_]+):\s*(.*)$/);
+    if (current && field) {
+      currentField = field[1];
+      current.fields[currentField] = field[2];
+      continue;
+    }
+
+    if (current && currentField && /^  /.test(line) && line.trim()) {
+      current.fields[currentField] += `\n${line.trim()}`;
+      continue;
+    }
+
+    if (line.trim()) {
+      currentField = null;
+    }
+  }
+
+  return records;
+}
+
+function parseInlineList(value) {
+  const normalized = (value ?? "").replaceAll("\n", " ").trim();
+  if (!normalized || normalized === "[]") {
+    return [];
+  }
+
+  return normalized
+    .split(",")
+    .map((item) => normalizeCatalogValue(item.trim()))
+    .filter(Boolean);
+}
+
+function parseAlternativeRoles(value) {
+  const normalized = (value ?? "").trim();
+  if (!normalized || normalized === "[]") {
+    return [];
+  }
+
+  const groups = [];
+  let current = null;
+  for (const line of normalized.split(/\r?\n/).map((entry) => entry.trim())) {
+    const group = line.match(/^- group_id:\s*(.+)$/);
+    if (group) {
+      current = { group_id: group[1], roles: [], resolution: "" };
+      groups.push(current);
+      continue;
+    }
+
+    if (!current) {
+      continue;
+    }
+
+    const roles = line.match(/^roles:\s*(.+)$/);
+    if (roles) {
+      current.roles = parseInlineList(roles[1]);
+      continue;
+    }
+
+    const resolution = line.match(/^resolution:\s*(.+)$/);
+    if (resolution) {
+      current.resolution = resolution[1].trim();
+    }
+  }
+
+  return groups;
+}
+
+function trimSentence(value) {
+  return value.trim().replace(/\.$/, "");
+}
+
+function knownRoleIds() {
+  return new Set(parseCatalogRecords(join(root, "roles/INDEX.md")).keys());
+}
+
+function parseRecommendedModelLevels(value) {
+  const knownRoles = knownRoleIds();
+  const levels = {};
+  for (const match of value.matchAll(
+    /\b([a-z][a-z-]*)\s+`(cheap|standard|deep)`/g,
+  )) {
+    if (knownRoles.has(match[1])) {
+      levels[match[1]] = match[2];
+    }
+  }
+
+  const groupedDeployQa = value.match(/deploy and QA roles `([^`]+)`/);
+  if (groupedDeployQa) {
+    levels["deploy-watcher"] = groupedDeployQa[1];
+    levels["qa-backend"] = groupedDeployQa[1];
+    levels["qa-frontend"] = groupedDeployQa[1];
+  }
+
+  return levels;
+}
+
+function markdownBullets(text) {
+  const bullets = [];
+  let current = null;
+
+  for (const line of text.split(/\r?\n/)) {
+    const bullet = line.match(/^- (.*)$/);
+    if (bullet) {
+      current = bullet[1];
+      bullets.push(current);
+      continue;
+    }
+
+    if (current !== null && /^  /.test(line) && line.trim()) {
+      current += ` ${line.trim()}`;
+      bullets[bullets.length - 1] = current;
+    }
+  }
+
+  return bullets;
+}
+
+function extractExecutionPolicy(path) {
+  const bullets = markdownBullets(sectionText(path, "Execution Policy"));
+
+  const policy = {
+    recommended_model_levels: {},
+    consensus_defaults: [],
+    consensus_escalations: [],
+    iteration_cap: "",
+    raw: bullets,
+  };
+
+  for (const bullet of bullets) {
+    const recommended = bullet.match(/^Recommended model levels:\s*(.+)$/);
+    if (recommended) {
+      policy.recommended_model_levels = parseRecommendedModelLevels(
+        recommended[1],
+      );
+      continue;
+    }
+
+    const scopedConsensus = bullet.match(
+      /^Default (.+?) consensus:\s*`([^`]+)`/,
+    );
+    if (scopedConsensus) {
+      policy.consensus_defaults.push({
+        scope: scopedConsensus[1],
+        value: scopedConsensus[2],
+      });
+      continue;
+    }
+
+    const defaultConsensus = bullet.match(/^Default consensus:\s*`([^`]+)`/);
+    if (defaultConsensus) {
+      policy.consensus_defaults.push({
+        scope: "default",
+        value: defaultConsensus[1],
+      });
+      continue;
+    }
+
+    const escalation = bullet.match(/^Escalate to `([^`]+)` when (.+)$/);
+    if (escalation) {
+      policy.consensus_escalations.push({
+        value: escalation[1],
+        when: trimSentence(escalation[2]),
+      });
+      continue;
+    }
+
+    const useConsensus = bullet.match(/^Use `([^`]+)` when (.+)$/);
+    if (useConsensus) {
+      policy.consensus_escalations.push({
+        value: useConsensus[1],
+        when: trimSentence(useConsensus[2]),
+      });
+      continue;
+    }
+
+    const iterationCap = bullet.match(/^Default iteration cap:\s*(.+)$/);
+    if (iterationCap) {
+      policy.iteration_cap = trimSentence(iterationCap[1]);
+    }
+  }
+
+  return policy;
+}
+
+function buildRoleCatalog() {
+  const catalog = parseCatalogRecords(join(root, "roles/INDEX.md"));
+  return [...catalog]
+    .map(([roleId, fields]) => {
+      const rolePath = join(root, normalizeCatalogValue(fields.path ?? ""));
+      const frontmatter = exists(rolePath)
+        ? parseFrontmatter(rolePath, [
+            "id",
+            "surface",
+            "rights",
+            "default_model_level",
+          ])
+        : {};
+      return {
+        id: roleId,
+        path: normalizeCatalogValue(fields.path ?? ""),
+        surface: frontmatter?.surface ?? "",
+        rights: frontmatter?.rights ?? "",
+        default_model_level: frontmatter?.default_model_level ?? "",
+        wrappers: {
+          codex: `adapters/codex/materialized/agents/${roleId}.toml`,
+          claude_code: `adapters/claude-code/materialized/agents/${roleId}.md`,
+        },
+      };
+    })
+    .sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function buildPipelineCatalog() {
+  const catalog = parseCatalogRecords(join(root, "pipelines/INDEX.md"));
+  return [...catalog]
+    .map(([pipelineId, fields]) => {
+      const pipelinePath = normalizeCatalogValue(fields.path ?? "");
+      return {
+        id: pipelineId,
+        path: pipelinePath,
+        triggers: parseInlineList(fields.triggers),
+        required_roles: parseInlineList(fields.required_roles),
+        alternative_roles: parseAlternativeRoles(fields.alternative_roles),
+        optional_roles: parseInlineList(fields.optional_roles),
+        route_gates: parseInlineList(fields.route_gates),
+        platform_invocation: normalizeCatalogValue(
+          fields.platform_invocation ?? "",
+        ),
+        execution_policy: extractExecutionPolicy(join(root, pipelinePath)),
+      };
+    })
+    .sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function expectedPlaybookManifest() {
+  return {
+    id: "revisium-agent-playbook",
+    name: "Revisium Agent Playbook",
+    schema_version: 1,
+    package: "@revisium/agent-playbook",
+    catalogs: {
+      roles: "catalog/roles.json",
+      pipelines: "catalog/pipelines.json",
+    },
+    supported_runtimes: ["codex", "claude-code", "revo"],
+  };
+}
+
+function stableJson(value) {
+  return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+function writeCatalogFiles() {
+  mkdirSync(join(root, "catalog"), { recursive: true });
+  writeFileSync(
+    join(root, "catalog/roles.json"),
+    stableJson(buildRoleCatalog()),
+  );
+  writeFileSync(
+    join(root, "catalog/pipelines.json"),
+    stableJson(buildPipelineCatalog()),
+  );
+  writeFileSync(
+    join(root, "playbook.json"),
+    stableJson(expectedPlaybookManifest()),
+  );
+}
+
+function validateJsonFile(path, expectedValue) {
+  if (!exists(path)) {
+    fail(path, "missing generated JSON file");
+    return;
+  }
+
+  const expected = stableJson(expectedValue);
+  const actual = read(path);
+  if (actual !== expected) {
+    fail(
+      path,
+      "generated JSON is stale; run `node tools/validate.mjs --build-catalogs`",
+    );
+  }
+}
+
+function validateGeneratedCatalogs() {
+  validateJsonFile(join(root, "catalog/roles.json"), buildRoleCatalog());
+  validateJsonFile(join(root, "catalog/pipelines.json"), buildPipelineCatalog());
+  validateJsonFile(join(root, "playbook.json"), expectedPlaybookManifest());
 }
 
 function validateMarkdownAdapters() {
@@ -949,6 +1261,10 @@ function validateEnvironmentBoundary() {
   }
 }
 
+if (shouldBuildCatalogs) {
+  writeCatalogFiles();
+}
+
 validateMarkdownAdapters();
 validateCodexAgentToml();
 validateRoleCatalog();
@@ -964,6 +1280,7 @@ validateAdapterSkillSymmetry();
 validateMarkdownLinks();
 validateRuntimeDoesNotLinkLegacy();
 validateEnvironmentBoundary();
+validateGeneratedCatalogs();
 
 if (failures.length > 0) {
   console.error("Validation failed:");

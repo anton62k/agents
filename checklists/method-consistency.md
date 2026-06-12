@@ -26,6 +26,8 @@ Run it before publishing a method PR.
 - [ ] `pipelines/INDEX.md` matches pipeline files.
 - [ ] Pipeline frontmatter `id` matches `method/pipeline-definition.md` and
   `pipelines/INDEX.md`.
+- [ ] `playbook.json`, `catalog/roles.json`, and `catalog/pipelines.json` are
+  regenerated and pass staleness validation.
 - [ ] `platform_invocation: skill-wrapper` pipelines have matching skill
   wrappers in Codex and Claude Code adapters, or the omission is documented.
 - [ ] Adapter wrappers point back to canonical sources and do not redefine role
