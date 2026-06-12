@@ -9,6 +9,8 @@ The current base is deliberately small:
 
 - `feature-development` - full spec to PR, with review and watcher loops.
 - `bugfix` - reproduce, patch, review, PR.
+- `local-change` - small local implementation when requirements and architecture
+  are already clear.
 - `analysis-only` - read-only investigation and recommendation.
 - `post-merge-qa` - deploy verification and live QA loop.
 - `method-development` - add or improve roles, stacks, pipelines, adapters, and

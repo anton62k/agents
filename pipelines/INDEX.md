@@ -47,6 +47,17 @@ Each record defines:
   merge approval
 - platform_invocation: `canonical-only`
 
+### `local-change`
+
+- path: `pipelines/local-change/PIPELINE.md`
+- triggers: small local edit, obvious fix, repo-local maintenance
+- required_roles: `orchestrator`, `developer`
+- alternative_roles: []
+- optional_roles: `reviewer`, `integrator`, `watcher`
+- route_gates: unclear requirements, architecture boundary, skipped required
+  verification, publication approval, merge approval
+- platform_invocation: `canonical-only`
+
 ### `analysis-only`
 
 - path: `pipelines/analysis-only/PIPELINE.md`
