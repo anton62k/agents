@@ -28,6 +28,7 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 - `references/` - shared practices reused by multiple roles.
 - `stacks/` - language and ecosystem knowledge used by roles.
 - `pipelines/` - portable multi-role workflows with gates and handoff contracts.
+- `catalog/` - generated machine-readable role and pipeline catalogs.
 - `adapters/` - notes for running the same method in Codex, Claude Code, and revo.
 - `templates/common/` - consuming-repo entrypoint templates.
 - `templates/workspace/` - workspace-root entrypoints for multi-repo setups.
@@ -35,6 +36,7 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 - `checklists/requirements.md` - canonical requirements readiness gate.
 - `checklists/method-consistency.md` - self-review gate for method PRs.
 - `checklists/role-development.md` - preparation gate for role-focused PRs.
+- `playbook.json` - root manifest for future runtime/package import.
 - `legacy/` - archived older material. It is not runtime agent knowledge and
   should not be loaded by roles, stacks, pipelines, or adapters.
 
@@ -50,6 +52,14 @@ The validator checks role, pipeline, and adapter wrapper frontmatter; catalog
 and wrapper coverage; relative markdown links; runtime links away from
 `legacy/`; environment-boundary hardcoded values; and basic portable model-level
 vocabulary. CI runs the same command.
+
+When role, pipeline, or catalog inputs change, regenerate machine-readable files
+before validation:
+
+```sh
+node tools/validate.mjs --build-catalogs
+node tools/validate.mjs
+```
 
 ## How To Use
 

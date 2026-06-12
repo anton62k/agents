@@ -31,14 +31,16 @@ This file tells agents how to update the method safely.
    changing routable roles or pipelines.
    Keep role and pipeline frontmatter aligned with the catalog and definition
    formats.
-8. Run the adapter materialization gate when a routable role,
+8. Run `node tools/validate.mjs --build-catalogs` when role, pipeline, or
+   manifest inputs change.
+9. Run the adapter materialization gate when a routable role,
    `platform_invocation: skill-wrapper` pipeline, or platform discovery behavior
    changes.
-9. Run `checklists/role-development.md` when the change deepens, adds, splits,
+10. Run `checklists/role-development.md` when the change deepens, adds, splits,
    or reroutes a role.
-10. Add or update a checklist/reference when the rule changes what an agent does.
-11. Update artifact templates when canonical artifact schemas change.
-12. Run `checklists/method-consistency.md` before publishing the PR.
+11. Add or update a checklist/reference when the rule changes what an agent does.
+12. Update artifact templates when canonical artifact schemas change.
+13. Run `checklists/method-consistency.md` before publishing the PR.
 
 ## Adapter Materialization Gate
 
