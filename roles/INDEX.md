@@ -90,8 +90,8 @@ Each record defines:
 
 - path: `roles/merger/ROLE.md`
 - surface: repo
-- capabilities: merge execution after explicit authorization
-- rights: GitHub merge only
+- capabilities: merge execution, approved source-head cleanup
+- rights: GitHub merge and approved source-head cleanup
 
 ### `deploy-watcher`
 
