@@ -29,6 +29,23 @@ granular references below.
 - DI/composition owns object graph assembly and dependency boundaries.
 - FSD owns import and layer boundaries only when selected.
 
+## Ownership Tie-Breaks
+
+- [DECISION] If a rule decides product behavior, validation, permission, status,
+  or workflow, put it in the selected view model, use case, domain service, or
+  form model, not in React render code.
+- [DECISION] If a rule exists to maintain observable consistency, put it in the
+  MobX model or store. If it exists to present screen behavior, expose it through
+  the view model or presenter.
+- [DECISION] If a rule selects concrete implementations, lifetime, config, or
+  adapters, put it in the DI or composition boundary.
+- [DECISION] If a rule decides import direction, public API, layer, slice, or
+  segment placement, use the FSD reference when selected and return
+  `needs_architect` when the boundary is not already clear.
+- [DECISION] Generated API or schema contracts should enter the route through a
+  data source, generated-client boundary, or view model before React renders
+  them, unless the repo explicitly uses generated data directly in components.
+
 ## Hard Rules
 
 - [DECISION] Do not treat this composite as a frontend default. Select it only
@@ -44,6 +61,13 @@ granular references below.
 - [DECISION] Keep user-visible behavior, state ownership, data access, and
   structure boundaries testable outside JSX whenever the repo architecture
   supports it.
+
+## Verification Signals
+
+When this composite route is selected, verification should combine the granular
+references and map them to existing capabilities in `verification.md`; common
+frontend gates include `tests`, `architecture_or_structure`, `typecheck`, `lint`,
+and `build_or_package`, depending on repo evidence.
 
 ## Stop Conditions
 
