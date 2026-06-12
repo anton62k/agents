@@ -13,6 +13,13 @@ across API, CQRS, persistence, jobs, auth, or integration boundaries.
    - `https://www.prisma.io/docs/orm/prisma-client/testing/integration-testing`
 4. This reference.
 
+## Route Evidence
+
+Select this reference for JS/TS backend surfaces when discovery finds server
+entrypoints, API protocol handlers, persistence config, workers, queues,
+auth/permission boundaries, backend test kits, or repo verification docs that
+require backend behavior evidence.
+
 ## Test Categories
 
 - Unit tests: pure domain policy, mappers, validators, utility logic, and
@@ -36,6 +43,9 @@ across API, CQRS, persistence, jobs, auth, or integration boundaries.
   good backend test kit boots the relevant module, exposes real Prisma or data
   clients, command/query buses or API services, transaction helpers, seed or
   factory helpers, cleanup, and `close()`.
+- [DECISION] A test kit should make the tested boundary visible. The reader
+  should know whether the test is exercising a module, API service, command,
+  query, data boundary, queue handler, or integration adapter.
 - [DECISION] Keep test kits small and surface-specific. Do not create a global
   test kit that hides which module, database, bus, or integration is under test.
 - [DECISION] Commands and queries should be tested through the same public
@@ -49,8 +59,17 @@ across API, CQRS, persistence, jobs, auth, or integration boundaries.
 - [DECISION] Queue, worker, cache, auth, and integration changes need boundary
   behavior checks when mocks would hide retry, idempotency, timing, or
   serialization risk.
+- [DECISION] Match test scope to risk. Unit-only evidence is insufficient for
+  persistence, transaction, migration, public-contract, auth, queue, or external
+  integration behavior when the real boundary owns correctness.
 - [DECISION] Do not report the backend as verified when only a targeted subset
   ran. State targeted vs full gate explicitly.
+
+## Verification Signals
+
+Backend testing usually maps to `tests`; generated contracts and package
+surfaces may also require `build_or_package`, while boundary or module checks
+may require `architecture_or_structure` through `verification.md`.
 
 ## Stop Conditions
 

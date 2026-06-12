@@ -14,6 +14,12 @@ metadata, route approval, or overlay config. It is not a backend default.
    - `https://www.prisma.io/docs/orm/prisma-client/queries/transactions`
 4. This reference.
 
+## Route Evidence
+
+Select this reference when repo evidence shows Prisma schema, Prisma Client,
+migrations, generated Prisma types, Prisma transaction helpers, database test
+setup, or package metadata/config selecting Prisma as the persistence boundary.
+
 ## Responsibilities
 
 Prisma should own:
@@ -40,6 +46,8 @@ Prisma should not own:
   as a migration substitute.
 - [DECISION] Review migration files and generated artifacts as code. Do not edit
   generated client output manually.
+- [DECISION] Schema changes must keep migration files, generated client output,
+  tests, and public data contracts synchronized according to repo policy.
 - [DECISION] `prisma migrate reset`, production migration repair, and
   `prisma migrate resolve` are destructive or precedent-setting operations and
   require human approval unless the repo overlay explicitly authorizes them.
@@ -53,6 +61,9 @@ Prisma should not own:
   helper argument chains when the repo has an async-context transaction helper.
 - [DECISION] Keep transaction boundaries explicit at the application boundary.
   State isolation, retry, rollback, and idempotency assumptions when they matter.
+- [DECISION] A command or use case that relies on transaction context must make
+  that requirement visible through the repo-approved transaction abstraction,
+  not hidden control flow.
 - [DECISION] Test transaction behavior against a real database when correctness
   depends on rollback, isolation, unique constraints, concurrent writes, JSON
   behavior, or generated SQL.
@@ -67,6 +78,16 @@ Prisma should not own:
   boundary. Do not add a repository layer only to satisfy a generic pattern.
 - [DECISION] Avoid returning raw Prisma errors or raw persistence objects through
   public API boundaries unless the repo contract explicitly allows it.
+- [DECISION] Map expected Prisma and database errors into application errors at
+  the approved boundary. Preserve enough evidence for debugging without leaking
+  persistence details through public APIs.
+
+## Verification Signals
+
+Prisma changes commonly require `tests` with real database behavior,
+`build_or_package` for generated client or declaration synchronization, and
+`architecture_or_structure` when data boundaries or migrations change. Exact
+gates are owned by `verification.md`.
 
 ## Stop Conditions
 

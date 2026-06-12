@@ -15,6 +15,12 @@ backends.
    - `https://docs.nestjs.com/graphql/quick-start`
 4. This reference.
 
+## Route Evidence
+
+Select this reference when repo evidence shows NestJS modules, controllers,
+resolvers, providers, guards, pipes, interceptors, decorators, `TestingModule`,
+or Nest-specific package metadata and framework config.
+
 ## Responsibilities
 
 Nest transport adapters should own:
@@ -45,8 +51,21 @@ Nest application providers should own:
 - [DECISION] Module exports are public contracts. Export API services and
   approved providers, not internal command/query handlers or low-level
   persistence details, unless the repo explicitly uses them as public APIs.
+- [DECISION] Provider scope and lifecycle are architecture decisions when they
+  affect transactions, caching, request context, subscriptions, or background
+  work. Do not change scope casually inside feature work.
+- [DECISION] Guards, pipes, interceptors, and filters are framework adapters.
+  They may enforce protocol concerns, but business policy should still live in
+  the approved application or domain boundary.
 - [DECISION] Keep generated DTOs, validation, and serialization in sync with the
   public API contract. API contract changes require corresponding tests.
+
+## Verification Signals
+
+NestJS changes commonly require `tests` for module or API behavior,
+`architecture_or_structure` for module boundaries, and `build_or_package` when
+generated DTOs or framework metadata must stay synchronized. Exact gates are
+owned by `verification.md`.
 
 ## Stop Conditions
 

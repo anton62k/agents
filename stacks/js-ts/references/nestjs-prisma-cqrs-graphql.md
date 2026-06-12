@@ -20,6 +20,13 @@ granular references below.
 7. `backend-integrations-jobs.md` when queues, workers, jobs, webhooks, or
    external integrations are involved.
 
+## Route Evidence
+
+Select this composite only when route evidence selects NestJS, Prisma, CQRS, and
+GraphQL together. If one concern is absent or uncertain, load only the confirmed
+granular references and return `needs_architect` when the missing concern would
+change ownership.
+
 ## Route Responsibilities
 
 - GraphQL, REST, MCP, and other protocols remain transport adapters.
@@ -29,6 +36,19 @@ granular references below.
 - Queries read data and are ready for paginated read models.
 - Prisma owns persistence through repo-approved data and transaction boundaries.
 - Tests use real database behavior where Prisma or database semantics matter.
+
+## Ownership Tie-Breaks
+
+- [DECISION] Transport concerns stay in GraphQL, REST, MCP, or other adapters;
+  application intent enters through the module API service.
+- [DECISION] Write behavior belongs to commands or use cases; read behavior
+  belongs to queries or read-model builders.
+- [DECISION] Persistence shape belongs to Prisma and the approved data boundary;
+  public API shape belongs to GraphQL or the selected protocol reference.
+- [DECISION] Transaction ownership belongs to the application boundary and the
+  repo-approved Prisma transaction abstraction, not to transport adapters.
+- [DECISION] Pagination starts at the query contract and is mapped into GraphQL
+  connection shape by the GraphQL layer.
 
 ## Hard Rules
 
@@ -43,6 +63,13 @@ granular references below.
   query for data returned after writes.
 - [DECISION] Real database tests are required when the change depends on Prisma,
   transactions, generated SQL, migrations, constraints, JSON, or pagination.
+
+## Verification Signals
+
+This composite combines granular verification signals. Common capabilities are
+`tests`, `architecture_or_structure`, `build_or_package`, `typecheck`, and
+`lint`; exact gates are selected through `verification.md` and the consuming repo
+contract.
 
 ## Stop Conditions
 
