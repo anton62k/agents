@@ -62,6 +62,9 @@ Return a compact deployment result:
 
 ```yaml
 deploy_watcher_result:
+  source_refs:
+    merge_ref: ""
+    verification_plan_ref: ""
   verdict: deployed-ready | waiting | problem
   target_env: "{{TARGET_ENV}}"
   expected_revision: ""
@@ -76,6 +79,17 @@ Use `next_route_action` from `../../../method/escalation.md`. For a ready
 deployment, `continue` routes to the selected QA role. For inaccessible,
 ambiguous, or permission-blocked deployment state, use `needs_human` unless a
 provider wait state is the only blocker.
+
+## Evidence Handoff
+
+Deployment evidence is scoped to the selected target environment and expected
+revision or release marker. QA roles may start only when `verdict` is
+`deployed-ready` and `observed_revision` matches the run's expected deployment
+artifact or an approved equivalent release marker.
+
+If the target environment, expected revision, observed revision, or deployment
+artifact is missing or ambiguous, return `problem`, `waiting`, or `needs_human`
+instead of handing off to QA.
 
 ## Stop Conditions
 
