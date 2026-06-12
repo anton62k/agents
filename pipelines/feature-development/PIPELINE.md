@@ -71,5 +71,5 @@ optional `architect`, optional `merger`, optional `deploy-watcher`, optional
 
 - Codex and Claude Code manual runs: the main agent owns orchestration and state
   files.
-- Future revo: DBOS owns progress; Revisium/control-plane owns role definitions,
-  policy, inbox, events, and ledger.
+- Future revo runtime: see `../../adapters/revo/README.md` for platform
+  mechanics.

@@ -12,10 +12,10 @@ This directory is the workspace-local overlay for the canonical agents method.
 
 ## Expected Symlinks
 
-- `.agents/skills -> ../agents/adapters/codex/materialized/skills`
-- `.codex/agents -> ../agents/adapters/codex/materialized/agents`
-- `.claude/agents -> ../agents/adapters/claude-code/materialized/agents`
-- `.claude/skills -> ../agents/adapters/claude-code/materialized/skills`
+- `.agents/skills -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/skills`
+- `.codex/agents -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/agents`
+- `.claude/agents -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents`
+- `.claude/skills -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills`
 
 ## Local Files
 

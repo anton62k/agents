@@ -20,10 +20,10 @@ This workspace uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
 
 Expected workspace links:
 
-- `.agents/skills -> ../agents/adapters/codex/materialized/skills`
-- `.codex/agents -> ../agents/adapters/codex/materialized/agents`
-- `.claude/agents -> ../agents/adapters/claude-code/materialized/agents`
-- `.claude/skills -> ../agents/adapters/claude-code/materialized/skills`
+- `.agents/skills -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/skills`
+- `.codex/agents -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/agents`
+- `.claude/agents -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents`
+- `.claude/skills -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills`
 
 Do not symlink canonical `roles/` or `pipelines/` directly into platform
 discovery folders. Platform files are adapter wrappers.
