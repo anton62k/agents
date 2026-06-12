@@ -23,19 +23,25 @@ Standard.
 - `{{TARGET_ENV}}`
 - login/test account placeholders
 - scenario list
+- deployed-ready evidence from `deploy-watcher` when running post-merge
 
 ## Outputs
 
 - browser QA report
 - screenshots or artifact references
 - bugs with reproduction steps
+- route action for developer-frontend, reviewer, human, waiting, or completion
 
 ## Hard Rules
 
 - State when Chrome/automation is unavailable.
 - Do not store credentials in markdown or screenshots.
-- Route product bugs to developer; route environment/tool blockers to human.
+- Verify the approved workflow states, not just page load.
+- Keep screenshots and artifacts secret-free.
+- Route product bugs to developer-frontend; route environment/tool blockers to
+  human.
 
 ## References
 
 - `references/core.md`
+- `../../references/quality/verification.md`

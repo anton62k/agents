@@ -25,19 +25,25 @@ Standard.
 - API endpoint placeholders
 - `{{ADMIN_SECRET_REF}}` when explicitly allowed
 - test scenario list
+- deployed-ready evidence from `deploy-watcher` when running post-merge
 
 ## Outputs
 
 - scenario report
 - bugs with repro steps
 - QA blockers
+- route action for developer, reviewer, human, waiting, or completion
 
 ## Hard Rules
 
 - Do not read arbitrary cluster logs or resources unless the pipeline grants it.
 - Prefer API setup over DB mutation.
+- Verify behavior through approved public, admin, or test API surfaces before
+  considering lower-level inspection.
+- Separate application bugs from environment, credential, and test-data blockers.
 - No plaintext secrets in output.
 
 ## References
 
 - `references/core.md`
+- `../../references/quality/verification.md`

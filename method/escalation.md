@@ -30,7 +30,7 @@ These actions route feedback after execution has started. They are not
 clarification markers by themselves:
 
 - `needs_developer` - an actionable code, test, docs, generated-artifact, or
-  config finding belongs to the developer.
+  config finding belongs to the developer or selected developer specialization.
 - `needs_reviewer` - a finding needs risk classification, false-positive
   judgment, accepted-risk judgment, or adversarial review before developer work.
 - `waiting` - a remote provider, CI system, review bot, deploy, or external

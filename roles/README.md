@@ -25,9 +25,10 @@ Before changing role behavior, run
 - `watcher` - classifies CI, static-analysis, bot, and human review signals.
 - `merger` - merges and optionally cleans up the source head only when explicitly
   authorized for a run.
-- `deploy-watcher` - verifies post-merge deployment.
-- `qa-backend` - live backend QA through public/API surfaces.
-- `qa-frontend` - browser QA for frontend workflows.
+- `deploy-watcher` - verifies post-merge deployment revision and health before
+  QA.
+- `qa-backend` - live backend QA through approved public/API surfaces.
+- `qa-frontend` - browser QA for approved frontend workflows and states.
 
 ## Specializations
 

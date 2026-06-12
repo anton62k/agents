@@ -17,11 +17,23 @@ Verify that merged work deployed and behaves correctly in the target environment
 ## Steps
 
 1. Orchestrator runs standard startup; see `../COMMON-STEPS.md`.
-2. Deploy-watcher verifies the merged change is live.
-3. QA role runs approved scenarios.
-4. If QA finds code bugs, route to developer and repeat PR cycle.
-5. If QA finds environment or access blockers, escalate to human.
-6. Record final QA outcome.
+2. Deploy-watcher verifies the merged change is live for the selected target
+   environment and expected revision or release marker.
+3. If deployment is still progressing, record `waiting` with `resume_after` when
+   available.
+4. If deployment is absent, stale, unhealthy, ambiguous, or inaccessible, route
+   to the smallest owner: human for access/approval gaps, developer for
+   application bugs with evidence, or `waiting` for provider progress.
+5. QA role runs approved scenarios only after deploy-watcher returns
+   `deployed-ready`.
+6. If QA finds reproducible code bugs, route to developer or the selected
+   developer specialization and repeat the PR cycle.
+7. If QA findings need risk classification, false-positive judgment, accepted
+   risk, visual approval, or security/compatibility interpretation, route to
+   reviewer or human according to the run gate.
+8. If QA finds environment, access, credential, target, or tool blockers,
+   escalate to human unless the blocker is a provider wait state.
+9. Record final deploy and QA outcome with evidence and residual risk.
 
 ## Execution Policy
 
@@ -38,9 +50,13 @@ Verify that merged work deployed and behaves correctly in the target environment
 
 - Any secret or live-system access beyond the pipeline grant.
 - Infra mutation.
+- Destructive test-data setup or direct data mutation.
+- Visual approval, product-copy approval, accepted risk, or compatibility break
+  approval.
 - Merge approval for follow-up PRs unless explicit auto-merge is recorded.
 
 ## Adapter Notes
 
-Resolved environment coordinates belong in run state. This pipeline only names
-placeholders such as `{{TARGET_ENV}}` and `{{ADMIN_SECRET_REF}}`.
+Resolved environment coordinates, test credentials, release markers, and secret
+references belong in run state or ignored local overlays. This pipeline only
+names placeholders such as `{{TARGET_ENV}}` and `{{ADMIN_SECRET_REF}}`.
