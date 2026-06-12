@@ -327,11 +327,77 @@ function validateModelLevels() {
   }
 }
 
+function validateRoleSections() {
+  const required = [
+    "Purpose",
+    "When To Use",
+    "Rights",
+    "Default Model Level",
+    "Inputs",
+    "Outputs",
+    "Hard Rules",
+    "References",
+  ];
+
+  for (const path of walk(
+    join(root, "roles"),
+    (entry) => basename(entry) === "ROLE.md",
+  )) {
+    const text = read(path);
+    const roleId = rel(dirname(path)).replace(/^roles\//, "");
+    if (!text.startsWith(`# Role: ${roleId}\n`)) {
+      fail(path, `heading must be \`# Role: ${roleId}\``);
+    }
+    validateHeadings(path, required);
+  }
+}
+
+function validatePipelineSections() {
+  const required = [
+    "Purpose",
+    "Triggers",
+    "Roles",
+    "Steps",
+    "Execution Policy",
+    "Human Gates",
+    "Adapter Notes",
+  ];
+
+  for (const path of walk(
+    join(root, "pipelines"),
+    (entry) => basename(entry) === "PIPELINE.md",
+  )) {
+    const text = read(path);
+    const pipelineId = rel(dirname(path)).replace(/^pipelines\//, "");
+    if (!text.startsWith(`# Pipeline: ${pipelineId}\n`)) {
+      fail(path, `heading must be \`# Pipeline: ${pipelineId}\``);
+    }
+    validateHeadings(path, required);
+  }
+}
+
+function validateHeadings(path, required) {
+  const headings = new Set(
+    read(path)
+      .split(/\r?\n/)
+      .map((line) => line.match(/^## (.+)$/)?.[1])
+      .filter(Boolean),
+  );
+
+  for (const heading of required) {
+    if (!headings.has(heading)) {
+      fail(path, `missing \`## ${heading}\` section`);
+    }
+  }
+}
+
 validateMarkdownAdapters();
 validateCodexAgentToml();
 validateRoleCatalog();
 validatePipelineCatalog();
 validateModelLevels();
+validateRoleSections();
+validatePipelineSections();
 
 if (failures.length > 0) {
   console.error("Validation failed:");
