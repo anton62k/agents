@@ -6,6 +6,26 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const failures = [];
+const markdownValidationRoots = [
+  "README.md",
+  "AGENTS.md",
+  "CLAUDE.md",
+  "method",
+  "roles",
+  "pipelines",
+  "references",
+  "stacks",
+  "adapters",
+  "templates",
+  "checklists",
+];
+const envBoundaryRoots = [
+  ...markdownValidationRoots,
+  ".github",
+  "tools",
+];
+const ignoredEnvBoundaryPrefixes = ["legacy/"];
+const allowedNonPipelineSkillWrappers = new Set(["agent-method"]);
 
 function rel(path) {
   return relative(root, path).replaceAll("\\", "/");
@@ -40,6 +60,24 @@ function walk(dir, predicate = () => true) {
     }
   }
   return entries;
+}
+
+function filesUnder(paths, predicate = () => true) {
+  const files = [];
+  for (const entry of paths) {
+    const path = join(root, entry);
+    if (!exists(path)) {
+      continue;
+    }
+
+    const stat = statSync(path);
+    if (stat.isDirectory()) {
+      files.push(...walk(path, predicate));
+    } else if (predicate(path)) {
+      files.push(path);
+    }
+  }
+  return files;
 }
 
 function stripInlineComment(value) {
@@ -138,6 +176,66 @@ function parseCatalog(path) {
   return records;
 }
 
+function lineForOffset(text, offset) {
+  return text.slice(0, offset).split(/\r?\n/).length;
+}
+
+function extractMarkdownLinks(path) {
+  const text = read(path);
+  const links = [];
+  const pattern = /!?\[[^\]]*]\(([^)\n]+)\)/g;
+
+  for (const match of text.matchAll(pattern)) {
+    const destination = parseMarkdownDestination(match[1]);
+    if (!destination) {
+      continue;
+    }
+    links.push({
+      destination,
+      line: lineForOffset(text, match.index ?? 0),
+    });
+  }
+
+  return links;
+}
+
+function parseMarkdownDestination(rawValue) {
+  const raw = rawValue.trim();
+  if (!raw || raw.startsWith("#")) {
+    return null;
+  }
+
+  if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) {
+    return null;
+  }
+
+  let destination = raw;
+  if (destination.startsWith("<")) {
+    const endIndex = destination.indexOf(">");
+    destination =
+      endIndex === -1 ? destination.slice(1) : destination.slice(1, endIndex);
+  } else {
+    destination = destination.split(/\s+/)[0];
+  }
+
+  destination = destination.replace(/^['"]|['"]$/g, "");
+  if (!destination || destination.includes("{{")) {
+    return null;
+  }
+
+  return destination;
+}
+
+function stripFragmentAndQuery(destination) {
+  const hashIndex = destination.indexOf("#");
+  const queryIndex = destination.indexOf("?");
+  const cutoffIndexes = [hashIndex, queryIndex].filter((index) => index !== -1);
+  if (cutoffIndexes.length === 0) {
+    return destination;
+  }
+  return destination.slice(0, Math.min(...cutoffIndexes));
+}
+
 function normalizeCatalogValue(value) {
   return value.trim().replace(/^`([^`]+)`$/, "$1");
 }
@@ -234,6 +332,29 @@ function validateRoleCatalog() {
       fail(catalogPath, `role \`${roleId}\` is missing Claude Code wrapper`);
     }
   }
+
+  const catalogRoleIds = new Set(catalog.keys());
+  const wrapperSets = [
+    {
+      dir: join(root, "adapters/codex/materialized/agents"),
+      extension: ".toml",
+      label: "Codex",
+    },
+    {
+      dir: join(root, "adapters/claude-code/materialized/agents"),
+      extension: ".md",
+      label: "Claude Code",
+    },
+  ];
+
+  for (const { dir, extension, label } of wrapperSets) {
+    for (const path of walk(dir, (entry) => extname(entry) === extension)) {
+      const roleId = basename(path, extension);
+      if (!catalogRoleIds.has(roleId)) {
+        fail(path, `${label} wrapper has no role catalog record \`${roleId}\``);
+      }
+    }
+  }
 }
 
 function validatePipelineCatalog() {
@@ -283,6 +404,37 @@ function validatePipelineCatalog() {
         fail(
           catalogPath,
           `skill-wrapper pipeline \`${pipelineId}\` is missing Claude Code skill`,
+        );
+      }
+    }
+  }
+
+  const skillWrapperPipelineIds = new Set(
+    [...catalog]
+      .filter(([, fields]) => fields.platform_invocation === "skill-wrapper")
+      .map(([pipelineId]) => pipelineId),
+  );
+  const skillWrapperDirs = [
+    {
+      dir: join(root, "adapters/codex/materialized/skills"),
+      label: "Codex",
+    },
+    {
+      dir: join(root, "adapters/claude-code/materialized/skills"),
+      label: "Claude Code",
+    },
+  ];
+
+  for (const { dir, label } of skillWrapperDirs) {
+    for (const path of walk(dir, (entry) => basename(entry) === "SKILL.md")) {
+      const skillId = basename(dirname(path));
+      if (
+        !skillWrapperPipelineIds.has(skillId) &&
+        !allowedNonPipelineSkillWrappers.has(skillId)
+      ) {
+        fail(
+          path,
+          `${label} skill wrapper has no pipeline catalog record \`${skillId}\``,
         );
       }
     }
@@ -538,6 +690,126 @@ function validateAdapterSkillSymmetry() {
   }
 }
 
+function validateMarkdownLinks() {
+  const markdownFiles = filesUnder(
+    markdownValidationRoots,
+    (entry) => extname(entry) === ".md",
+  );
+
+  for (const path of markdownFiles) {
+    for (const { destination, line } of extractMarkdownLinks(path)) {
+      if (destination.startsWith("/")) {
+        fail(path, `markdown link must be relative: \`${destination}\``, line);
+        continue;
+      }
+
+      const localDestination = stripFragmentAndQuery(destination);
+      if (!localDestination) {
+        continue;
+      }
+
+      const targetPath = join(dirname(path), localDestination);
+      if (!exists(targetPath)) {
+        fail(
+          path,
+          `markdown link target does not exist: \`${destination}\``,
+          line,
+        );
+      }
+    }
+  }
+}
+
+function validateRuntimeDoesNotLinkLegacy() {
+  const runtimeFiles = filesUnder(
+    markdownValidationRoots.filter((entry) => entry !== "README.md"),
+    (entry) => extname(entry) === ".md",
+  );
+
+  for (const path of runtimeFiles) {
+    for (const { destination, line } of extractMarkdownLinks(path)) {
+      const localDestination = stripFragmentAndQuery(destination);
+      const normalized = rel(join(dirname(path), localDestination));
+      if (
+        localDestination.startsWith("legacy/") ||
+        localDestination.startsWith("../legacy/") ||
+        normalized.startsWith("legacy/")
+      ) {
+        fail(
+          path,
+          `runtime markdown must not link to legacy: \`${destination}\``,
+          line,
+        );
+      }
+    }
+  }
+}
+
+function validateEnvironmentBoundary() {
+  const files = filesUnder(envBoundaryRoots, (entry) =>
+    [".md", ".mjs", ".toml", ".yml", ".yaml"].includes(extname(entry)),
+  );
+  const forbiddenPatterns = [
+    {
+      pattern: /\/Users\//,
+      message: "committed files must not contain absolute macOS home paths",
+    },
+    {
+      pattern: /\/home\/[A-Za-z0-9._-]+\//,
+      message: "committed files must not contain absolute Linux home paths",
+    },
+    {
+      pattern: /\b[A-Za-z]:\\Users\\/,
+      message: "committed files must not contain absolute Windows home paths",
+    },
+    {
+      pattern: /(^|[\s`"'(])~\//,
+      message: "committed files must not contain home-relative local paths",
+    },
+    {
+      pattern: /anton62k\/agents/,
+      message: "external repository coordinates must use revisium/agent-playbook",
+    },
+    {
+      pattern: /\bgh[pousr]_[A-Za-z0-9_]{20,}\b/,
+      message: "committed files must not contain GitHub tokens",
+    },
+    {
+      pattern: /\bsk-[A-Za-z0-9_-]{20,}\b/,
+      message: "committed files must not contain API keys",
+    },
+    {
+      pattern: /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
+      message: "committed files must not contain private keys",
+    },
+    {
+      pattern:
+        /\bclaude-(?:opus|sonnet|haiku)-[A-Za-z0-9.-]+\b|\bgpt-[0-9][A-Za-z0-9.-]*\b/,
+      message: "committed method must use model levels, not concrete model names",
+    },
+  ];
+
+  for (const path of files) {
+    const relativePath = rel(path);
+    if (
+      ignoredEnvBoundaryPrefixes.some((prefix) =>
+        relativePath.startsWith(prefix),
+      )
+    ) {
+      continue;
+    }
+
+    const lines = read(path).split(/\r?\n/);
+    lines.forEach((line, index) => {
+      for (const { pattern, message } of forbiddenPatterns) {
+        if (pattern.test(line)) {
+          fail(path, message, index + 1);
+        }
+      }
+    });
+  }
+}
+
 validateMarkdownAdapters();
 validateCodexAgentToml();
 validateRoleCatalog();
@@ -548,6 +820,9 @@ validatePipelineSections();
 validateArtifactTemplateOwnerLinks();
 validateVerificationArtifactSync();
 validateAdapterSkillSymmetry();
+validateMarkdownLinks();
+validateRuntimeDoesNotLinkLegacy();
+validateEnvironmentBoundary();
 
 if (failures.length > 0) {
   console.error("Validation failed:");

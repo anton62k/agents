@@ -1,10 +1,10 @@
 # .agents
 
-This directory is the workspace-local overlay for the canonical agents method.
+This directory is the workspace-local overlay for the canonical agent playbook.
 
 ## Source
 
-- canonical method: `{{AGENTS_REPO_PATH}}`
+- canonical playbook: `{{AGENTS_REPO_PATH}}`
 - manual run protocol: `{{AGENTS_REPO_PATH}}/method/manual-run.md`
 - bootstrap protocol: `{{AGENTS_REPO_PATH}}/method/bootstrap.md`
 - materialization protocol: `{{AGENTS_REPO_PATH}}/method/materialization.md`
@@ -19,8 +19,8 @@ This directory is the workspace-local overlay for the canonical agents method.
 
 ## Refresh After Method Update
 
-After pulling or changing the canonical agents repository, validate the source
-before using newly added roles, pipelines, agents, or skills:
+After pulling or changing the canonical agent playbook repository, validate the
+source before using newly added roles, pipelines, agents, or skills:
 
 ```sh
 cd {{AGENTS_REPO_PATH}}
@@ -52,14 +52,14 @@ If this workspace root is versioned, merge
 Example `.agents/local.context.md`:
 
 ```md
-agents_repo_path: <local checkout of the canonical agents repository>
+agents_repo_path: <local checkout of the canonical agent playbook repository>
 workspace_root: <local checkout of this workspace>
 execution_profile: .agents/local.execution-profile.md
 ```
 
 ## Rules
 
-- Do not copy the full canonical method into this directory.
+- Do not copy the full canonical playbook into this directory.
 - Keep generated skills or adapter files reproducible from
   `{{AGENTS_REPO_PATH}}`.
 - Keep run artifacts out of reusable method changes unless the workspace

@@ -1,6 +1,6 @@
-# anton62k/agents
+# Revisium Agent Playbook
 
-Canonical agent method for building and maintaining software projects.
+Canonical agent playbook for building and maintaining software projects.
 
 This repository contains reusable role definitions, pipelines, references,
 templates, adapters, and method rules used to run AI coding agents consistently
@@ -11,7 +11,8 @@ the reusable method.
 
 ## Principle
 
-Project repos contain context. `anton62k/agents` contains method.
+Project repos contain context. `revisium/agent-playbook` contains reusable
+method.
 
 Prefer a workspace-first setup when several repositories are developed together.
 The workspace root contains the agent entrypoints and platform symlinks; child
@@ -22,7 +23,7 @@ handoff artifacts, apply gates, and keep platform-specific files reproducible.
 
 ## Structure
 
-- `method/` - canonical rules for role, pipeline, and environment definitions.
+- `method/` - core rules for role, pipeline, and environment definitions.
 - `roles/` - portable role definitions and role knowledge references.
 - `references/` - shared practices reused by multiple roles.
 - `stacks/` - language and ecosystem knowledge used by roles.
@@ -45,8 +46,10 @@ Run the repository validator before publishing method changes:
 node tools/validate.mjs
 ```
 
-The validator checks adapter wrapper frontmatter, catalog coverage, wrapper
-coverage, and basic portable model-level vocabulary. CI runs the same command.
+The validator checks adapter wrapper frontmatter, catalog and wrapper coverage,
+relative markdown links, runtime links away from `legacy/`, environment-boundary
+hardcoded values, and basic portable model-level vocabulary. CI runs the same
+command.
 
 ## How To Use
 
@@ -74,23 +77,27 @@ flow in `method/manual-run.md`.
 
 To update the method itself, follow `method/maintenance.md`.
 
+The `method/` directory name and internal ids such as `method-development` and
+`needs_method_materialization` are stable compatibility contracts. Do not rename
+them just because the repository is called the agent playbook.
+
 ## After Clone
 
-If this repository was cloned into a workspace as `agents/`, launch Codex or
-Claude Code from the workspace root and give it this request:
+If this repository was cloned into a workspace as `agent-playbook/`, launch
+Codex or Claude Code from the workspace root and give it this request:
 
 ```md
-Set up this workspace to use the canonical agents method from ./agents.
+Set up this workspace to use the canonical agent playbook from ./agent-playbook.
 
-Read agents/method/bootstrap.md and agents/method/materialization.md. Prefer
-workspace symlink mode for Codex and Claude Code. Create or update only the
-workspace entrypoints and adapter links needed for discovery: AGENTS.md,
-CLAUDE.md, .agents/README.md, .agents/skills, .codex/agents, .claude/agents,
-and .claude/skills.
+Read agent-playbook/method/bootstrap.md and
+agent-playbook/method/materialization.md. Prefer workspace symlink mode for
+Codex and Claude Code. Create or update only the workspace entrypoints and
+adapter links needed for discovery: AGENTS.md, CLAUDE.md, .agents/README.md,
+.agents/skills, .codex/agents, .claude/agents, and .claude/skills.
 
 If model, runner, consensus, or budget defaults are needed, use
-agents/templates/artifacts/execution-profile.md as the template and save the
-filled profile as .agents/local.execution-profile.md.
+agent-playbook/templates/artifacts/execution-profile.md as the template and save
+the filled profile as .agents/local.execution-profile.md.
 
 Preserve existing repo-local overlays. Keep concrete local paths, accounts,
 tokens, hosts, and secrets in ignored local files such as .agents/local.*.
@@ -98,8 +105,9 @@ Report what was created, linked, skipped, or needs human input before making
 ambiguous changes.
 ```
 
-If the repository has a different checkout name or location, replace `./agents`
-with the local checkout path or record it in `.agents/local.context.md`.
+If the repository has a different checkout name or location, replace
+`./agent-playbook` with the local checkout path or record it in
+`.agents/local.context.md`.
 
 `AGENTS.md` is intentional. Codex reads it as persistent guidance, and
 `CLAUDE.md` can import it for Claude Code. README is for human onboarding;

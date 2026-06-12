@@ -6,7 +6,7 @@ this method without copying all method files into every product repo.
 ## Root Types
 
 - `workspace root`: a folder that contains several product repositories and one
-  checkout of this canonical agents repository.
+  checkout of this canonical agent playbook repository.
 - `standalone repo root`: a single product repository that consumes this method
   directly.
 
@@ -16,7 +16,7 @@ repository.
 
 ## Repository Split
 
-- This repository is the canonical method source.
+- This repository is the canonical agent playbook source.
 - The consuming root keeps platform entrypoints, symlinks, local overlays,
   generated adapter files, and run artifacts.
 - Child product repositories keep product context and repo-specific overlays.
@@ -29,7 +29,7 @@ On a new device, do this before running agents in workspace mode:
 
 1. Create or clone the workspace root as `{{WORKSPACE_ROOT}}`.
 2. Clone or otherwise make this repository available as `{{AGENTS_REPO_PATH}}`,
-   preferably under `{{WORKSPACE_ROOT}}/agents`.
+   preferably under `{{WORKSPACE_ROOT}}/agent-playbook`.
 3. Clone product repositories under `{{WORKSPACE_ROOT}}`.
 4. Add or verify the workspace root entrypoints:
    - `AGENTS.md` for Codex-facing guidance;
@@ -59,8 +59,8 @@ On a new device, do this before running agents in workspace mode:
 
 The agent resolves `{{AGENTS_REPO_PATH}}` from the local overlay before reading
 canonical method files. If no overlay exists and the default
-`{{WORKSPACE_ROOT}}/agents` path is missing, the main agent asks the human for
-the method checkout location.
+`{{WORKSPACE_ROOT}}/agent-playbook` path is missing, the main agent asks the
+human for the playbook checkout location.
 
 ## Workspace Symlink Layout
 
@@ -148,7 +148,7 @@ CLAUDE.md
 .claude/
   agents -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents
   skills -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills
-agents/
+agent-playbook/
 repo-a/
 repo-b/
 ```
@@ -156,7 +156,7 @@ repo-b/
 Example ignored `.agents/local.context.md`:
 
 ```md
-agents_repo_path: <local checkout of the canonical agents repository>
+agents_repo_path: <local checkout of the canonical agent playbook repository>
 workspace_root: <local checkout of this workspace>
 ```
 
@@ -165,7 +165,7 @@ workspace_root: <local checkout of this workspace>
 The consuming root entrypoint should say:
 
 ```md
-Use the canonical agent method from {{AGENTS_REPO_PATH}}.
+Use the canonical agent playbook from {{AGENTS_REPO_PATH}}.
 Repo-local overlays win for concrete commands, paths, policies, and domain
 facts.
 Launch Codex and Claude Code from the workspace root when shared agents should
@@ -202,5 +202,5 @@ Start every multi-role task with:
 - Keep `.agents/runs/` out of reusable method changes unless a product repo
   explicitly commits run artifacts.
 - Generated Codex or Claude Code files must be reproducible from this repository.
-- Future revo import should read canonical method files, not generated adapter
+- Future revo import should read canonical playbook files, not generated adapter
   output.

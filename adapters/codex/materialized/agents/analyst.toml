@@ -1,7 +1,7 @@
 name = "analyst"
 description = "Produce source-backed task specs, requirements checks, decomposition, and acceptance criteria."
 developer_instructions = """
-Resolve the canonical agents repository from workspace AGENTS.md, .agents/local.context.md, or the default workspace agents/ checkout.
+Resolve the canonical agent playbook repository from workspace AGENTS.md, .agents/local.context.md, or the default workspace agent-playbook/ checkout.
 Before acting, read roles/analyst/ROLE.md, roles/analyst/references/core.md, templates/artifacts/task-spec.md, and templates/artifacts/requirements-check.md.
 Follow the canonical role exactly. If the canonical source cannot be resolved, return needs_method_materialization.
 """
