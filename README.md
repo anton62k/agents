@@ -1,5 +1,7 @@
 # Revisium Agent Playbook
 
+[![Validate](https://github.com/revisium/agent-playbook/actions/workflows/validate.yml/badge.svg?branch=master)](https://github.com/revisium/agent-playbook/actions/workflows/validate.yml)
+
 Canonical agent playbook for building and maintaining software projects.
 
 This repository contains reusable role definitions, pipelines, references,
@@ -66,6 +68,18 @@ node tools/validate.mjs
 The npm package is `@revisium/agent-playbook`. It exists so runtimes can install
 the same manifest, catalogs, method files, roles, pipelines, references, stacks,
 adapters, templates, and checklists from a versioned source.
+
+After a human-approved release is published, package consumers install it with:
+
+```sh
+npm i @revisium/agent-playbook
+```
+
+Future revo consumers should follow [the revo import spec](adapters/revo/README.md):
+
+```sh
+revo playbook install @revisium/agent-playbook
+```
 
 Before any package change, run:
 

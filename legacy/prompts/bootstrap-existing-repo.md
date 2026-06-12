@@ -19,4 +19,4 @@ workflow control.
 - Local verification passes.
 - CI passes.
 - Project-specific docs stay in the repo; reusable method moves to
-  `anton62k/agents`.
+  `revisium/agent-playbook`.
