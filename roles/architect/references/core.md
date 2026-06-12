@@ -177,28 +177,10 @@ architecture_plan:
 
 ## Fill Rules
 
-- `summary` states the architectural decision in one concise paragraph.
-- `decision_context` explains the source-backed problem, constraints, and
-  existing repo reality.
-- `chosen_approach` states the design direction without implementation trivia.
-- `alternatives_considered` records meaningful options, including why they were
-  rejected.
-- `boundaries` names affected modules, services, packages, layers, or ownership
-  edges.
-- `contracts` records API, event, data, generated-artifact, or integration
-  contracts that change or must remain stable.
-- `data_model_changes` and `migration_plan` describe sequencing, compatibility,
-  rollback, and cleanup needs.
-- `quality_attributes` captures only attributes that matter to the design.
-- `risks` includes unresolved technical risk, operational risk, and accepted
-  tradeoffs.
-- `implementation_slices` sequence the work but do not become line-by-line code
-  tasks.
-- `test_strategy` states required verification shape and risk-driven coverage.
-- `adr_candidate` is set when the decision is significant enough to require
-  durable human-visible architecture history.
-- `escalation` uses only the markers owned by
-  `../../../method/escalation.md`.
+Use the canonical field definitions in
+`../../../templates/artifacts/architecture-plan.md`. Architect-specific rule:
+fill existing fields with technical shape and constraints only; keep product
+requirements and acceptance criteria in `task_spec`.
 
 ## Handoff To Developer
 

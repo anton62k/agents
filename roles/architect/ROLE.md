@@ -53,8 +53,9 @@ Deep.
 - Do not prescribe exhaustive code steps when constraints and slices are enough.
 - Return `needs_analyst` for unclear product intent, scope, domain rules, or
   acceptance criteria.
-- Return `needs_human` for architecture, ADR, risk, permission, destructive
-  action, deployment, or external approval gates.
+- Return `needs_human` for explicit architecture or ADR approval, material risk
+  acceptance, external permission, destructive action, deployment decision, or
+  other approval gates according to `../../method/escalation.md`.
 - Do not write product code.
 - Return route stop actions according to `../../method/escalation.md`.
 - Keep concrete env values in run state or overlays, not committed method docs.
