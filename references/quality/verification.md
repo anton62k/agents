@@ -103,6 +103,82 @@ the uncertainty in `verification_plan` instead of guessing.
 - Missing credentials, project access, or provider config must be reported as
   skipped or `needs_human`; never report the provider gate as passed.
 
+## `verification_plan`
+
+`verification_plan` is the concrete gate plan prepared before developer
+execution. It maps generic route capabilities to repo-local commands only when
+the consuming repo or run overlay provides them.
+
+Fillable copy: `../../templates/artifacts/verification-plan.md`.
+
+```yaml
+verification_plan:
+  source_inputs:
+    route_plan_ref: ""
+    repo_verification_contract:
+      path: "VERIFICATION.md"
+      status: present | missing | stale | equivalent
+      equivalent_path: ""
+      fallback_used: false
+    repo_quality_docs: []
+    stack_references: []
+    tooling_references: []
+    risk_notes: []
+  required:
+    - id: primary-local-gate
+      capability: primary_local_gate
+      command: "{{LOCAL_VERIFY_COMMAND}}"
+      source: repo-overlay
+      evidence_required: command_output_summary
+  conditional:
+    - id: changed-surface-gate
+      capability: architecture_or_structure
+      applies_when: []
+      command: "{{CHANGED_SURFACE_CHECK_COMMAND}}"
+      source: repo-overlay
+      evidence_required: command_output_summary
+  optional_configured:
+    - id: static-analysis
+      provider: "{{STATIC_ANALYSIS_PROVIDER}}"
+      capability: static_analysis
+      provider_state: >
+        not_configured | configured_local | configured_hosted |
+        configured_unavailable | unknown
+      mode: local | hosted | ci | pr-decoration | unknown
+      scope: changed-code | new-code | full-project | unknown
+      blocking: false
+      command: "{{STATIC_ANALYSIS_COMMAND}}"
+      hosted_check: "{{STATIC_ANALYSIS_HOSTED_CHECK}}"
+      issue_level_access: required | best-effort | unavailable | unknown
+      categories:
+        - security
+        - reliability
+        - maintainability
+        - duplication
+        - coverage
+        - dependency_risk
+        - quality_gate
+      skip_if_missing:
+        - credential
+        - project_access
+        - provider_config
+      evidence_required: issue_summary_with_gate_status
+      false_positive_policy: reviewer_or_human_required
+  remote_after_push:
+    - id: remote-ci
+      provider: "{{CI_PROVIDER}}"
+      evidence_required: status_checks
+    - id: hosted-static-analysis
+      provider: "{{STATIC_ANALYSIS_PROVIDER}}"
+      applies_when: static_analysis.provider_state == configured_hosted
+      evidence_required: issue_summary_with_gate_status
+    - id: review-threads
+      provider: "{{REVIEW_THREAD_PROVIDER}}"
+      evidence_required: unresolved_thread_count
+  documentation_followups: []
+  stop_and_escalate_if: []
+```
+
 ## `verification_result`
 
 `verification_result` is the shared gate and PR-feedback evidence artifact for

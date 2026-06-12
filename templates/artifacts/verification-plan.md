@@ -68,7 +68,7 @@ verification_plan:
       applies_when: static_analysis.provider_state == configured_hosted
       evidence_required: issue_summary_with_gate_status
     - id: review-threads
-      provider: github
+      provider: "{{REVIEW_THREAD_PROVIDER}}"
       evidence_required: unresolved_thread_count
   documentation_followups: []
   stop_and_escalate_if: []
