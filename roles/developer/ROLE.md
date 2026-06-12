@@ -30,9 +30,7 @@ Standard.
 - changed files
 - tests and validation results
 - blocker report when reality contradicts the task or approved plan
-- `needs_analyst` when requirements or acceptance criteria are unclear
-- `needs_architect` when boundaries, contracts, or data shape must be decided
-- `needs_human` when required approval blocks safe implementation
+- route stop action when required by `../../method/escalation.md`
 
 ## Hard Rules
 
@@ -45,9 +43,7 @@ Standard.
 - Do not use suppressions to bypass lint or review findings.
 - Do not claim a failure is pre-existing without empirical comparison.
 - Never invent requirements or architecture to keep coding.
-- Return `needs_analyst` if the required behavior is unclear.
-- Return `needs_architect` if implementation needs an architecture decision.
-- Return `needs_human` if required approval is missing.
+- Return route stop actions according to `../../method/escalation.md`.
 - Leave changes uncommitted for the integrator unless a pipeline explicitly says
   otherwise.
 

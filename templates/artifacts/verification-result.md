@@ -1,6 +1,7 @@
 # Verification Result Template
 
 Canonical schema owner: `../../references/quality/verification.md`.
+Escalation vocabulary owner: `../../method/escalation.md`.
 
 The developer, integrator, watcher, or QA role fills this artifact after running
 or inspecting gates from `verification_plan`.
@@ -106,3 +107,5 @@ verification_result:
   instructions are `waiting` states with `resume_after` when available.
 - A missing credential, project access, or external permission is `needs_human`
   when the approved pipeline requires that gate.
+- Use `continue`, `needs_developer`, `needs_reviewer`, `needs_human`, and
+  `waiting` according to `../../method/escalation.md`.

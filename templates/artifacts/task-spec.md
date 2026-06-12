@@ -1,6 +1,7 @@
 # Task Spec Template
 
 Canonical schema owner: `../../roles/analyst/references/core.md`.
+Escalation vocabulary owner: `../../method/escalation.md`.
 
 The analyst owns this artifact. It defines what should change, why it matters,
 and how readiness will be judged.
@@ -41,4 +42,4 @@ task_spec:
 - Ground `sources` in inspected files, docs, run artifacts, or external sources.
 - Keep product ambiguity in `open_questions`, not hidden in prose.
 - Put human work in `human_actions`, not mixed into developer tasks.
-- Set `needs_architect` when technical shape must be decided before coding.
+- Set escalation flags according to `../../method/escalation.md`.

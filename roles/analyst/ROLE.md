@@ -34,16 +34,14 @@ Deep.
 - dependency order
 - risks and human-action items
 - acceptance criteria
-- `needs_architect` when technical shape, boundaries, or contracts are unclear
-- `needs_human` when requirements or approvals cannot be resolved from sources
+- route stop action when required by `../../method/escalation.md`
 
 ## Hard Rules
 
 - Ground claims in real files.
 - If source reality contradicts the brief, report the contradiction.
 - Define `what` and `why`; do not make architecture decisions.
-- Return `needs_architect` using the criteria in `references/core.md`.
-- Return `needs_human` when human clarification or approval is required.
+- Return route stop actions according to `../../method/escalation.md`.
 - Do not write product code.
 
 ## References
