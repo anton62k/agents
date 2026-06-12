@@ -38,23 +38,49 @@ input. Script names below are discovery hints, not commands to invent.
   conditional gates.
 - If the repo has multiple packages or workspaces, identify the package scope
   before running broad root commands.
+- [DECISION] Workspace selection is verification scope evidence, not a separate
+  `verification_capabilities` field.
 
-## Capability Mapping
+## Canonical Capability Mapping
 
+Map JS/TS evidence to the canonical capability names from
+`../../../references/quality/verification.md`. Do not introduce JS/TS-specific
+capability fields.
+
+- `primary_local_gate`: aggregate repo scripts or documented command sets that
+  run the required local checks for the selected surface.
 - `typecheck`: scripts such as `ts:check`, `typecheck`, `tsc`, or
   `check:types`.
 - `lint`: scripts such as `lint:ci`, `lint`, `eslint`, or framework-specific
-  strict lint gates.
-- `format`: scripts such as `format:check`, `prettier:ci`, or
-  `prettier:check`.
+  strict lint gates. Format-only checks feed this capability when the repo
+  treats formatting as part of lint quality.
 - `tests`: scripts such as `test:cov`, `test:ci`, `test:unit`, `test:e2e`, or
   targeted test scripts for the touched package.
 - `build_or_package`: scripts such as `build`, `build:dts`, `pack`,
-  `package`, or dry-run package commands.
+  `package`, package export checks, or dry-run package commands.
 - `architecture_or_structure`: scripts such as `fsd:check`, dependency-boundary
   checks, module-boundary checks, or framework structure validators.
 - `static_analysis`: configured providers discovered from repo docs, scripts,
   config files, or CI jobs.
+- `remote_ci`: hosted CI checks discovered from workflow config, PR status
+  checks, or repo documentation.
+
+Format scripts may still appear in `verification_plan` and
+`verification_result.executed`, but route planning must not record `format` as a
+top-level generic capability.
+
+## Workspace And Package Scope
+
+- [DECISION] Determine whether the change belongs to the repo root, one package,
+  several packages, or a generated output package before choosing commands.
+- [DECISION] Prefer package-scoped checks while iterating, then run the repo's
+  required aggregate gate before handoff when the route requires full local
+  verification.
+- [DECISION] Do not run broad workspace commands as proof of a specific package
+  gate unless the repo contract declares that aggregate as authoritative.
+- [DECISION] When scope is ambiguous or package metadata conflicts with repo
+  docs, set `fallback_used: true`, record the mismatch in `verification_plan`,
+  and return `needs_human` if the mismatch changes what is blocking.
 
 ## Conditional Gates
 
@@ -66,6 +92,18 @@ input. Script names below are discovery hints, not commands to invent.
   package export checks, and package dry runs.
 - Documentation-only changes usually require markdown/link checks when the repo
   defines them.
+
+## Generated Artifacts And Contracts
+
+- [DECISION] Treat configured code generation as a conditional gate when touched
+  sources include API schemas, GraphQL documents, Prisma schema, route manifests,
+  generated clients, declaration output, or package export metadata.
+- [DECISION] Regenerate artifacts only through repo-approved scripts or docs.
+  Do not invent direct tool commands from package names.
+- [DECISION] If generated files are intentionally not committed, record the
+  source-of-truth command or skipped reason in `verification_result`.
+- [DECISION] When generated output is committed, verify that source and output
+  stay in sync before handing off.
 
 ## Static Analysis
 
