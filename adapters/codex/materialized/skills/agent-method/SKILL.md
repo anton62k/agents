@@ -21,7 +21,11 @@ pipeline, select roles, bootstrap a workspace, or continue a multi-role run.
    `.claude` links.
 8. Discover roles from `roles/INDEX.md`.
 9. Discover pipelines from `pipelines/INDEX.md`.
-10. Use repo-local overlays for concrete commands, verification gates, review
+10. When setup, method updates, role changes, pipeline invocation changes, or
+    missing platform agents/skills are involved, run the materialization
+    freshness check from `method/materialization.md` before declaring the
+    workspace ready.
+11. Use repo-local overlays for concrete commands, verification gates, review
    policy, domain facts, and environment boundaries.
 
 If the canonical source cannot be resolved, return

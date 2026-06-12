@@ -28,6 +28,20 @@ Expected workspace links:
 Do not symlink canonical `roles/` or `pipelines/` directly into platform
 discovery folders. Platform files are adapter wrappers.
 
+## Method Updates
+
+After updating `{{AGENTS_REPO_PATH}}`, run its materialization freshness check
+before assuming new roles or skills are visible:
+
+- `node tools/validate.mjs` in `{{AGENTS_REPO_PATH}}`;
+- verify the symlinks above still point to adapter materialized directories;
+- when a role or directly invokable pipeline was added, renamed, removed, or
+  rerouted, follow `{{AGENTS_REPO_PATH}}/method/materialization.md`.
+
+In symlink mode, do not copy adapter files into the workspace just because the
+canonical method changed. If a platform does not follow a symlink in the current
+environment, switch only that target to generated mode.
+
 ## Child Repository Overlays
 
 Child repositories should contain only repo-specific facts when needed:
