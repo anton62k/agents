@@ -17,7 +17,8 @@ Before changing role behavior, run
 - `analyst` - turns a request into a grounded task spec, edge cases, and order.
 - `architect` - defines technical shape, boundaries, contracts, and ADR
   candidates.
-- `developer` - implements or fixes code in a working tree.
+- `developer` - implements scoped changes, fixes actionable findings, and runs
+  local verification in a working tree.
 - `reviewer` - adversarial read-only review; one voice in consensus.
 - `integrator` - commits, pushes, opens or updates PRs, and publishes approved
   PR-maintenance actions.
@@ -30,9 +31,10 @@ Before changing role behavior, run
 
 ## Specializations
 
-- `developer-backend` - backend specialization for the base developer contract.
-- `developer-frontend` - frontend specialization for the base developer
-  contract.
+- `developer-backend` - backend specialization for API, persistence,
+  integration, migration, and backend behavior work.
+- `developer-frontend` - frontend specialization for UI, routing, state,
+  generated frontend contracts, and browser-visible behavior work.
 
 ## Analyst, Architect, Developer Boundary
 

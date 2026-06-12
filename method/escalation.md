@@ -74,7 +74,10 @@ Developer execution must not start while any marker below is unresolved:
   acceptance criteria are unclear and returns `needs_human` when architecture,
   ADR, or risk approval is required.
 - Developer returns `needs_analyst`, `needs_architect`, or `needs_human` instead
-  of filling gaps outside the approved implementation boundary.
+  of filling gaps outside the approved implementation boundary, and may return
+  `needs_reviewer` when an implementation finding needs risk classification,
+  false-positive judgment, accepted-risk judgment, or provider-rule
+  interpretation before code should change.
 - Watcher, QA, integrator, merger, and deploy roles may return `waiting`,
   `needs_developer`, `needs_reviewer`, or `needs_human` according to the feedback
   owner and gate status.

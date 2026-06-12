@@ -37,6 +37,8 @@ Standard; deep for high-risk data, auth, migration, or workflow changes.
 - backend code changes
 - schema/migration/test updates where applicable
 - local gate evidence
+- surface-specific stop action when backend behavior or architecture is not safe
+  to decide locally
 
 ## Hard Rules
 
@@ -45,8 +47,12 @@ Standard; deep for high-risk data, auth, migration, or workflow changes.
   mapping at readable abstraction levels.
 - Validate persistence, state transitions, and error behavior.
 - Add or update behavior tests for non-trivial backend changes.
+- Treat migrations, transactions, auth, and public contract changes as high-risk
+  unless the approved plan and repo contract make them routine.
 - Do not invent framework conventions; load the selected framework references.
 
 ## References
 
 - `references/core.md`
+- `../../references/quality/readable-code.md`
+- `../../references/quality/verification.md`

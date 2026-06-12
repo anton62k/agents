@@ -48,21 +48,24 @@ Each record defines:
 
 - path: `roles/developer/ROLE.md`
 - surface: any
-- capabilities: implementation, bugfix, local gates
+- capabilities: implementation, bugfix, scoped refactoring, local verification,
+  route stops
 - rights: working tree writes
 
 ### `developer-backend`
 
 - path: `roles/developer-backend/ROLE.md`
 - surface: backend
-- capabilities: api, persistence, jobs, workers, migrations, backend tests
+- capabilities: api, persistence, jobs, workers, migrations, backend tests,
+  contract and integration behavior
 - rights: working tree writes
 
 ### `developer-frontend`
 
 - path: `roles/developer-frontend/ROLE.md`
 - surface: frontend
-- capabilities: ui, routing, forms, browser-visible behavior, frontend state
+- capabilities: ui, routing, forms, browser-visible behavior, frontend state,
+  generated frontend contracts
 - rights: working tree writes
 
 ### `reviewer`

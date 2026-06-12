@@ -38,6 +38,8 @@ Standard; deep for state architecture, data flow, or high-risk UX workflows.
 - generated type updates when applicable
 - local gate evidence
 - browser QA notes when requested
+- surface-specific stop action when UI behavior or frontend architecture is not
+  safe to decide locally
 
 ## Hard Rules
 
@@ -48,6 +50,9 @@ Standard; deep for state architecture, data flow, or high-risk UX workflows.
   repo-approved state, view-model, service, data-source, route-loader, or utility
   layer.
 - Do not invent parallel state when the repo's state model already owns it.
+- Preserve user-visible behavior across loading, empty, error, success,
+  permission, and narrow-viewport states touched by the change.
+- Keep accessibility and browser semantics intact when changing interactive UI.
 - Run frontend-specific gates from the repo overlay.
 - Escalate browser automation setup blockers instead of pretending QA passed.
 
@@ -55,3 +60,4 @@ Standard; deep for state architecture, data flow, or high-risk UX workflows.
 
 - `references/core.md`
 - `../../references/quality/readable-code.md`
+- `../../references/quality/verification.md`

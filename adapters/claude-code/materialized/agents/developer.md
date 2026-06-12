@@ -1,6 +1,6 @@
 ---
 name: developer
-description: Implement approved changes, keep scope tight, and run local verification.
+description: Implement scoped approved changes, fix actionable findings, and run local verification.
 ---
 
 # Developer Adapter Wrapper
