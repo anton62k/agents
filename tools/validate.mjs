@@ -391,6 +391,153 @@ function validateHeadings(path, required) {
   }
 }
 
+function extractYamlBlockAfterHeading(path, heading) {
+  const lines = read(path).split(/\r?\n/);
+  const headingIndex = lines.findIndex((line) => line === heading);
+  if (headingIndex === -1) {
+    fail(path, `missing \`${heading}\` section`);
+    return null;
+  }
+
+  const openIndex = lines.findIndex(
+    (line, index) => index > headingIndex && line === "```yaml",
+  );
+  if (openIndex === -1) {
+    fail(path, `missing YAML block after \`${heading}\``);
+    return null;
+  }
+
+  const closeIndex = lines.findIndex(
+    (line, index) => index > openIndex && line === "```",
+  );
+  if (closeIndex === -1) {
+    fail(path, `missing YAML block closing marker after \`${heading}\``);
+    return null;
+  }
+
+  return lines.slice(openIndex + 1, closeIndex).join("\n");
+}
+
+function extractFirstYamlBlock(path) {
+  const lines = read(path).split(/\r?\n/);
+  const openIndex = lines.findIndex((line) => line === "```yaml");
+  if (openIndex === -1) {
+    fail(path, "missing YAML block");
+    return null;
+  }
+
+  const closeIndex = lines.findIndex(
+    (line, index) => index > openIndex && line === "```",
+  );
+  if (closeIndex === -1) {
+    fail(path, "missing YAML block closing marker");
+    return null;
+  }
+
+  return lines.slice(openIndex + 1, closeIndex).join("\n");
+}
+
+function validateArtifactTemplateOwnerLinks() {
+  const dir = join(root, "templates/artifacts");
+  const ownerLabels = [
+    "Canonical schema owner",
+    "Canonical policy owner",
+    "Escalation vocabulary owner",
+    "Related lifecycle contract",
+  ];
+  const ownerPatterns = [
+    new RegExp(`(?:${ownerLabels.join("|")}): \`([^\`]+)\``, "g"),
+    /Fillable copy of the schema owned by `([^`]+)`/g,
+  ];
+
+  for (const path of walk(dir, (entry) => extname(entry) === ".md")) {
+    if (basename(path) === "README.md") {
+      continue;
+    }
+
+    const text = read(path);
+    const ownerRefs = [];
+    for (const pattern of ownerPatterns) {
+      for (const match of text.matchAll(pattern)) {
+        ownerRefs.push(match[1]);
+      }
+    }
+
+    if (ownerRefs.length === 0) {
+      fail(path, "artifact template must declare a canonical owner");
+      continue;
+    }
+
+    for (const ownerRef of ownerRefs) {
+      if (ownerRef.startsWith("/") || /^[a-z]+:\/\//i.test(ownerRef)) {
+        fail(path, `canonical owner must be a relative path: \`${ownerRef}\``);
+        continue;
+      }
+
+      const ownerPath = join(dirname(path), ownerRef);
+      if (!exists(ownerPath)) {
+        fail(path, `canonical owner path does not exist: \`${ownerRef}\``);
+      }
+    }
+  }
+}
+
+function validateVerificationArtifactSync() {
+  const canonicalPath = join(root, "references/quality/verification.md");
+  const artifacts = [
+    {
+      templatePath: join(root, "templates/artifacts/verification-plan.md"),
+      heading: "## `verification_plan`",
+    },
+    {
+      templatePath: join(root, "templates/artifacts/verification-result.md"),
+      heading: "## `verification_result`",
+    },
+  ];
+
+  for (const { templatePath, heading } of artifacts) {
+    const canonicalBlock = extractYamlBlockAfterHeading(canonicalPath, heading);
+    const templateBlock = extractFirstYamlBlock(templatePath);
+    if (
+      canonicalBlock !== null &&
+      templateBlock !== null &&
+      canonicalBlock !== templateBlock
+    ) {
+      fail(
+        templatePath,
+        `YAML block must match ${rel(canonicalPath)} ${heading}`,
+      );
+    }
+  }
+}
+
+function validateAdapterSkillSymmetry() {
+  const codexPath = join(
+    root,
+    "adapters/codex/materialized/skills/agent-method/SKILL.md",
+  );
+  const claudePath = join(
+    root,
+    "adapters/claude-code/materialized/skills/agent-method/SKILL.md",
+  );
+
+  const codexExists = exists(codexPath);
+  const claudeExists = exists(claudePath);
+  if (!codexExists) {
+    fail(codexPath, "missing Codex agent-method skill");
+  }
+  if (!claudeExists) {
+    fail(claudePath, "missing Claude Code agent-method skill");
+  }
+
+  if (codexExists && claudeExists && read(codexPath) !== read(claudePath)) {
+    fail(
+      claudePath,
+      `agent-method skill must match ${rel(codexPath)}`,
+    );
+  }
+}
+
 validateMarkdownAdapters();
 validateCodexAgentToml();
 validateRoleCatalog();
@@ -398,6 +545,9 @@ validatePipelineCatalog();
 validateModelLevels();
 validateRoleSections();
 validatePipelineSections();
+validateArtifactTemplateOwnerLinks();
+validateVerificationArtifactSync();
+validateAdapterSkillSymmetry();
 
 if (failures.length > 0) {
   console.error("Validation failed:");
