@@ -75,6 +75,67 @@ phase order still belongs to `method/orchestrator-run.md`.
 6. Present why this route is sufficient, what coverage was omitted, and what
    would trigger `method first`, `analysis only`, `change roles`, or `stop`.
 
+## Route Selection Tie-Breakers
+
+[DECISION] Use these tie-breakers when more than one route could apply.
+
+- Prefer the smallest cataloged pipeline that can produce the requested outcome
+  with the required gates. Do not pick a heavier pipeline because its roles are
+  more familiar.
+- Prefer `analysis-only` when the user asks for research, review, explanation,
+  planning, or approval material without mutation.
+- Prefer `method-development` when the requested outcome changes roles,
+  pipelines, adapters, stack references, artifact schemas, validators, or
+  bootstrap behavior.
+- Prefer `bugfix` for a concrete failing behavior, regression, CI/review defect,
+  or QA finding whose desired outcome is already known.
+- Prefer `feature-development` when the work needs requirements definition,
+  architecture choices, implementation, PR publication, and watcher feedback in
+  one route.
+- Prefer `post-merge-qa` only after merge or deployment when the primary
+  question is runtime evidence, not implementation.
+- If a small local implementation can be done safely by one role but no
+  cataloged pipeline represents that route, stop with `method-development` to
+  add or approve the missing route instead of hiding the mismatch.
+- Do not let model availability, missing local tooling, or a desire to reduce
+  review cost change the route silently. Surface the tradeoff in route approval.
+
+Optional role inclusion follows risk, not habit:
+
+- include `architect` when boundaries, contracts, data ownership, migrations,
+  cross-module flows, quality attributes, or ADR-level tradeoffs are in scope;
+- include `reviewer` when risk classification, adversarial review,
+  false-positive handling, or accepted-risk judgment is needed;
+- include `qa-backend`, `qa-frontend`, or `deploy-watcher` only when runtime or
+  user-visible evidence is part of the approved outcome;
+- omit optional roles only when the omitted coverage is visible in the route
+  plan.
+
+## Progressive Context Loading
+
+[DECISION] The orchestrator controls context spend.
+
+Read in this order:
+
+1. always-on method rules, consuming-root entrypoints, repo-local overlays, and
+   source-of-truth docs;
+2. role and pipeline catalogs;
+3. selected pipeline and required role files;
+4. selected stack, framework, tooling, quality, and architecture references;
+5. source files or external artifacts named by the selected route.
+
+Do not load every role, stack, framework, or legacy file to make a route feel
+complete. Widen context only when the route evidence, repo overlay, specialist
+output, or human approval requires it.
+
+When context budget is tight, preserve decisions and blockers first:
+
+- selected route and why;
+- required/omitted roles and coverage tradeoffs;
+- unresolved clarification markers;
+- implementation and verification contracts;
+- links or paths to evidence instead of pasted long artifacts.
+
 ## Execution Policy Recommendation
 
 [DECISION] The orchestrator recommends policy; the human approves policy.
@@ -134,6 +195,38 @@ Do not hard-code JavaScript, npm, Sonar, FSD, or any other provider as a core
 expectation. If a provider is configured but credentials or project access are
 missing, mark that gate as `optional_configured` with a skip or `needs_human`
 condition.
+
+## Developer Handoff Boundaries
+
+[DECISION] The orchestrator may turn specialist output into implementation
+guidance, but it must not turn the developer into the owner of unresolved
+analysis or architecture.
+
+The implementation brief may include:
+
+- approved behavior and acceptance criteria;
+- target files, modules, or source areas to inspect first;
+- architecture constraints and contracts already approved;
+- implementation slices in a useful order;
+- required tests and a `verification_plan` reference;
+- known risks, out-of-scope items, and stop conditions.
+
+Developer owns local code-shape decisions inside those constraints: exact helper
+extraction, naming, small refactoring needed for the change, test arrangement,
+and framework-local implementation choices.
+
+Stop before developer execution when the developer would need to decide:
+
+- product behavior, acceptance criteria, or user-visible tradeoffs;
+- public API, event, persistence, or integration contract changes;
+- module ownership, dependency direction, or cross-boundary architecture;
+- data model, migration strategy, transaction boundary, or consistency policy;
+- security acceptance, false-positive acceptance, release policy, or merge
+  authorization;
+- which verification gates are allowed to be skipped.
+
+Route those gaps to `needs_analyst`, `needs_architect`, `needs_reviewer`, or
+`needs_human` according to `method/escalation.md`.
 
 ## Execution Policy Ownership
 

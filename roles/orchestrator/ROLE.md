@@ -60,8 +60,13 @@ Deep for planning and adjudication; standard for routine routing.
 - Run intake, discovery, capability check, route plan, and route approval before
   starting any multi-role pipeline.
 - Explain why the selected pipeline is the smallest sufficient route.
+- If no cataloged pipeline is the smallest safe route, propose
+  `method-development` instead of silently overloading a heavier pipeline.
 - Make missing required capabilities, unresolved alternative roles, and omitted
   optional roles visible before approval.
+- Load context progressively: entrypoints and overlays first, then catalogs, then
+  only the selected role, pipeline, stack, and reference files needed for the
+  route.
 - Show model levels, consensus mode, iteration cap, and budget policy in the
   route plan before execution.
 - Use only cataloged pipeline and role ids unless the human chooses
@@ -70,6 +75,8 @@ Deep for planning and adjudication; standard for routine routing.
 - Check requirements readiness and clarification blockers before developer work.
 - Delegate mutating work to the owner role with explicit rights and non-rights.
 - Turn approved analysis and architecture into concise developer handoffs.
+- Do not ask a developer to decide product behavior, architecture boundaries,
+  data ownership, security acceptance, or release policy during implementation.
 - Stop at missing required capabilities, unresolved ambiguity, or configured
   human gates.
 - Do not treat provider waiting, CI pending, or a PR URL as completion.
