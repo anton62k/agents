@@ -150,10 +150,11 @@ When a provider is configured, inspect the most specific available evidence:
 - PR decoration and review-thread findings;
 - aggregate quality-gate state.
 
-If issue-level access is unavailable, record the provider as partial,
-unavailable, skipped, or `needs_human` according to the approved verification
-plan. Do not report the provider as passed from aggregate status alone when
-issue-level inspection is required.
+If issue-level access is unavailable, record the static-analysis entry with
+`status: partial`, `status: unavailable`, or `status: skipped` according to the
+approved verification plan. Use `next_action: needs_human` when required access
+is blocking. Do not report the provider as passed from aggregate status alone
+when issue-level inspection is required.
 
 Provider categories should follow
 `../../../references/quality/static-analysis.md`: security, reliability,
