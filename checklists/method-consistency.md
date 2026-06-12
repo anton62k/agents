@@ -18,10 +18,14 @@ Run it before publishing a method PR.
 - [ ] The change belongs to the edited owner: role, stack, framework reference,
   shared reference, pipeline, adapter, template, or local overlay.
 - [ ] `roles/INDEX.md` matches routable role files.
+- [ ] Role frontmatter `id`, `surface`, `rights`, and `default_model_level`
+  matches `method/role-definition.md` and `roles/INDEX.md`.
 - [ ] Routable role wrappers match `roles/INDEX.md` in:
   - `adapters/codex/materialized/agents/`
   - `adapters/claude-code/materialized/agents/`
 - [ ] `pipelines/INDEX.md` matches pipeline files.
+- [ ] Pipeline frontmatter `id` matches `method/pipeline-definition.md` and
+  `pipelines/INDEX.md`.
 - [ ] `platform_invocation: skill-wrapper` pipelines have matching skill
   wrappers in Codex and Claude Code adapters, or the omission is documented.
 - [ ] Adapter wrappers point back to canonical sources and do not redefine role

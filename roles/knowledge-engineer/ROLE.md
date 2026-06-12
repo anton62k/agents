@@ -1,3 +1,10 @@
+---
+id: knowledge-engineer
+surface: method
+rights: write-working-tree
+default_model_level: deep
+---
+
 # Role: knowledge-engineer
 
 ## Purpose

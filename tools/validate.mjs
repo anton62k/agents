@@ -26,6 +26,23 @@ const envBoundaryRoots = [
 ];
 const ignoredEnvBoundaryPrefixes = ["legacy/"];
 const allowedNonPipelineSkillWrappers = new Set(["agent-method"]);
+const allowedRoleSurfaces = new Set([
+  "any",
+  "backend",
+  "frontend",
+  "repo",
+  "deployment",
+  "method",
+]);
+const allowedRoleRights = new Set([
+  "read-only",
+  "write-working-tree",
+  "git-gh",
+  "deploy-read",
+  "qa-live",
+  "deterministic-script",
+]);
+const allowedModelLevels = new Set(["cheap", "standard", "deep"]);
 
 function rel(path) {
   return relative(root, path).replaceAll("\\", "/");
@@ -85,7 +102,7 @@ function stripInlineComment(value) {
   return hashIndex === -1 ? value : value.slice(0, hashIndex).trimEnd();
 }
 
-function parseFrontmatter(path) {
+function parseFrontmatter(path, requiredKeys = ["name", "description"]) {
   const lines = read(path).split(/\r?\n/);
   if (lines[0] !== "---") {
     fail(path, "missing YAML frontmatter opening marker", 1);
@@ -124,13 +141,27 @@ function parseFrontmatter(path) {
     data[key] = quoted ? value.slice(1, -1) : value;
   }
 
-  for (const key of ["name", "description"]) {
+  for (const key of requiredKeys) {
     if (!data[key]) {
       fail(path, `frontmatter is missing \`${key}\``);
     }
   }
 
   return data;
+}
+
+function markdownBody(path) {
+  const lines = read(path).split(/\r?\n/);
+  if (lines[0] !== "---") {
+    return lines.join("\n");
+  }
+
+  const end = lines.findIndex((line, index) => index > 0 && line === "---");
+  if (end === -1) {
+    return lines.join("\n");
+  }
+
+  return lines.slice(end + 1).join("\n").replace(/^\n/, "");
 }
 
 function parseTomlAssignments(path) {
@@ -357,6 +388,68 @@ function validateRoleCatalog() {
   }
 }
 
+function validateRoleFrontmatter() {
+  const catalogPath = join(root, "roles/INDEX.md");
+  const catalog = parseCatalog(catalogPath);
+
+  for (const path of walk(
+    join(root, "roles"),
+    (entry) => basename(entry) === "ROLE.md",
+  )) {
+    const roleId = rel(dirname(path)).replace(/^roles\//, "");
+    const frontmatter = parseFrontmatter(path, [
+      "id",
+      "surface",
+      "rights",
+      "default_model_level",
+    ]);
+    if (!frontmatter) {
+      continue;
+    }
+
+    if (frontmatter.id !== roleId) {
+      fail(path, `frontmatter id must match role directory \`${roleId}\``);
+    }
+    if (!allowedRoleSurfaces.has(frontmatter.surface)) {
+      fail(
+        path,
+        `frontmatter surface has invalid enum value \`${frontmatter.surface}\``,
+      );
+    }
+    if (!allowedRoleRights.has(frontmatter.rights)) {
+      fail(
+        path,
+        `frontmatter rights has invalid enum value \`${frontmatter.rights}\``,
+      );
+    }
+    if (!allowedModelLevels.has(frontmatter.default_model_level)) {
+      fail(
+        path,
+        `frontmatter default_model_level has invalid enum value \`${frontmatter.default_model_level}\``,
+      );
+    }
+
+    const catalogFields = catalog.get(roleId);
+    if (catalogFields && catalogFields.surface !== frontmatter.surface) {
+      fail(
+        path,
+        `frontmatter surface \`${frontmatter.surface}\` must match roles/INDEX.md \`${catalogFields.surface}\``,
+      );
+    }
+
+    const modelSection = sectionText(path, "Default Model Level").toLowerCase();
+    if (
+      frontmatter.default_model_level &&
+      !new RegExp(`\\b${frontmatter.default_model_level}\\b`).test(modelSection)
+    ) {
+      fail(
+        path,
+        `Default Model Level section must include frontmatter value \`${frontmatter.default_model_level}\``,
+      );
+    }
+  }
+}
+
 function validatePipelineCatalog() {
   const catalogPath = join(root, "pipelines/INDEX.md");
   const catalog = parseCatalog(catalogPath);
@@ -441,8 +534,36 @@ function validatePipelineCatalog() {
   }
 }
 
+function validatePipelineFrontmatter() {
+  const catalogPath = join(root, "pipelines/INDEX.md");
+  const catalog = parseCatalog(catalogPath);
+
+  for (const path of walk(
+    join(root, "pipelines"),
+    (entry) => basename(entry) === "PIPELINE.md",
+  )) {
+    const pipelineId = rel(dirname(path)).replace(/^pipelines\//, "");
+    const frontmatter = parseFrontmatter(path, ["id"]);
+    if (!frontmatter) {
+      continue;
+    }
+
+    if (frontmatter.id !== pipelineId) {
+      fail(
+        path,
+        `frontmatter id must match pipeline directory \`${pipelineId}\``,
+      );
+    }
+    if (!catalog.has(pipelineId)) {
+      fail(
+        path,
+        `frontmatter id \`${pipelineId}\` is missing from pipelines/INDEX.md`,
+      );
+    }
+  }
+}
+
 function validateModelLevels() {
-  const allowed = new Set(["cheap", "standard", "deep"]);
   for (const path of walk(
     join(root, "roles"),
     (entry) => basename(entry) === "ROLE.md",
@@ -470,7 +591,7 @@ function validateModelLevels() {
     const words = [...section.matchAll(/\b[a-z][a-z-]*\b/g)].map(
       (match) => match[0],
     );
-    if (!words.some((word) => allowed.has(word))) {
+    if (!words.some((word) => allowedModelLevels.has(word))) {
       fail(path, "`Default Model Level` must include cheap, standard, or deep");
     }
     if (section.includes("deterministic script")) {
@@ -495,9 +616,9 @@ function validateRoleSections() {
     join(root, "roles"),
     (entry) => basename(entry) === "ROLE.md",
   )) {
-    const text = read(path);
+    const body = markdownBody(path);
     const roleId = rel(dirname(path)).replace(/^roles\//, "");
-    if (!text.startsWith(`# Role: ${roleId}\n`)) {
+    if (!body.startsWith(`# Role: ${roleId}\n`)) {
       fail(path, `heading must be \`# Role: ${roleId}\``);
     }
     validateHeadings(path, required);
@@ -519,9 +640,9 @@ function validatePipelineSections() {
     join(root, "pipelines"),
     (entry) => basename(entry) === "PIPELINE.md",
   )) {
-    const text = read(path);
+    const body = markdownBody(path);
     const pipelineId = rel(dirname(path)).replace(/^pipelines\//, "");
-    if (!text.startsWith(`# Pipeline: ${pipelineId}\n`)) {
+    if (!body.startsWith(`# Pipeline: ${pipelineId}\n`)) {
       fail(path, `heading must be \`# Pipeline: ${pipelineId}\``);
     }
     validateHeadings(path, required);
@@ -541,6 +662,24 @@ function validateHeadings(path, required) {
       fail(path, `missing \`## ${heading}\` section`);
     }
   }
+}
+
+function sectionText(path, heading) {
+  const lines = markdownBody(path).split(/\r?\n/);
+  const headingIndex = lines.findIndex((line) => line === `## ${heading}`);
+  if (headingIndex === -1) {
+    return "";
+  }
+
+  const sectionLines = [];
+  for (let index = headingIndex + 1; index < lines.length; index += 1) {
+    if (lines[index].startsWith("## ")) {
+      break;
+    }
+    sectionLines.push(lines[index]);
+  }
+
+  return sectionLines.join("\n");
 }
 
 function extractYamlBlockAfterHeading(path, heading) {
@@ -813,7 +952,9 @@ function validateEnvironmentBoundary() {
 validateMarkdownAdapters();
 validateCodexAgentToml();
 validateRoleCatalog();
+validateRoleFrontmatter();
 validatePipelineCatalog();
+validatePipelineFrontmatter();
 validateModelLevels();
 validateRoleSections();
 validatePipelineSections();

@@ -1,3 +1,10 @@
+---
+id: deploy-watcher
+surface: deployment
+rights: deploy-read
+default_model_level: standard
+---
+
 # Role: deploy-watcher
 
 ## Purpose

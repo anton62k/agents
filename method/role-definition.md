@@ -2,6 +2,30 @@
 
 Each portable role lives at `roles/<role>/ROLE.md`.
 
+## Frontmatter
+
+Each role file starts with YAML frontmatter:
+
+```yaml
+---
+id: <role-id>
+surface: any | backend | frontend | repo | deployment | method
+rights: <rights>
+default_model_level: cheap | standard | deep
+---
+```
+
+- [DECISION] `id` must equal the role directory name and the `roles/INDEX.md`
+  record.
+- [DECISION] `surface` must equal the catalog surface.
+- [DECISION] `rights` is a coarse importer/runtime capability class, not the
+  full prose rights explanation. Allowed values: `read-only`,
+  `write-working-tree`, `git-gh`, `deploy-read`, `qa-live`, or
+  `deterministic-script`.
+- [DECISION] `default_model_level` is the portable default. Prose may explain
+  escalation cases, but it must include the frontmatter value and must not
+  replace it with concrete provider models or runner types.
+
 ## Required Sections
 
 - `# Role: <id>`: stable kebab-case role id.
@@ -16,6 +40,14 @@ Each portable role lives at `roles/<role>/ROLE.md`.
 
 Specialized roles may include `Extends` between `Purpose` and `When To Use`.
 
+## Optional Sections
+
+- `Extends`: inheritance or composition links for specialized roles.
+
+[DECISION] Do not add separate `practice_references` or `platform_notes`
+sections as a second source of truth. Use `References` for knowledge files and
+adapter docs for platform mechanics unless this format is changed first.
+
 ## Catalog Metadata
 
 `roles/INDEX.md` owns routable metadata:
@@ -28,7 +60,7 @@ Specialized roles may include `Extends` between `Purpose` and `When To Use`.
 
 Do not duplicate catalog metadata as separate sections in every role file.
 Future machine-readable imports should validate `roles/INDEX.md` against
-`ROLE.md` files and adapter wrappers.
+`ROLE.md` frontmatter, role files, and adapter wrappers.
 
 ## Knowledge References
 
@@ -84,9 +116,9 @@ Usage and cost metadata are recorded by the orchestrator or adapter according to
 
 ## Model Policy
 
-`default_model_level` is a portable recommendation, not a concrete provider
-model. Concrete model names are selected from local execution profiles or future
-runtime config according to `execution-policy.md`.
+`default_model_level` frontmatter is a portable recommendation, not a concrete
+provider model. Concrete model names are selected from local execution profiles
+or future runtime config according to `execution-policy.md`.
 
 Runner types such as deterministic scripts are not model levels. Put them in
 rights, adapter docs, or execution profiles.

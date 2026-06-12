@@ -1,3 +1,10 @@
+---
+id: qa-backend
+surface: backend
+rights: qa-live
+default_model_level: standard
+---
+
 # Role: qa-backend
 
 ## Purpose

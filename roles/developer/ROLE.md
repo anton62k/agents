@@ -1,3 +1,10 @@
+---
+id: developer
+surface: any
+rights: write-working-tree
+default_model_level: standard
+---
+
 # Role: developer
 
 ## Purpose

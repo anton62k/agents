@@ -46,10 +46,10 @@ Run the repository validator before publishing method changes:
 node tools/validate.mjs
 ```
 
-The validator checks adapter wrapper frontmatter, catalog and wrapper coverage,
-relative markdown links, runtime links away from `legacy/`, environment-boundary
-hardcoded values, and basic portable model-level vocabulary. CI runs the same
-command.
+The validator checks role, pipeline, and adapter wrapper frontmatter; catalog
+and wrapper coverage; relative markdown links; runtime links away from
+`legacy/`; environment-boundary hardcoded values; and basic portable model-level
+vocabulary. CI runs the same command.
 
 ## How To Use
 

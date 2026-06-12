@@ -1,3 +1,7 @@
+---
+id: method-development
+---
+
 # Pipeline: method-development
 
 ## Purpose

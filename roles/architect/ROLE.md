@@ -1,3 +1,10 @@
+---
+id: architect
+surface: any
+rights: read-only
+default_model_level: deep
+---
+
 # Role: architect
 
 ## Purpose
