@@ -1,6 +1,6 @@
-# AGENTS.md - anton62k/agents
+# AGENTS.md - Revisium Agent Playbook
 
-This repository stores the canonical agent method. Older material under
+This repository stores the canonical agent playbook. Older material under
 `legacy/` is archived and must not be used as runtime agent knowledge.
 
 ## Why This File Exists

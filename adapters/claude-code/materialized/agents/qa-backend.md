@@ -5,8 +5,8 @@ description: Run approved backend QA against live APIs, runtime behavior, and ba
 
 # Backend QA Adapter Wrapper
 
-Resolve the canonical agents repository from workspace `AGENTS.md`,
-`.agents/local.context.md`, or the default workspace `agents/` checkout.
+Resolve the canonical agent playbook repository from workspace `AGENTS.md`,
+`.agents/local.context.md`, or the default workspace `agent-playbook/` checkout.
 
 Before acting, read:
 

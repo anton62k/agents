@@ -21,7 +21,7 @@ TODO: short description of what this repository owns.
 1. Repo-local files and docs in this repository.
 2. Existing quality, review, architecture, and CI documents.
 3. Build/package scripts and CI workflow definitions.
-4. Canonical agents method from `{{AGENTS_REPO_PATH}}`.
+4. Canonical agent playbook from `{{AGENTS_REPO_PATH}}`.
 5. Agent inference from source inspection.
 
 Repo overlay wins for concrete commands, paths, local policies, release rules,

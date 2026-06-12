@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This workspace uses the canonical agents method from `{{AGENTS_REPO_PATH}}`.
+This workspace uses the canonical agent playbook from `{{AGENTS_REPO_PATH}}`.
 
 ## Workspace Contract
 

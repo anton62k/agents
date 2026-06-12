@@ -5,8 +5,8 @@ description: "Own the run control plane: intake, routing, gates, role handoffs, 
 
 # Orchestrator Adapter Wrapper
 
-Resolve the canonical agents repository from workspace `AGENTS.md`,
-`.agents/local.context.md`, or the default workspace `agents/` checkout.
+Resolve the canonical agent playbook repository from workspace `AGENTS.md`,
+`.agents/local.context.md`, or the default workspace `agent-playbook/` checkout.
 
 Before acting, read:
 

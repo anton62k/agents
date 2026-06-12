@@ -64,7 +64,7 @@ workspace/
   .claude/
     agents -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents
     skills -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills
-  agents/
+  agent-playbook/
   repo-a/
   repo-b/
 ```
@@ -171,7 +171,7 @@ Generated files should start with a short portable header:
 <!--
 Generated from: {{AGENTS_REPO_PATH}}/<canonical-source-path>
 Source revision: {{AGENTS_SOURCE_REVISION}}
-Update rule: regenerate from canonical agents method; do not edit manually.
+Update rule: regenerate from canonical agent playbook; do not edit manually.
 -->
 ```
 
@@ -240,7 +240,7 @@ discovery.
 
 ## Update Flow
 
-1. Update or clone the canonical agents repository.
+1. Update or clone the canonical agent playbook repository.
 2. Resolve `{{WORKSPACE_ROOT}}`, `{{AGENTS_REPO_PATH}}`, and any child repo paths
    from ignored local overlays or human input.
 3. Read `bootstrap.md`, this file, and the selected adapter README.

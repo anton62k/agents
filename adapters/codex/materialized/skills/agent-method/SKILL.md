@@ -1,17 +1,17 @@
 ---
 name: agent-method
-description: Run the canonical agents method from a workspace root; use for routing tasks, bootstrapping agents, or selecting roles and pipelines.
+description: Run the canonical agent playbook from a workspace root; use for routing tasks, bootstrapping agents, or selecting roles and pipelines.
 ---
 
 # Agent Method
 
-Use this skill when the user asks to run the canonical agents method, choose a
+Use this skill when the user asks to run the canonical agent playbook, choose a
 pipeline, select roles, bootstrap a workspace, or continue a multi-role run.
 
 ## Steps
 
-1. Resolve the canonical agents repository from workspace `AGENTS.md`,
-   `.agents/local.context.md`, or the default workspace `agents/` checkout.
+1. Resolve the canonical agent playbook repository from workspace `AGENTS.md`,
+   `.agents/local.context.md`, or the default workspace `agent-playbook/` checkout.
 2. Read `method/constitution.md`.
 3. Read `method/manual-run.md`.
 4. Read `method/execution-policy.md`.
