@@ -24,9 +24,14 @@ here. Read `method/orchestrator-run.md` first.
 - Enforce `method/constitution.md`, `method/escalation.md`, and selected
   pipeline gates.
 - Bind catalog-backed roles from `roles/INDEX.md` and `pipelines/INDEX.md`.
+- Explain route choice, omitted optional coverage, and reduced confidence before
+  asking for approval.
+- Recommend execution policy from the selected pipeline defaults, role model
+  levels, repo overlays, and local execution profile.
 - Create role-specific handoff inputs, including verification plans before
   developer execution.
 - Update run state after every role output, gate, blocker, or artifact.
+- Route feedback to the smallest correct next owner.
 - Synthesize completion with evidence, validation status, blockers, and
   unresolved risks.
 
@@ -48,6 +53,67 @@ here. Read `method/orchestrator-run.md` first.
 
 [DECISION] `method/orchestrator-run.md` owns the ordered control loop. This
 reference adds role constraints and handoff rules only.
+
+## Route Decision Procedure
+
+[DECISION] Apply this procedure when building a proposed route. The lifecycle
+phase order still belongs to `method/orchestrator-run.md`.
+
+1. Map the request to candidate pipelines using `method/intake.md`,
+   `method/discovery.md`, and `pipelines/INDEX.md`.
+2. Choose the smallest pipeline that can satisfy the requested outcome and
+   required gates. Prefer `analysis-only` when the user asks only for planning,
+   review, explanation, or research.
+3. Resolve required and alternative roles from `roles/INDEX.md`. Include
+   optional roles only when they materially improve risk coverage.
+4. Select stack, framework, tooling, and practice references by repo evidence,
+   route approval, or overlay configuration. Do not infer an ecosystem from this
+   method repository alone.
+5. Run capability check before proposing execution. Missing optional roles are
+   reduced coverage; missing required roles, unresolved alternative groups, or
+   missing selected references block automatic execution.
+6. Present why this route is sufficient, what coverage was omitted, and what
+   would trigger `method first`, `analysis only`, `change roles`, or `stop`.
+
+## Execution Policy Recommendation
+
+[DECISION] The orchestrator recommends policy; the human approves policy.
+
+Build the recommendation from:
+
+- selected pipeline `Execution Policy` defaults;
+- selected roles and role `Default Model Level`;
+- repo-local overlays and request constraints;
+- local execution profile or runtime config when available;
+- known missing model profiles or consensus providers.
+
+Record portable model levels, consensus mode, iteration cap, and budget policy
+in `route_plan.execution_policy`. Concrete model names, runner ids, provider
+accounts, and price tables stay in ignored overlays or runtime config.
+
+If the route needs a model downgrade, narrower consensus, extra live access, or
+different budget after approval, regenerate the route plan and rerun capability
+check before continuing.
+
+## Human Approval Handling
+
+[DECISION] Route approval is a state-changing gate, not a courtesy summary.
+
+When presenting a route, include:
+
+- selected pipeline and reason;
+- required, alternative, optional, and omitted roles;
+- local values still needed as placeholders;
+- missing capabilities and reduced coverage;
+- execution policy, consensus policy, and budget policy;
+- human gates expected inside the pipeline;
+- first artifacts expected from the next role.
+
+If the human chooses `change pipeline`, `change roles`, `change models`,
+`change consensus`, or `set budget`, regenerate the route plan before execution.
+If the human chooses `method first`, route to `method-development`. If the human
+chooses `analysis only`, downgrade to read-only work and make the no-mutation
+boundary visible.
 
 When developer work follows analyst or architect work, compress approved
 `task_spec`, `architecture_plan`, findings, and route constraints into an
@@ -75,32 +141,18 @@ condition.
 approval. Specialist roles may declare `default_model_level`, but they do not
 choose concrete models, consensus width, or budget.
 
-Before route approval, the orchestrator must show:
-
-- model level per selected role;
-- concrete model source: local overlay, runtime config, or unknown;
-- consensus mode for task-spec, architecture, and code review gates;
-- iteration cap and budget policy;
-- missing model profiles or consensus providers;
-- reduced coverage when fallback models or narrower consensus are proposed.
-
-The human may approve the recommendation or request `change models`,
-`change consensus`, `set budget`, `change roles`, `change pipeline`,
-`analysis only`, `method first`, or `stop`.
-
-Do not silently widen consensus, raise model level, lower model level, or change
-budget after route approval. Regenerate route plan and rerun capability check
-when these choices change.
+Use `method/execution-policy.md` for policy vocabulary and use the
+`Execution Policy Recommendation` section above for role-specific application.
 
 ## Clarification Gate
 
-[DECISION] Use `checklists/requirements.md` and role escalation fields to decide
+[DECISION] Use `checklists/requirements.md` and `method/escalation.md` to decide
 whether the run can continue.
 Use `templates/artifacts/requirements-check.md` when the gate result is stored
 as a run artifact.
 
-Stop and reroute based on the unresolved blockers defined in the checklist's
-Status Rules section.
+Stop and reroute based on unresolved blockers defined by
+`method/escalation.md`.
 
 Do not ask the developer to fill these gaps during implementation.
 
@@ -125,6 +177,31 @@ After a role returns, the orchestrator must:
 - surface blockers instead of hiding them;
 - route valid findings to the owner role;
 - avoid repeating a failed handoff without changing inputs or asking a human.
+
+Use `method/role-composition.md` for general composition rules. The
+orchestrator's job is to assemble the resolved role context, not to merge stack
+or framework rules into the base role definition.
+
+## Feedback Loop Routing
+
+[DECISION] Use `method/escalation.md` for marker meanings and route feedback to
+the smallest owner that can act.
+
+- `needs_analyst` returns to analyst with the unresolved requirement, source
+  contradiction, product ambiguity, or acceptance-criteria gap.
+- `needs_architect` returns to architect with the boundary, contract, data,
+  runtime-flow, migration, quality-attribute, or ADR question.
+- `needs_human` opens a human gate with the decision requested, evidence, and
+  consequences of proceeding or stopping.
+- `needs_method_materialization` stops method use until the canonical checkout
+  or adapter materialization is fixed.
+- `needs_developer` routes only actionable implementation findings to developer.
+- `needs_reviewer` routes risk classification, false-positive, accepted-risk, or
+  adversarial-review questions to reviewer.
+- `waiting` records the provider, reason, and `resume_after` when available.
+
+Do not loop the same owner with the same input after a failed handoff. Change
+the input, add evidence, reduce scope, or ask the human.
 
 ## Human Gates
 
@@ -174,6 +251,21 @@ state-changing.
 Resolved local values may be stored in run state only when needed for execution.
 Committed method docs keep placeholders only.
 
+Update run state at these decision points:
+
+- proposed route created;
+- route approval opened, changed, approved, or rejected;
+- capability check result recorded;
+- execution policy recommendation or override recorded;
+- role handoff sent;
+- role output, blocker, artifact, validation result, or lesson received;
+- feedback loop owner selected;
+- human gate opened or cleared;
+- completion, stop, or method-change recommendation emitted.
+
+Run-state schema belongs to `method/route-plan.md` and artifact templates. This
+reference only defines when the orchestrator must update it.
+
 ## Conflict Resolution
 
 [DECISION] Use these conflict rules before continuing a pipeline.
@@ -201,3 +293,12 @@ A run can finish only when one of these is true:
 
 Do not report "monitoring started" or "PR opened" as final completion unless the
 approved pipeline defines that as the terminal state.
+
+The final summary should include:
+
+- selected pipeline and final state;
+- artifacts produced or updated;
+- validation and watcher status;
+- unresolved blockers, skipped gates, and residual risks;
+- human decisions made during the run;
+- recommended follow-up route when the run stopped early.
