@@ -68,10 +68,10 @@ Use symlink-first materialization at the workspace root:
 
 ```sh
 mkdir -p .agents .codex .claude
-ln -sfn ../agents/adapters/codex/materialized/skills .agents/skills
-ln -sfn ../agents/adapters/codex/materialized/agents .codex/agents
-ln -sfn ../agents/adapters/claude-code/materialized/agents .claude/agents
-ln -sfn ../agents/adapters/claude-code/materialized/skills .claude/skills
+ln -sfn {{AGENTS_REPO_PATH}}/adapters/codex/materialized/skills .agents/skills
+ln -sfn {{AGENTS_REPO_PATH}}/adapters/codex/materialized/agents .codex/agents
+ln -sfn {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents .claude/agents
+ln -sfn {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills .claude/skills
 ```
 
 Then add workspace entrypoints:
@@ -139,15 +139,15 @@ AGENTS.md
 CLAUDE.md
 .agents/
   README.md
-  skills -> ../agents/adapters/codex/materialized/skills
+  skills -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/skills
   local.env              # ignored
   local.context.md       # ignored
   runs/                  # ignored unless run-artifact policy says otherwise
 .codex/
-  agents -> ../agents/adapters/codex/materialized/agents
+  agents -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/agents
 .claude/
-  agents -> ../agents/adapters/claude-code/materialized/agents
-  skills -> ../agents/adapters/claude-code/materialized/skills
+  agents -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents
+  skills -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills
 agents/
 repo-a/
 repo-b/

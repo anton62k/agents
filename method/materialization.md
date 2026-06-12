@@ -58,12 +58,12 @@ workspace/
   AGENTS.md
   CLAUDE.md
   .agents/
-    skills -> ../agents/adapters/codex/materialized/skills
+    skills -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/skills
   .codex/
-    agents -> ../agents/adapters/codex/materialized/agents
+    agents -> {{AGENTS_REPO_PATH}}/adapters/codex/materialized/agents
   .claude/
-    agents -> ../agents/adapters/claude-code/materialized/agents
-    skills -> ../agents/adapters/claude-code/materialized/skills
+    agents -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/agents
+    skills -> {{AGENTS_REPO_PATH}}/adapters/claude-code/materialized/skills
   agents/
   repo-a/
   repo-b/

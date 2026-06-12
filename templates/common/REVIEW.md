@@ -5,7 +5,7 @@ Use this checklist for branch review.
 - Repo-local review policy wins when it is more specific.
 - Behavior and API changes are intentional.
 - Tests cover changed behavior.
-- Type surface is covered when public TypeScript API changes.
+- Public API or type surface is covered when the selected stack has one.
 - Docs are updated when public behavior changes.
 - Local verification from `VERIFICATION.md` or an existing repo equivalent
   passed, or skipped gates are explicitly justified.

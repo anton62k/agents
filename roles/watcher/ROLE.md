@@ -2,8 +2,8 @@
 
 ## Purpose
 
-Classify CI, static-analysis, bot, and human review state into actionable next
-steps.
+Classify CI, static-analysis provider status, review threads, bot status, and
+human review state into actionable next steps.
 
 ## When To Use
 
