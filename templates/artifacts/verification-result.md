@@ -1,15 +1,16 @@
 # Verification Result Template
 
-Canonical schema owner: `../../references/quality/verification.md`.
+Fillable copy of the schema owned by `../../references/quality/verification.md`.
 Escalation vocabulary owner: `../../method/escalation.md`.
 
-The developer, integrator, watcher, or QA role fills this artifact after running
-or inspecting gates from `verification_plan`.
+Developer, integrator, and watcher fill this artifact after running or
+inspecting gates from `verification_plan`. Deploy watcher and QA roles use their
+role-owned result contracts instead.
 
 ```yaml
 verification_result:
   plan_ref: ""
-  role: developer | integrator | watcher | qa-backend | qa-frontend
+  role: developer | integrator | watcher
   status: passed | failed | partial | blocked | skipped
   source:
     repo_verification_contract_status: present | missing | stale | equivalent

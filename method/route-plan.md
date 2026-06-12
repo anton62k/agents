@@ -92,6 +92,10 @@ run_state:
     implementation_brief: {}
     verification_plan: {}
     verification_result: {}
+    developer_result: {} # see roles/developer/references/core.md
+    deploy_watcher_result: {} # see roles/deploy-watcher/references/core.md
+    qa_backend_result: {} # see roles/qa-backend/references/core.md
+    qa_frontend_result: {} # see roles/qa-frontend/references/core.md
   gates:
     - id: route-approval
       status: open | approved | rejected
@@ -126,6 +130,8 @@ run_state:
 - Keep route planning generic. Do not encode stack-specific commands, package
   managers, static-analysis vendors, or CI provider names as core assumptions.
   Store exact commands in repo overlays or filled verification artifacts.
+- Keep role-specific result schemas with the owning role reference. Run state may
+  store named handoff slots, but it must not duplicate those schemas.
 - Store resolved local values only in run state, never in committed method docs.
 - Keep this schema portable; adapters may wrap it but must not rename canonical
   fields.
