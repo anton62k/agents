@@ -1,6 +1,6 @@
 {
   "name": "@revisium/agent-playbook",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "Canonical Revisium agent playbook for roles, pipelines, references, and adapters.",
   "license": "MIT",
   "repository": "github:revisium/agent-playbook",
