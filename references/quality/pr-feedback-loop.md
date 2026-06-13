@@ -136,16 +136,17 @@ Review threads are the canonical queue for line-specific review findings.
 
 ## Top-Level Comments
 
-Top-level comments are useful for provider status, summary, and human process
-messages. They are not a substitute for review threads.
+Top-level comments are evidence for provider status, summary, and human process
+messages. They are not a substitute for review threads, and watcher must not
+treat this section as permission to post new top-level comments.
 
-Use them to detect:
+Interpret them to detect:
 
-- provider still processing;
+- provider failure, wait, or retry state;
 - rate limit, quota limit, or plan limit;
-- provider-requested wait or retry time;
-- missing provider permissions;
+- missing provider permissions or other actionable external state;
 - summary links to issue-level findings;
+- explicit repo or user policy;
 - human process comments that do not map to a review thread.
 
 If a top-level human comment requests a code change, route to reviewer first

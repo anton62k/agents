@@ -17,7 +17,13 @@ Human approval is scoped to the last artifact or gate the orchestrator showed.
 
 Route approval exists only when the latest pending gate is an explicit route
 proposal that names the selected pipeline, roles, consensus policy, model
-policy, budget policy, missing capabilities, and human gates.
+policy, budget policy, missing capabilities, `role_action_fallbacks`, and human
+gates.
+
+[DECISION] A generic `approve` authorizes only the route and role-action
+fallbacks shown in the immediately preceding proposed route. It does not
+authorize hidden, unstated, or later-added main-session fallbacks for role-owned
+actions.
 
 If the human approves a work order, plan, task spec, architecture note, review
 finding, or any other non-route artifact, treat that approval as permission to
@@ -27,7 +33,8 @@ approval before execution starts.
 
 ## Human Choices
 
-- `approve` - run the selected pipeline.
+- `approve` - run the selected pipeline with only the shown role-action
+  fallbacks, if any.
 - `change pipeline` - pick a different pipeline.
 - `change roles` - adjust required, alternative, or optional roles.
 - `change models` - change recommended model levels or concrete local model
@@ -51,6 +58,9 @@ approval before execution starts.
 - Route approval is required before starting a multi-role pipeline.
 - `approve` means route approval only when the immediately preceding assistant
   message contained the explicit proposed route gate.
+- [DECISION] `approve` authorizes only `role_action_fallbacks` shown in that
+  proposed route. New or changed fallbacks require a refreshed route plan and a
+  new route approval.
 - If the immediately preceding gate was not a proposed route, continue to route
   planning and ask for route approval instead of starting execution.
 - Keep this gate lightweight; do not ask for approval on every step.

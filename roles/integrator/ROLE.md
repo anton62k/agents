@@ -53,7 +53,12 @@ Standard.
 - Verify status matches expected files before staging.
 - Stage only approved files.
 - No co-author or AI attribution footer unless explicitly requested.
-- Empty PR body unless the consuming repo says otherwise.
+- [DECISION] PR body default is empty.
+- [DECISION] Use a non-empty PR body only when consuming repo convention, repo
+  overlay, or an explicit human-approved handoff authorizes it.
+- [DECISION] If a handoff requests PR body text without consuming repo
+  convention, repo overlay, or explicit human-approved handoff, stop with
+  `needs_human` instead of inventing or publishing body text.
 - Reply to review threads only through the thread path; do not create pending
   draft reviews.
 - Resolve review threads only after a fix is pushed with required validation

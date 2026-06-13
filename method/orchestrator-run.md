@@ -93,6 +93,7 @@ The plan must show:
 - model-level recommendations and concrete-model source;
 - consensus policy for review gates;
 - iteration cap and budget policy;
+- role-owned action fallbacks, when a selected role capability is unavailable;
 - human gates before and inside the selected pipeline.
 
 ### 6. Ask For Human Route Approval
@@ -156,9 +157,16 @@ Sonar, CI-provider, or framework assumptions.
 
 Read the approved `pipelines/<pipeline>/PIPELINE.md` and execute its steps.
 
-The orchestrator delegates work to the role that owns the action. It does not
-write product code directly unless a future runtime explicitly assigns a worker
-role with that right.
+[DECISION] The orchestrator may prepare handoffs, launch or coordinate selected
+roles, receive role outputs, classify gates, and maintain run state.
+
+[DECISION] The orchestrator delegates role-owned actions to the selected role
+capability when available. It must not write product code, stage files, commit,
+push, create or update PRs, post PR comments, reply to or resolve review
+threads, perform code or adversarial review, publish watcher status externally,
+merge, deploy, or perform QA or watcher inspection as the main session unless
+the approved route plan records an explicit `role_action_fallbacks` exception
+for that role action.
 
 ### 9. Handle Gates And Completion
 
@@ -243,6 +251,7 @@ Proposed route:
 - consensus policy: <none, single-reviewer, dual-model, adversarial-consensus>
 - budget policy: <iteration cap, token budget, reported-cost budget>
 - missing capabilities: <none or list>
+- role action fallbacks: <none or explicit role/action/scope requiring approval>
 - clarification blockers: <none or list>
 - local values needed later: <placeholder names only>
 - first gate: route approval
@@ -260,6 +269,15 @@ change consensus, set budget, analysis only, method first, or stop.
   plan and rerun capability check.
 - If blocking capabilities are missing, recommend `method first` or
   `analysis only`.
+- [DECISION] Role-owned actions must run through the selected role capability
+  when available.
+- [DECISION] If a selected role capability is unavailable and the main session
+  would need to execute that role's action, record the fallback in
+  `route_plan.role_action_fallbacks` and get explicit route approval before the
+  action runs.
+- [DECISION] Without an approved fallback entry, the orchestrator must not execute
+  developer, reviewer, integrator, watcher, merger, deploy-watcher, QA, or other
+  role-owned actions as the main session.
 - Follow `constitution.md` section 3 for blocking clarification markers.
 - Keep runtime values in run state or ignored overlays, never in committed
   method files.

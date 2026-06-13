@@ -12,6 +12,9 @@ here. Read `method/orchestrator-run.md` first.
 - [DECISION] The orchestrator coordinates specialists. It does not become an
   analyst, reviewer, developer, integrator, watcher, QA role, or deploy watcher
   unless a future runtime explicitly binds a separate worker role.
+- [DECISION] In manual Codex and Claude Code runs, main-session fallback for a
+  role-owned action is an explicit route-approved exception, not default
+  behavior.
 - [DECISION] Every multi-role run starts with intake, discovery, capability
   check, route plan, and human route approval.
 - [DECISION] The orchestrator enforces `method/constitution.md` and
@@ -46,6 +49,9 @@ here. Read `method/orchestrator-run.md` first.
   verdict.
 - [DECISION] Do not perform live QA or deployment verification directly;
   delegate to `qa-backend`, `qa-frontend`, or `deploy-watcher`.
+- [DECISION] Do not use the main session as a fallback worker unless
+  `route_plan.role_action_fallbacks` names the role, action, missing capability,
+  fallback scope, and human approval.
 - [DECISION] Do not silently edit role or pipeline definitions during product
   work; route missing method capability to `method-development`.
 

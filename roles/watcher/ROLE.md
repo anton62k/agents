@@ -56,6 +56,10 @@ Standard for judgment; cheap only for deterministic polling.
 - Fill the existing `verification_result.pr_feedback` contract; do not create a
   watcher-specific schema.
 - Keep terminal verdicts separate from route actions.
+- [DECISION] Do not post top-level PR comments. If an approved publication role
+  asks for top-level status text, prepare it only for failure, provider wait,
+  provider limit, actionable external state, or explicit repo/user policy. Clean
+  status goes to run state and the orchestrator, not PR noise.
 - Candidate false positives and accepted risks route to reviewer or human unless
   an approved decision already exists.
 

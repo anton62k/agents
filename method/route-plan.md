@@ -63,6 +63,15 @@ route_plan:
       cost_policy: self_reported_only
   local_values_needed: []
   missing_capabilities: []
+  role_action_fallbacks:
+    - role: ""
+      action: ""
+      missing_capability: ""
+      fallback_actor: main-session
+      scope: ""
+      risk: ""
+      approval_required: true
+      approved: false
   clarification_blockers: []
   human_gates: []
   first_artifacts: []
@@ -125,6 +134,11 @@ run_state:
   not fit task spec, architecture, or code review.
 - If `missing_capabilities` contains blocking items, recommend `method first` or
   `analysis only`.
+- [DECISION] Keep `role_action_fallbacks` empty when selected role capabilities are
+  available. Add an entry only when a selected role capability is unavailable and
+  the main session is proposed to execute that role-owned action.
+- [DECISION] A role-owned action fallback is executable only when its entry is
+  explicit, scoped, and approved during route approval.
 - If `clarification_blockers` contains blocking items, stop with
   `needs_analyst`, `needs_architect`, or `needs_human`.
 - Keep route planning generic. Do not encode stack-specific commands, package

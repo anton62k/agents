@@ -14,5 +14,9 @@ Before acting, read:
 - `roles/integrator/references/core.md`
 - `references/quality/pr-feedback-loop.md`
 
+Preserve the empty PR body default. Use a non-empty body only from consuming
+repo convention, repo overlay, or explicit human-approved handoff; otherwise
+stop with `needs_human`.
+
 Follow the canonical role exactly. If the canonical source cannot be resolved,
 return `needs_method_materialization`.

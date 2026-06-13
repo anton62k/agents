@@ -56,9 +56,15 @@ and canonical method.
 
 ## Subagent Constraint
 
-If a Claude Code subagent cannot prompt for interactive approval, do not give it
-authority that depends on approval prompts. Use read-only subagents for review
-and analysis. Keep writes in the main session or in explicitly authorized roles.
+- [DECISION] If a Claude Code subagent cannot prompt for interactive approval,
+  do not give it authority that depends on approval prompts.
+- [DECISION] Use read-only subagents for review and analysis only when they are
+  the selected role capability.
+- [DECISION] Writes and other role-owned actions must run through explicitly
+  authorized role capabilities. The main session remains the orchestrator only.
+- [DECISION] Main-session writes or role-owned actions are allowed only when the
+  approved route plan records a scoped `role_action_fallbacks` entry for the
+  unavailable role capability.
 
 ## Rules
 
