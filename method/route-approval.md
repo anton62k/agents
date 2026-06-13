@@ -11,6 +11,20 @@ agents spend time or mutate a working tree.
 
 Before execution, show the route plan defined in `route-plan.md`.
 
+## Approval Scope
+
+Human approval is scoped to the last artifact or gate the orchestrator showed.
+
+Route approval exists only when the latest pending gate is an explicit route
+proposal that names the selected pipeline, roles, consensus policy, model
+policy, budget policy, missing capabilities, and human gates.
+
+If the human approves a work order, plan, task spec, architecture note, review
+finding, or any other non-route artifact, treat that approval as permission to
+continue routing. It does not authorize pipeline execution or working-tree
+mutation. The orchestrator must still show the proposed route and wait for route
+approval before execution starts.
+
 ## Human Choices
 
 - `approve` - run the selected pipeline.
@@ -35,6 +49,10 @@ Before execution, show the route plan defined in `route-plan.md`.
 ## Rules
 
 - Route approval is required before starting a multi-role pipeline.
+- `approve` means route approval only when the immediately preceding assistant
+  message contained the explicit proposed route gate.
+- If the immediately preceding gate was not a proposed route, continue to route
+  planning and ask for route approval instead of starting execution.
 - Keep this gate lightweight; do not ask for approval on every step.
 - Approval changes `route_plan.approval.status` from `proposed` to `approved`,
   `changed`, or `rejected`.

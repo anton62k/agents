@@ -113,6 +113,11 @@ Show a concise proposed route and wait for one of the route decisions:
 
 Do not start mutating pipeline steps before route approval.
 
+Approval of a work order, task spec, architecture plan, review note, or other
+non-route artifact is not route approval. If the last approval did not answer an
+explicit proposed route gate, treat it as approval to continue routing, build or
+refresh the route plan, and stop again at this phase.
+
 ### 7. Prepare Run State And Check Clarification
 
 After approval, create or update `run_state` using `route-plan.md`.

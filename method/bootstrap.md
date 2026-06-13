@@ -46,6 +46,8 @@ On a new device, do this before running agents in workspace mode:
    - optional `REPOSITORY.md` for repo structure and source-of-truth order;
    - a thin child `AGENTS.md` or `CLAUDE.md` only when agents are commonly
      launched from inside that child repository.
+   - ignore rules based on `templates/common/gitignore` when the child
+     repository records local `.agents` overlays or run state.
 6. In committed files, record only placeholders and relative links; do not
    record one-machine absolute paths.
 7. Create ignored local overlay files for concrete values, for example
@@ -107,6 +109,8 @@ cp {{AGENTS_REPO_PATH}}/templates/common/agents-README.md .agents/README.md
 ```
 
 `REPOSITORY.md` is recommended for larger or less obvious repositories.
+Merge `{{AGENTS_REPO_PATH}}/templates/common/gitignore` into `.gitignore` when
+the standalone repository records local `.agents` overlays or run state.
 
 ## Consumption Modes
 

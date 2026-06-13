@@ -44,3 +44,5 @@ execution_profile: .agents/local.execution-profile.md
   `{{AGENTS_REPO_PATH}}`.
 - Keep run artifacts out of reusable method changes unless the repo explicitly
   commits them.
+- Merge `{{AGENTS_REPO_PATH}}/templates/common/gitignore` into `.gitignore`
+  before recording local `.agents` overlays or run state.

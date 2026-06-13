@@ -71,6 +71,10 @@ manual_run:
 ## Rules
 
 - Do not execute a multi-role pipeline before route approval.
+- In manual Codex or Claude Code runs, do not treat approval of a work order,
+  plan, task spec, architecture note, review finding, or implementation brief as
+  permission for single-agent implementation. After any non-route approval,
+  build or refresh the route plan and stop at the route approval gate.
 - Do not start implementation while blocking clarification markers remain.
 - Do not copy concrete local values into canonical method files.
 - If generated platform files disagree with canonical roles or pipelines, the

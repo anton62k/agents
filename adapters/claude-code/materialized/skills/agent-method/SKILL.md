@@ -21,11 +21,16 @@ pipeline, select roles, bootstrap a workspace, or continue a multi-role run.
    `.claude` links.
 8. Discover roles from `roles/INDEX.md`.
 9. Discover pipelines from `pipelines/INDEX.md`.
-10. When setup, method updates, role changes, pipeline invocation changes, or
+10. Before any multi-role execution or working-tree mutation, show the explicit
+    proposed route from `method/orchestrator-run.md` and wait for route
+    approval. Approval of a work order, plan, review note, or any other
+    non-route artifact only permits continuing to route planning; it does not
+    authorize implementation.
+11. When setup, method updates, role changes, pipeline invocation changes, or
     missing platform agents/skills are involved, run the materialization
     freshness check from `method/materialization.md` before declaring the
     workspace ready.
-11. Use repo-local overlays for concrete commands, verification gates, review
+12. Use repo-local overlays for concrete commands, verification gates, review
    policy, domain facts, and environment boundaries.
 
 If the canonical source cannot be resolved, return
