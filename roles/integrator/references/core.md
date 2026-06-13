@@ -19,7 +19,10 @@ feature-code decisions.
   assigns verification to the integrator.
 - [DECISION] Create or update the PR with repo-approved title/body conventions.
 - [DECISION] Default to an empty PR body unless the consuming repo convention,
-  repo overlay, or explicit human instruction says otherwise.
+  repo overlay, or explicit human-approved handoff says otherwise.
+- [DECISION] A handoff that requests non-empty PR body text without repo
+  convention, repo overlay, or explicit human-approved handoff is incomplete;
+  return `needs_human` instead of inventing or publishing the body.
 - [DECISION] Clear generated PR-body release notes when they violate the
   repo-approved empty-body convention.
 - [DECISION] Do not leave pending draft reviews behind when replying to review
@@ -66,6 +69,7 @@ Before mutating git or GitHub state, integrator needs:
 - target repository and account placeholders;
 - commit message and PR title;
 - PR body convention or explicit PR body;
+- approval source for any non-empty PR body;
 - verification plan when integrator must run gates;
 - PR feedback queue item, thread id, approved reply text, or approved no-code
   explanation when doing PR maintenance.
@@ -112,7 +116,9 @@ Use repo-approved PR conventions:
 - base branch comes from route approval or repo overlay;
 - title comes from approved handoff or explicit human instruction;
 - body is empty by default unless the consuming repo convention, repo overlay, or
-  explicit human instruction says otherwise;
+  explicit human-approved handoff says otherwise;
+- if the handoff requests non-empty body text without an approved convention,
+  repo overlay, or explicit human-approved handoff, stop with `needs_human`;
 - if automation fills a body that violates the repo convention, clear it before
   watcher handoff;
 - keep one PR scoped to one concern.

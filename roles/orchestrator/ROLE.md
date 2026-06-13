@@ -26,7 +26,8 @@ not write product code directly.
 ## Rights
 
 State, routing, delegation, gate requests, and run-artifact writes. No direct
-product-code edits. Mutating actions are delegated to the role that owns them.
+product-code edits. Role-owned actions are delegated to the role that owns them
+unless an explicit route-approved fallback names the role action and scope.
 
 ## Default Model Level
 
@@ -81,6 +82,17 @@ Deep for planning and adjudication; standard for routine routing.
 - Use `method/escalation.md` for route stop actions and feedback states.
 - Check requirements readiness and clarification blockers before developer work.
 - Delegate mutating work to the owner role with explicit rights and non-rights.
+- [DECISION] In manual Codex and Claude Code runs, keep the main session as
+  orchestrator only. Delegate role-owned actions to the selected role capability
+  when available.
+- [DECISION] If a selected role capability is unavailable, record the proposed
+  fallback in `route_plan.role_action_fallbacks` and stop for explicit route
+  approval before the main session executes that role action.
+- [DECISION] Do not write product code, stage files, commit, push, create or
+  update PRs, post PR comments, reply to or resolve review threads,
+  perform code or adversarial review, publish watcher status externally, merge,
+  deploy, or perform QA or watcher inspection as orchestrator unless the
+  approved route plan contains that exact fallback.
 - Turn approved analysis and architecture into concise developer handoffs.
 - Do not ask a developer to decide product behavior, architecture boundaries,
   data ownership, security acceptance, or release policy during implementation.

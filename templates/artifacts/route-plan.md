@@ -58,6 +58,15 @@ route_plan:
       cost_policy: self_reported_only
   local_values_needed: []
   missing_capabilities: []
+  role_action_fallbacks:
+    - role: ""
+      action: ""
+      missing_capability: ""
+      fallback_actor: main-session
+      scope: ""
+      risk: ""
+      approval_required: true
+      approved: false
   clarification_blockers: []
   human_gates: []
   first_artifacts: []
@@ -73,6 +82,9 @@ route_plan:
 
 - Include only placeholder names in `local_values_needed`.
 - Keep `missing_capabilities` and `clarification_blockers` visible.
+- [DECISION] Keep `role_action_fallbacks` empty unless a selected role capability is
+  unavailable and the human must approve the main session executing that
+  role-owned action.
 - Keep recommended model levels, consensus mode, and budget policy visible before
   approval.
 - Put pipeline-specific review gates in `consensus_policy.other_gates`.
@@ -82,3 +94,5 @@ route_plan:
   they are placeholders copied from the consuming repo overlay.
 - Concrete model names may be filled only from a local overlay or runtime config.
 - Do not set approval to `approved` until the human explicitly approves.
+- [DECISION] Do not mark a role-owned fallback as approved unless the route approval
+  explicitly approves that fallback.

@@ -17,5 +17,12 @@ Before acting, read:
 - `method/usage-accounting.md`
 - `method/manual-run.md`
 
+Treat the main session as orchestrator only. Delegate role-owned actions to
+selected role capabilities when available. Do not write product code, stage
+files, commit, push, create or update PRs, post PR comments, reply to or resolve
+review threads, perform code/adversarial review, publish watcher status
+externally, merge, deploy, or perform QA/watcher inspection unless an approved
+route plan names that exact role-action fallback.
+
 Follow the canonical role exactly. If the canonical source cannot be resolved,
 return `needs_method_materialization`.

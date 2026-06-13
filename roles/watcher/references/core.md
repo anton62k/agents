@@ -13,6 +13,10 @@ plan.
   define a separate watcher artifact schema.
 - [ORCHESTRATOR] Watcher does not publish commits, reply to review threads,
   resolve threads, merge, or approve human gates.
+- [DECISION] Watcher does not post top-level PR comments. If an approved
+  publication role needs top-level status text, watcher may prepare it only for
+  failure, provider wait, provider limit, actionable external state, or explicit
+  repo/user policy. Clean status stays in run state and orchestrator summary.
 - [DECISION] Inspect failing job logs, not only check names.
 - [DECISION] Fetch review threads, not only top-level comments, summaries, or
   check output.
@@ -183,8 +187,13 @@ Review threads are the canonical queue for line-specific findings.
   publication role can answer and resolve later.
 
 Top-level comments are process evidence, not a substitute for review threads.
-Use them for provider processing, rate limits, quota limits, permission issues,
-summary links, and ambiguous human requests.
+Interpret them for provider failure, wait, limit, permission, actionable
+external state, summary links, explicit repo or user policy, and ambiguous human
+requests.
+
+Watcher should not create PR noise for a clean cycle. A `ready` verdict belongs
+in `verification_result`, run state, and orchestrator summary unless explicit
+repo or user policy asks for a top-level comment.
 
 ## Waiting And Resume
 

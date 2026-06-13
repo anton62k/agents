@@ -38,6 +38,9 @@ available method definitions.
 14. Required consensus providers exist or are listed as missing.
 15. Budget constraints are compatible with the recommended route or require
     human approval.
+16. Selected role execution capabilities are available for the chosen adapter,
+    or the route plan records an explicit role-owned action fallback for human
+    approval.
 
 ## Output
 
@@ -52,7 +55,7 @@ recommendation: proceed | run-method-development-first | ask-human
 
 Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
 `practice`, `pipeline`, `adapter`, `local-value`, `model-profile`,
-`consensus-provider`, `budget`.
+`consensus-provider`, `budget`, `role-action-capability`.
 
 ## Rules
 
@@ -66,6 +69,14 @@ Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
   the orchestrator degrades models or narrows consensus.
 - Budget constraints that would change model level, consensus mode, or iteration
   cap require route-plan regeneration and human approval.
+- [DECISION] Missing selected role execution capability blocks automatic
+  execution of that role-owned action. The run may proceed only when the
+  fallback is recorded in `route_plan.role_action_fallbacks` and explicitly
+  approved at route approval.
+- [DECISION] A selected role execution capability is unavailable only when the
+  selected adapter lacks the materialized role agent or wrapper, the wrapper
+  cannot resolve the canonical source, or role invocation returns
+  `needs_method_materialization`.
 - If a missing capability is itself method work, route to
   `method-development`.
 - Do not substitute a generic role for a missing specialization without human
