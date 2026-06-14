@@ -127,8 +127,11 @@ Do not compute cost from a committed price table. Use `usage-accounting.md`.
 - Do not silently decrease model level after route approval unless
   `budget_exhaustion_action: degrade_models` and the specific downgrade path
   were approved in the route plan.
-- Concrete model and runner names may appear in run state only when they come
-  from local overlays or runtime config.
+- Concrete model names may appear in run state only when they come from local
+  overlays or runtime config.
+- Resolved runner ids may appear in route plans and run state when they come
+  from installed playbook role `runner_id` values, or from local, test, or
+  runtime execution-profile overrides.
 - Stub runners are test-profile bindings, not user-facing product modes.
 - Runtime importers must not derive runner bindings from `rights`; `rights`
   controls access and tool policy only.

@@ -63,8 +63,9 @@ and canonical method.
 - [DECISION] Writes and other role-owned actions must run through explicitly
   authorized role capabilities. The main session remains the orchestrator only.
 - [DECISION] Main-session writes or role-owned actions are allowed only when the
-  approved route plan records a scoped `role_action_fallbacks` entry for the
-  unavailable role capability.
+  approved route plan records and approves a scoped `role_action_fallbacks`
+  entry that names the exact role, action, missing capability, fallback actor,
+  scope, and risk.
 
 ## Rules
 
