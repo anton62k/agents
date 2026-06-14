@@ -3,6 +3,7 @@ id: orchestrator
 surface: any
 rights: read-only
 default_model_level: deep
+runner_id: claude-code
 ---
 
 # Role: orchestrator

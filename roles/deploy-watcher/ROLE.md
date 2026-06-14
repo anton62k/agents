@@ -3,6 +3,7 @@ id: deploy-watcher
 surface: deployment
 rights: deploy-read
 default_model_level: standard
+runner_id: claude-code
 ---
 
 # Role: deploy-watcher

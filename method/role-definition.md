@@ -12,6 +12,7 @@ id: <role-id>
 surface: any | backend | frontend | repo | deployment | method
 rights: <rights>
 default_model_level: cheap | standard | deep
+runner_id: claude-code | codex | revo-integrator | revo-merger | revo-deterministic | other
 ---
 ```
 
@@ -25,6 +26,10 @@ default_model_level: cheap | standard | deep
 - [DECISION] `default_model_level` is the portable default. Prose may explain
   escalation cases, but it must include the frontmatter value and must not
   replace it with concrete provider models or runner types.
+- [DECISION] `runner_id` is the portable production runner binding for the role.
+  It names a runtime capability, not a provider account, model, token, or local
+  executable path. Test and local overrides belong in an execution profile, not
+  in a separate stub role.
 
 ## Required Sections
 
@@ -122,3 +127,12 @@ or future runtime config according to `execution-policy.md`.
 
 Runner types such as deterministic scripts are not model levels. Put them in
 rights, adapter docs, or execution profiles.
+
+## Runner Binding
+
+`runner_id` frontmatter is installed with the playbook so runtimes can bind a
+role without deriving workflow semantics from `rights`. Use stable capability
+ids such as `claude-code`, `codex`, `revo-integrator`, `revo-merger`, or
+`revo-deterministic`. Do not create production stub roles. Test profiles may
+override a runner id, for example `claude-code -> stub-agent`, while preserving
+the same role ids and pipeline definitions.

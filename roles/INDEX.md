@@ -14,6 +14,10 @@ Each record defines:
 - `capabilities` - short routing tags used during discovery.
 - `rights` - read/write boundary summary.
 
+Generated `catalog/roles.json` enriches these records with each role's
+frontmatter `runner_id`; do not duplicate runner bindings in this markdown
+catalog.
+
 ## Role Records
 
 ### `orchestrator`

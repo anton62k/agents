@@ -5,6 +5,7 @@
     "surface": "any",
     "rights": "read-only",
     "default_model_level": "deep",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/analyst.toml",
       "claude_code": "adapters/claude-code/materialized/agents/analyst.md"
@@ -16,6 +17,7 @@
     "surface": "any",
     "rights": "read-only",
     "default_model_level": "deep",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/architect.toml",
       "claude_code": "adapters/claude-code/materialized/agents/architect.md"
@@ -27,6 +29,7 @@
     "surface": "deployment",
     "rights": "deploy-read",
     "default_model_level": "standard",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/deploy-watcher.toml",
       "claude_code": "adapters/claude-code/materialized/agents/deploy-watcher.md"
@@ -38,6 +41,7 @@
     "surface": "any",
     "rights": "write-working-tree",
     "default_model_level": "standard",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/developer.toml",
       "claude_code": "adapters/claude-code/materialized/agents/developer.md"
@@ -49,6 +53,7 @@
     "surface": "backend",
     "rights": "write-working-tree",
     "default_model_level": "standard",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/developer-backend.toml",
       "claude_code": "adapters/claude-code/materialized/agents/developer-backend.md"
@@ -60,6 +65,7 @@
     "surface": "frontend",
     "rights": "write-working-tree",
     "default_model_level": "standard",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/developer-frontend.toml",
       "claude_code": "adapters/claude-code/materialized/agents/developer-frontend.md"
@@ -71,6 +77,7 @@
     "surface": "repo",
     "rights": "git-gh",
     "default_model_level": "standard",
+    "runner_id": "revo-integrator",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/integrator.toml",
       "claude_code": "adapters/claude-code/materialized/agents/integrator.md"
@@ -82,6 +89,7 @@
     "surface": "method",
     "rights": "write-working-tree",
     "default_model_level": "deep",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/knowledge-engineer.toml",
       "claude_code": "adapters/claude-code/materialized/agents/knowledge-engineer.md"
@@ -93,6 +101,7 @@
     "surface": "repo",
     "rights": "git-gh",
     "default_model_level": "standard",
+    "runner_id": "revo-merger",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/merger.toml",
       "claude_code": "adapters/claude-code/materialized/agents/merger.md"
@@ -104,6 +113,7 @@
     "surface": "any",
     "rights": "read-only",
     "default_model_level": "deep",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/orchestrator.toml",
       "claude_code": "adapters/claude-code/materialized/agents/orchestrator.md"
@@ -115,6 +125,7 @@
     "surface": "backend",
     "rights": "qa-live",
     "default_model_level": "standard",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/qa-backend.toml",
       "claude_code": "adapters/claude-code/materialized/agents/qa-backend.md"
@@ -126,6 +137,7 @@
     "surface": "frontend",
     "rights": "qa-live",
     "default_model_level": "standard",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/qa-frontend.toml",
       "claude_code": "adapters/claude-code/materialized/agents/qa-frontend.md"
@@ -137,6 +149,7 @@
     "surface": "any",
     "rights": "read-only",
     "default_model_level": "deep",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/reviewer.toml",
       "claude_code": "adapters/claude-code/materialized/agents/reviewer.md"
@@ -148,6 +161,7 @@
     "surface": "repo",
     "rights": "read-only",
     "default_model_level": "standard",
+    "runner_id": "claude-code",
     "wrappers": {
       "codex": "adapters/codex/materialized/agents/watcher.toml",
       "claude_code": "adapters/claude-code/materialized/agents/watcher.md"

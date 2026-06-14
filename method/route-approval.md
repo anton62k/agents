@@ -17,8 +17,8 @@ Human approval is scoped to the last artifact or gate the orchestrator showed.
 
 Route approval exists only when the latest pending gate is an explicit route
 proposal that names the selected pipeline, roles, consensus policy, model
-policy, budget policy, missing capabilities, `role_action_fallbacks`, and human
-gates.
+policy, runner policy, budget policy, missing capabilities,
+`role_action_fallbacks`, and human gates.
 
 [DECISION] A generic `approve` authorizes only the route and role-action
 fallbacks shown in the immediately preceding proposed route. It does not
@@ -39,6 +39,8 @@ approval before execution starts.
 - `change roles` - adjust required, alternative, or optional roles.
 - `change models` - change recommended model levels or concrete local model
   bindings.
+- `change execution profile` - change local or test execution-profile runner
+  bindings before execution. This is not a public product `runnerMode`.
 - `change consensus` - change reviewer consensus mode or providers.
 - `set budget` - set or change iteration, token, or reported-cost limits.
 - `analysis only` - switch to `analysis-only`.
@@ -71,5 +73,7 @@ approval before execution starts.
 - If clarification blockers are already visible, show them in the route plan and
   route to analyst, architect, or human review before implementation.
 - If model, consensus, or budget choices change, regenerate route plan and rerun
+  capability check before execution.
+- If execution profile or runner choices change, regenerate route plan and rerun
   capability check before execution.
 - Record the approved route in run state, not in method markdown.

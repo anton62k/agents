@@ -37,6 +37,7 @@ run_state:
   usage_summary:
     attempts: []
     totals_by_role: {}
+    totals_by_runner_id: {}
     totals_by_model_profile: {}
     cost_unreported_for: []
   next_action: route-approval
@@ -55,4 +56,8 @@ run_state:
 - Keep adapter-specific metadata outside the canonical fields or in a wrapper.
 - Record concrete model names only when they came from local overlay or runtime
   config.
+- Record resolved runner ids from the approved route plan first. If the runtime
+  executes with a local, test, or runtime execution-profile override, record the
+  overridden runner id as the resolved value and keep the override source
+  visible in `execution_policy.runner_policy`.
 - Usage summaries follow `../../method/usage-accounting.md`.

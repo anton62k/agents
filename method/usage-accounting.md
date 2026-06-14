@@ -26,6 +26,7 @@ attempt:
   id: ""
   role: ""
   runner: codex | claude-code | revo-future | other
+  runner_id: ""
   model_profile: cheap | standard | deep
   concrete_model: "{{MODEL_NAME_FROM_LOCAL_OVERLAY}}"
   started_at: ""
@@ -43,6 +44,7 @@ canonical method.
 ```yaml
 usage_record:
   runner: codex | claude-code | revo-future | other
+  runner_id: ""
   model_profile: cheap | standard | deep
   concrete_model: "{{MODEL_NAME_FROM_LOCAL_OVERLAY}}"
   input_tokens: null
@@ -59,6 +61,8 @@ usage_record:
 
 - Agents do not emit cost fields as part of their portable result.
 - The orchestrator or adapter records usage from runner self-reported metadata.
+- `runner_id` records the resolved role runner binding used for the attempt,
+  including execution-profile overrides when present.
 - Do not maintain a committed provider price table in this repository.
 - If a runner reports tokens but not cost, record tokens and set
   `reported_cost: null`.

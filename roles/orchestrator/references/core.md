@@ -30,7 +30,8 @@ here. Read `method/orchestrator-run.md` first.
 - Explain route choice, omitted optional coverage, and reduced confidence before
   asking for approval.
 - Recommend execution policy from the selected pipeline defaults, role model
-  levels, repo overlays, and local execution profile.
+  levels, installed playbook role runner bindings, repo overlays, and local
+  execution profile.
 - Create role-specific handoff inputs, including verification plans before
   developer execution.
 - Update run state after every role output, gate, blocker, or artifact.
@@ -77,7 +78,10 @@ phase order still belongs to `method/orchestrator-run.md`.
    method repository alone.
 5. Run capability check before proposing execution. Missing optional roles are
    reduced coverage; missing required roles, unresolved alternative groups, or
-   missing selected references block automatic execution.
+   missing selected references block automatic execution. Missing selected
+   runners or execution-profile override targets block automatic execution until
+   the route changes execution profile, runner bindings, or missing-runner
+   handling.
 6. Present why this route is sufficient, what coverage was omitted, and what
    would trigger `method first`, `analysis only`, `change roles`, or `stop`.
 
@@ -153,17 +157,23 @@ Build the recommendation from:
 
 - selected pipeline `Execution Policy` defaults;
 - selected roles and role `Default Model Level`;
+- installed playbook role `runner_id` values for production runner bindings;
 - repo-local overlays and request constraints;
 - local execution profile or runtime config when available;
-- known missing model profiles or consensus providers.
+- execution-profile runner availability and runner overrides when present;
+- known missing model profiles, runner implementations, or consensus providers.
 
 Record portable model levels, consensus mode, iteration cap, and budget policy
-in `route_plan.execution_policy`. Concrete model names, runner ids, provider
-accounts, and price tables stay in ignored overlays or runtime config.
+in `route_plan.execution_policy`. Record `runner_policy` with the resolved
+role-to-runner binding, binding source, execution-profile overrides, and missing
+runners. Production runner bindings come from installed playbook role
+`runner_id` values. Concrete local runner availability, override mappings,
+provider accounts, model names, paths, credentials, and price tables stay in
+ignored execution profiles or runtime config.
 
-If the route needs a model downgrade, narrower consensus, extra live access, or
-different budget after approval, regenerate the route plan and rerun capability
-check before continuing.
+If the route needs a model downgrade, narrower consensus, execution-profile or
+runner-binding change, extra live access, or different budget after approval,
+regenerate the route plan and rerun capability check before continuing.
 
 ## Human Approval Handling
 
@@ -175,15 +185,16 @@ When presenting a route, include:
 - required, alternative, optional, and omitted roles;
 - local values still needed as placeholders;
 - missing capabilities and reduced coverage;
-- execution policy, consensus policy, and budget policy;
+- execution policy, including model policy, runner policy, consensus policy, and
+  budget policy;
 - human gates expected inside the pipeline;
 - first artifacts expected from the next role.
 
 If the human chooses `change pipeline`, `change roles`, `change models`,
-`change consensus`, or `set budget`, regenerate the route plan before execution.
-If the human chooses `method first`, route to `method-development`. If the human
-chooses `analysis only`, downgrade to read-only work and make the no-mutation
-boundary visible.
+`change execution profile`, `change consensus`, or `set budget`, regenerate the
+route plan before execution. If the human chooses `method first`, route to
+`method-development`. If the human chooses `analysis only`, downgrade to
+read-only work and make the no-mutation boundary visible.
 
 When developer work follows analyst or architect work, compress approved
 `task_spec`, `architecture_plan`, findings, and route constraints into an
@@ -312,6 +323,7 @@ the input, add evidence, reduce scope, or ask the human.
 - route approval before multi-role execution;
 - product, architecture, security, or legal ambiguity;
 - missing required role, stack, adapter, or pipeline capability;
+- missing selected runner implementation or execution-profile override target;
 - missing required model profile or consensus provider;
 - budget limit that would change route coverage;
 - destructive filesystem, git, database, deployment, or external-service action;

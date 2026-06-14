@@ -50,6 +50,14 @@ const allowedRoleRights = new Set([
   "deterministic-script",
 ]);
 const allowedModelLevels = new Set(["cheap", "standard", "deep"]);
+const allowedRunnerIds = new Set([
+  "claude-code",
+  "codex",
+  "revo-integrator",
+  "revo-merger",
+  "revo-deterministic",
+  "other",
+]);
 
 function rel(path) {
   return relative(root, path).replaceAll("\\", "/");
@@ -488,6 +496,7 @@ function buildRoleCatalog() {
             "surface",
             "rights",
             "default_model_level",
+            "runner_id",
           ])
         : {};
       return {
@@ -496,6 +505,7 @@ function buildRoleCatalog() {
         surface: frontmatter?.surface ?? "",
         rights: frontmatter?.rights ?? "",
         default_model_level: frontmatter?.default_model_level ?? "",
+        runner_id: frontmatter?.runner_id ?? "",
         wrappers: {
           codex: `adapters/codex/materialized/agents/${roleId}.toml`,
           claude_code: `adapters/claude-code/materialized/agents/${roleId}.md`,
@@ -531,7 +541,7 @@ function expectedPlaybookManifest() {
   return {
     id: "revisium-agent-playbook",
     name: "Revisium Agent Playbook",
-    schema_version: 1,
+    schema_version: 2,
     package: "@revisium/agent-playbook",
     catalogs: {
       roles: "catalog/roles.json",
@@ -714,6 +724,7 @@ function validateRoleFrontmatter() {
       "surface",
       "rights",
       "default_model_level",
+      "runner_id",
     ]);
     if (!frontmatter) {
       continue;
@@ -738,6 +749,12 @@ function validateRoleFrontmatter() {
       fail(
         path,
         `frontmatter default_model_level has invalid enum value \`${frontmatter.default_model_level}\``,
+      );
+    }
+    if (!allowedRunnerIds.has(frontmatter.runner_id)) {
+      fail(
+        path,
+        `frontmatter runner_id has invalid enum value \`${frontmatter.runner_id}\``,
       );
     }
 

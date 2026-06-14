@@ -3,6 +3,7 @@ id: integrator
 surface: repo
 rights: git-gh
 default_model_level: standard
+runner_id: revo-integrator
 ---
 
 # Role: integrator
@@ -57,8 +58,8 @@ Standard.
 - [DECISION] Use a non-empty PR body only when consuming repo convention, repo
   overlay, or an explicit human-approved handoff authorizes it.
 - [DECISION] If a handoff requests PR body text without consuming repo
-  convention, repo overlay, or explicit human-approved handoff, stop with
-  `needs_human` instead of inventing or publishing body text.
+  convention, repo overlay, or explicit human-approved handoff, return route
+  stop action `needs_human` instead of inventing or publishing body text.
 - Reply to review threads only through the thread path; do not create pending
   draft reviews.
 - Resolve review threads only after a fix is pushed with required validation

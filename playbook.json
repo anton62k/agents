@@ -1,7 +1,7 @@
 {
   "id": "revisium-agent-playbook",
   "name": "Revisium Agent Playbook",
-  "schema_version": 1,
+  "schema_version": 2,
   "package": "@revisium/agent-playbook",
   "catalogs": {
     "roles": "catalog/roles.json",

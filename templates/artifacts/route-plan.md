@@ -38,6 +38,11 @@ route_plan:
       role_levels: {}
       concrete_models_source: local-overlay | runtime-config | unknown
       missing_model_profiles: []
+    runner_policy:
+      role_runner_ids: {}
+      runner_bindings_source: playbook-catalog | execution-profile | runtime-config | mixed | unknown
+      runner_overrides: {}
+      missing_runners: []
     consensus_policy:
       task_spec_review: none | single-reviewer | dual-model | adversarial-consensus
       architecture_review: none | single-reviewer | dual-model | adversarial-consensus
@@ -74,7 +79,8 @@ route_plan:
     status: proposed | approved | changed | rejected
     decision: >
       approve | change pipeline | change roles | change models |
-      change consensus | set budget | analysis only | method first | stop
+      change execution profile | change consensus | set budget |
+      analysis only | method first | stop
     notes: ""
 ```
 
@@ -87,12 +93,16 @@ route_plan:
   role-owned action.
 - Keep recommended model levels, consensus mode, and budget policy visible before
   approval.
+- Keep selected role runner bindings and any execution-profile overrides visible
+  before approval.
 - Put pipeline-specific review gates in `consensus_policy.other_gates`.
 - Fill `approved_model_downgrades` when `budget_exhaustion_action` is
   `degrade_models`; otherwise model downgrades require a new route approval.
 - Keep commands and provider-specific settings out of this route artifact unless
   they are placeholders copied from the consuming repo overlay.
 - Concrete model names may be filled only from a local overlay or runtime config.
+- Stub runners may be filled only from a test execution profile, not from a
+  production role id or public product run flag.
 - Do not set approval to `approved` until the human explicitly approves.
 - [DECISION] Do not mark a role-owned fallback as approved unless the route approval
   explicitly approves that fallback.

@@ -91,8 +91,11 @@ The plan must show:
 - local values needed later;
 - missing capabilities;
 - model-level recommendations and concrete-model source;
+- runner policy, including selected role runner bindings, binding or override
+  source, and missing runners;
 - consensus policy for review gates;
 - iteration cap and budget policy;
+- usage-accounting policy;
 - role-owned action fallbacks, when a selected role capability is unavailable;
 - human gates before and inside the selected pipeline.
 
@@ -106,6 +109,7 @@ Show a concise proposed route and wait for one of the route decisions:
 - `change pipeline`;
 - `change roles`;
 - `change models`;
+- `change execution profile`;
 - `change consensus`;
 - `set budget`;
 - `analysis only`;
@@ -199,6 +203,11 @@ orchestrator_run:
     optional: []
   execution_policy:
     model_policy: {}
+    runner_policy:
+      role_runner_ids: {}
+      runner_bindings_source: playbook-catalog | execution-profile | runtime-config | mixed | unknown
+      runner_overrides: {}
+      missing_runners: []
     consensus_policy: {}
     budget_policy: {}
     usage_accounting: {}
@@ -219,6 +228,7 @@ orchestrator_run:
   usage_summary:
     attempts: []
     totals_by_role: {}
+    totals_by_runner_id: {}
     totals_by_model_profile: {}
     cost_unreported_for: []
   next_action: route-approval
@@ -248,6 +258,7 @@ Proposed route:
 - surfaces/stacks/tooling: <generic route summary>
 - verification capabilities: <ready, missing, or unknown gates>
 - model policy: <role -> model level, concrete source>
+- runner policy: <role -> runner id, binding source, overrides, missing runners>
 - consensus policy: <none, single-reviewer, dual-model, adversarial-consensus>
 - budget policy: <iteration cap, token budget, reported-cost budget>
 - missing capabilities: <none or list>
@@ -257,7 +268,8 @@ Proposed route:
 - first gate: route approval
 
 Decision needed: approve, change pipeline, change roles, change models,
-change consensus, set budget, analysis only, method first, or stop.
+change execution profile, change consensus, set budget, analysis only, method
+first, or stop.
 ```
 
 ## Rules
@@ -267,6 +279,8 @@ change consensus, set budget, analysis only, method first, or stop.
   capability check.
 - If a human changes model policy, consensus, or budget, regenerate the route
   plan and rerun capability check.
+- If a human changes execution profile, runner availability, or runner
+  overrides, regenerate the route plan and rerun capability check.
 - If blocking capabilities are missing, recommend `method first` or
   `analysis only`.
 - [DECISION] Role-owned actions must run through the selected role capability

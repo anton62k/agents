@@ -3,6 +3,7 @@ id: qa-frontend
 surface: frontend
 rights: qa-live
 default_model_level: standard
+runner_id: claude-code
 ---
 
 # Role: qa-frontend

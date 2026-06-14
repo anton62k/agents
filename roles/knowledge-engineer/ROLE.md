@@ -3,6 +3,7 @@ id: knowledge-engineer
 surface: method
 rights: write-working-tree
 default_model_level: deep
+runner_id: claude-code
 ---
 
 # Role: knowledge-engineer

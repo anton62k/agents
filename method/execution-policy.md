@@ -12,14 +12,26 @@ local overlays or future runtime config.
 
 The orchestrator builds execution policy from these sources, in order:
 
-1. canonical role and pipeline requirements;
-2. consuming repo overlays and run request constraints;
-3. local execution profile, for example `.agents/local.context.md` or a future
+1. installed playbook role and pipeline catalogs;
+2. canonical role and pipeline requirements;
+3. consuming repo overlays and run request constraints;
+4. local execution profile, for example `.agents/local.context.md` or a future
    runtime config;
-4. user overrides during route approval.
+5. user overrides during route approval.
 
 The canonical method may recommend `cheap`, `standard`, or `deep`. It must not
 hardcode current provider model names as required behavior.
+
+Role production runner bindings come from installed playbook data, specifically
+role `runner_id` values. Local or test execution profiles may override runner
+ids for a run, for example `claude-code -> stub-agent`. Overrides select runner
+implementations; they must not create separate stub roles or change pipeline
+role ids.
+
+[DECISION] Public product runs must not expose runner selection as
+user-facing `runnerMode`, `--stub`, or `--live` controls. Test execution uses a
+test execution profile selected by the runtime or test harness, not a different
+production route, role id, or pipeline definition.
 
 ## Model Levels
 
@@ -60,6 +72,7 @@ Before execution, the orchestrator must show:
 
 - selected pipeline;
 - selected roles and omitted optional roles;
+- selected runner binding per selected role and the source of any override;
 - recommended model level per role;
 - consensus mode per review gate;
 - iteration cap;
@@ -73,6 +86,7 @@ The human may answer:
 - `change pipeline`;
 - `change roles`;
 - `change models`;
+- `change execution profile`;
 - `change consensus`;
 - `set budget`;
 - `analysis only`;
@@ -113,5 +127,11 @@ Do not compute cost from a committed price table. Use `usage-accounting.md`.
 - Do not silently decrease model level after route approval unless
   `budget_exhaustion_action: degrade_models` and the specific downgrade path
   were approved in the route plan.
-- Concrete model and runner names may appear in run state only when they come
-  from local overlays or runtime config.
+- Concrete model names may appear in run state only when they come from local
+  overlays or runtime config.
+- Resolved runner ids may appear in route plans and run state when they come
+  from installed playbook role `runner_id` values, or from local, test, or
+  runtime execution-profile overrides.
+- Stub runners are test-profile bindings, not user-facing product modes.
+- Runtime importers must not derive runner bindings from `rights`; `rights`
+  controls access and tool policy only.
