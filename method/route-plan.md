@@ -43,6 +43,11 @@ route_plan:
       role_levels: {} # role id -> cheap | standard | deep
       concrete_models_source: local-overlay | runtime-config | unknown
       missing_model_profiles: []
+    runner_policy:
+      role_runner_ids: {} # role id -> resolved runner id for this run
+      runner_bindings_source: playbook-catalog | execution-profile | runtime-config | mixed | unknown
+      runner_overrides: {} # production runner id -> selected runner id
+      missing_runners: []
     consensus_policy:
       task_spec_review: none | single-reviewer | dual-model | adversarial-consensus
       architecture_review: none | single-reviewer | dual-model | adversarial-consensus
@@ -79,7 +84,8 @@ route_plan:
     status: proposed | approved | changed | rejected
     decision: >
       approve | change pipeline | change roles | change models |
-      change consensus | set budget | analysis only | method first | stop
+      change execution profile | change consensus | set budget |
+      analysis only | method first | stop
     notes: ""
 ```
 
@@ -118,6 +124,7 @@ run_state:
   usage_summary:
     attempts: []
     totals_by_role: {}
+    totals_by_runner_id: {}
     totals_by_model_profile: {}
     cost_unreported_for: []
   next_action: route-approval
@@ -129,6 +136,8 @@ run_state:
 - If the human changes the pipeline or roles, regenerate the route plan and rerun
   capability check before execution.
 - If the human changes models, consensus, or budget, regenerate the route plan
+  and rerun capability check before execution.
+- If runner availability or runner overrides change, regenerate the route plan
   and rerun capability check before execution.
 - Use `consensus_policy.other_gates` for pipeline-specific review gates that do
   not fit task spec, architecture, or code review.
@@ -151,6 +160,11 @@ run_state:
   fields.
 - Concrete model names may enter run state only from local overlays or runtime
   config.
+- Production runner bindings come from installed playbook role `runner_id`
+  values. Local or test profiles may override runner ids without changing role
+  ids, pipeline role ids, or route gates.
+- Stub runners may appear only as execution-profile overrides, not as production
+  role ids or public product run modes.
 - `budget_exhaustion_action: degrade_models` may run without another human gate
   only when `approved_model_downgrades` names the pre-approved downgrade path.
 - Usage accounting follows `usage-accounting.md`; do not compute costs from a

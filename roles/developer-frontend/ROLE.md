@@ -3,6 +3,7 @@ id: developer-frontend
 surface: frontend
 rights: write-working-tree
 default_model_level: standard
+runner_id: claude-code
 ---
 
 # Role: developer-frontend

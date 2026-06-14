@@ -3,6 +3,7 @@ id: merger
 surface: repo
 rights: git-gh
 default_model_level: standard
+runner_id: revo-merger
 ---
 
 # Role: merger

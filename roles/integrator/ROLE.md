@@ -3,6 +3,7 @@ id: integrator
 surface: repo
 rights: git-gh
 default_model_level: standard
+runner_id: revo-integrator
 ---
 
 # Role: integrator

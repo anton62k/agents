@@ -43,10 +43,20 @@ The importer must not discover roles or pipelines by scanning `roles/`,
 `pipelines/`, adapter wrappers, or markdown headings. Those files may be opened
 only after catalog validation, for prompt composition or source display.
 
+The installed playbook snapshot owns available roles, pipelines, pipeline role
+sets, route gates, execution policy defaults, and production role `runner_id`
+bindings. Runtime or test execution profiles may narrow availability or override
+runner ids for a run, but they must not create production `stub-*` roles or
+change pipeline role ids.
+
 ## Compatibility
 
 `playbook.json.schema_version` is the import contract version. The importer must
 refuse unknown schema versions instead of guessing or partially importing.
+
+Current schema version: `2`. Version `2` requires role catalog records to carry
+portable production `runner_id` bindings and requires runtimes to apply test
+runner overrides through execution profiles, not production stub roles.
 
 Minimum behavior:
 
@@ -97,13 +107,16 @@ For each record in `catalog/roles.json`, import or derive:
 - `rights`
 - `model_level` from `default_model_level`;
 - `allowed_tools` from `rights`;
-- `runner` from `rights`;
+- `runner_id` from the role catalog;
 - optional `prompt`
 
 Mapping rules:
 
 - `default_model_level` maps to runtime `model_level`.
 - `rights` maps to `allowed_tools`.
+- `runner_id` maps to the runtime runner binding, optionally through a local or
+  test execution-profile override.
+- `rights` must not be used to derive `runner_id`.
 - `path` must point to the canonical role file inside the installed playbook.
 - Wrapper paths are adapter metadata for Codex and Claude Code; revo must not use
   wrappers as role definitions.
@@ -126,18 +139,20 @@ future explicit mapping.
 
 ## Rights Mapping
 
-| Playbook rights | revo allowed tools | Runner |
-| --- | --- | --- |
-| `read-only` | `Read`, `Grep`, `Glob` | prompt |
-| `write-working-tree` | `Read`, `Grep`, `Glob`, `Edit`, `Write`, `Bash` | prompt |
-| `qa-live` | `Read`, `Bash`, plus platform tools from runtime config | prompt |
-| `deploy-read` | `Read`, `Bash`, plus platform tools from runtime config | prompt |
-| `git-gh` | engine-owned git and GitHub operations | script |
-| `deterministic-script` | engine-owned deterministic operations | script |
+| Playbook rights | revo allowed tools |
+| --- | --- |
+| `read-only` | `Read`, `Grep`, `Glob` |
+| `write-working-tree` | `Read`, `Grep`, `Glob`, `Edit`, `Write`, `Bash` |
+| `qa-live` | `Read`, `Bash`, plus platform tools from runtime config |
+| `deploy-read` | `Read`, `Bash`, plus platform tools from runtime config |
+| `git-gh` | engine-owned git and GitHub operations |
+| `deterministic-script` | engine-owned deterministic operations |
 
-`git-gh` and `deterministic-script` roles are implemented by revo engine code.
-They are imported as code-backed roles with `runner: script`; prompt
-materialization is optional and must not be required for execution.
+`git-gh` and `deterministic-script` rights describe access. The executable
+runner binding still comes from `runner_id`. Engine-owned runner ids such as
+`revo-integrator`, `revo-merger`, and `revo-deterministic` may be implemented by
+revo code. Prompt materialization is optional for code-backed roles and must not
+be required for execution.
 
 Current code-backed roles:
 
@@ -183,25 +198,39 @@ Pipeline markdown may be opened after catalog validation to display the
 canonical workflow to a human or to compose a route plan. It is not the discovery
 source.
 
+Pipeline role sets come from the imported `required_roles`, `alternative_roles`,
+and `optional_roles` fields. A test run that uses stubs keeps those role ids and
+selects stub implementations only through execution-profile runner overrides.
+
 ## Route-Time Behavior
 
 The revo orchestrator should select a pipeline from the imported catalog, verify
-that required roles exist for the installed playbook, propose model levels and
+that required roles exist for the installed playbook, resolve selected
+`runner_id` values after execution-profile overrides, propose model levels and
 consensus settings from `execution_policy`, and ask for human approval when the
 route contract requires it.
+
+Public product runs must not depend on a user-facing `runnerMode`, `--stub`, or
+`--live` switch. Production uses installed playbook runner bindings; tests use a
+test execution profile such as `claude-code -> stub-agent`.
 
 The route plan should record:
 
 - playbook identity;
 - selected pipeline id;
 - selected role ids and runtime names;
-- model levels and runner choices;
+- model levels and resolved runner choices;
+- runner binding source for each selected role: playbook binding or
+  execution-profile override;
+- execution-profile runner overrides, when present;
+- missing runner implementations or override targets, when present;
 - consensus policy;
 - human gates and unresolved clarification markers.
 
 If a required role is absent, rights cannot be mapped, schema version is
-unsupported, or a blocking clarification marker remains, the route must stop
-instead of degrading silently.
+unsupported, a selected runner implementation is missing, an execution-profile
+override target is missing, or a blocking clarification marker remains, the
+route must stop instead of degrading silently.
 
 ## Usage Accounting
 

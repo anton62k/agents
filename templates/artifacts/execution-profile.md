@@ -26,6 +26,23 @@ execution_profile:
       available: true | false | unknown
 
   available_roles: []
+  available_pipelines: []
+
+  available_runners:
+    claude-code: available | missing | unknown
+    codex: available | missing | unknown
+    revo-integrator: available | missing | unknown
+    revo-merger: available | missing | unknown
+    revo-deterministic: available | missing | unknown
+    # Test profiles may add `stub-agent: available`; production role
+    # frontmatter must not use stub runner ids.
+
+  # Test profile example:
+  # runner_overrides:
+  #   claude-code: stub-agent
+  # Production profiles should usually leave overrides empty and use playbook
+  # role runner_id bindings directly.
+  runner_overrides: {}
 
   model_profiles:
     cheap:

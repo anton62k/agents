@@ -38,7 +38,9 @@ available method definitions.
 14. Required consensus providers exist or are listed as missing.
 15. Budget constraints are compatible with the recommended route or require
     human approval.
-16. Selected role execution capabilities are available for the chosen adapter,
+16. Selected role `runner_id` values resolve to available runner implementations
+    after execution-profile overrides are applied.
+17. Selected role execution capabilities are available for the chosen adapter,
     or the route plan records an explicit role-owned action fallback for human
     approval.
 
@@ -54,7 +56,7 @@ recommendation: proceed | run-method-development-first | ask-human
 ```
 
 Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
-`practice`, `pipeline`, `adapter`, `local-value`, `model-profile`,
+`practice`, `pipeline`, `adapter`, `local-value`, `model-profile`, `runner`,
 `consensus-provider`, `budget`, `role-action-capability`.
 
 ## Rules
@@ -67,6 +69,8 @@ Allowed `kind` values: `role`, `role-group`, `stack`, `framework`, `tooling`,
   only when the route selected them as required for this run.
 - Missing model profiles or consensus providers require human approval before
   the orchestrator degrades models or narrows consensus.
+- Missing selected runners require human approval before the orchestrator
+  changes runner bindings or switches to a different execution profile.
 - Budget constraints that would change model level, consensus mode, or iteration
   cap require route-plan regeneration and human approval.
 - [DECISION] Missing selected role execution capability blocks automatic

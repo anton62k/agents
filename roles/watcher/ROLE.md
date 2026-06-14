@@ -3,6 +3,7 @@ id: watcher
 surface: repo
 rights: read-only
 default_model_level: standard
+runner_id: claude-code
 ---
 
 # Role: watcher

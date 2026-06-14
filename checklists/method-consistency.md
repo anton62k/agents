@@ -18,8 +18,10 @@ Run it before publishing a method PR.
 - [ ] The change belongs to the edited owner: role, stack, framework reference,
   shared reference, pipeline, adapter, template, or local overlay.
 - [ ] `roles/INDEX.md` matches routable role files.
-- [ ] Role frontmatter `id`, `surface`, `rights`, and `default_model_level`
-  matches `method/role-definition.md` and `roles/INDEX.md`.
+- [ ] Role frontmatter fields `id`, `surface`, `rights`,
+  `default_model_level`, and `runner_id` match `method/role-definition.md`,
+  `roles/INDEX.md`, and
+  generated role catalog data.
 - [ ] Routable role wrappers match `roles/INDEX.md` in:
   - `adapters/codex/materialized/agents/`
   - `adapters/claude-code/materialized/agents/`
@@ -33,7 +35,16 @@ Run it before publishing a method PR.
 - [ ] Adapter wrappers point back to canonical sources and do not redefine role
   or pipeline behavior.
 - [ ] Route plan, run state, and artifact templates agree on execution policy,
-  consensus, budget, and usage fields.
+  runner policy, consensus, budget, and usage fields.
+- [ ] Production runner bindings come from installed playbook role `runner_id`
+  values.
+- [ ] `rights` never derive or imply runner bindings.
+- [ ] Local and test execution profiles only override runner availability or
+  bindings.
+- [ ] Stub runners appear only as test-profile overrides, not production role
+  bindings.
+- [ ] Public product contracts do not expose `runnerMode`, `--stub`, or `--live`
+  controls.
 - [ ] Pipeline execution-policy defaults do not hardcode concrete provider model
   names.
 - [ ] Usage accounting keeps cost and token metadata outside portable
