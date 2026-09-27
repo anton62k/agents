@@ -1,0 +1,323 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import fcntl
+import json
+import os
+from pathlib import Path
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import tomllib
+
+
+HOME = Path.home()
+GLOBAL_IGNORE = HOME / ".config" / "git" / "ignore"
+REGISTRY_ROOT = HOME / ".worktree" / ".registry"
+OPENCODE_CONFIG = HOME / ".config" / "opencode" / "opencode.jsonc"
+GROK_CONFIG = HOME / ".grok" / "config.toml"
+
+
+class ManagerError(RuntimeError):
+    pass
+
+
+def run(args: list[str], *, cwd: Path | None = None, capture: bool = False,
+        check: bool = True) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        args,
+        cwd=cwd,
+        text=True,
+        stdout=subprocess.PIPE if capture else None,
+        stderr=subprocess.PIPE if capture else None,
+        check=check,
+    )
+
+
+def output(args: list[str], *, cwd: Path | None = None) -> str:
+    return run(args, cwd=cwd, capture=True).stdout.strip()
+
+
+def require(command: str) -> None:
+    if shutil.which(command) is None:
+        raise ManagerError(f"Required command is unavailable: {command}")
+
+
+def git_root(path: Path) -> Path:
+    try:
+        return Path(output(["git", "-C", str(path), "rev-parse", "--show-toplevel"])).resolve()
+    except subprocess.CalledProcessError as exc:
+        raise ManagerError(f"Not inside a Git working tree: {path}") from exc
+
+
+def identity(root: Path) -> tuple[str, str, str] | None:
+    marker = (HOME / ".worktree").parts
+    parts = root.parts
+    if parts[:len(marker)] != marker or len(parts) < len(marker) + 3:
+        return None
+    relative = parts[len(marker):]
+    return relative[0], relative[-2], relative[-1]
+
+
+def registry_path(root: Path) -> Path | None:
+    parts = identity(root)
+    if parts is None:
+        return None
+    project, repo, task = parts
+    return REGISTRY_ROOT / project / repo / f"{task}.json"
+
+
+def now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def sync_registry(root: Path, status: str) -> None:
+    path = registry_path(root)
+    if path is None or not path.exists():
+        return
+    lock_path = path.with_suffix(path.suffix + ".lock")
+    with lock_path.open("a+") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            record = json.loads(path.read_text())
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ManagerError(f"Cannot read worktree registry record: {path}") from exc
+        timestamp = now()
+        record["codegraph"] = {
+            "status": status,
+            "root": str(root),
+            "version": codegraph_version(),
+            "lastCheckedAt": timestamp,
+        }
+        record["lastCheckedAt"] = timestamp
+        with tempfile.NamedTemporaryFile("w", dir=path.parent, delete=False) as handle:
+            json.dump(record, handle, indent=2)
+            handle.write("\n")
+            temporary = Path(handle.name)
+        os.replace(temporary, path)
+
+
+def codegraph_version() -> str:
+    result = run(["codegraph", "--version"], capture=True, check=False)
+    return result.stdout.strip() if result.returncode == 0 else "unknown"
+
+
+def ensure_global_ignore() -> None:
+    GLOBAL_IGNORE.parent.mkdir(parents=True, exist_ok=True)
+    existing = GLOBAL_IGNORE.read_text() if GLOBAL_IGNORE.exists() else ""
+    lines = existing.splitlines()
+    if ".codegraph/" not in {line.strip() for line in lines}:
+        separator = "" if not existing or existing.endswith("\n") else "\n"
+        with GLOBAL_IGNORE.open("a") as handle:
+            handle.write(f"{separator}.codegraph/\n")
+    # A linked worktree mounted into a sandbox may have a .git file whose host
+    # administration path is intentionally unavailable. Global configuration does
+    # not need repository discovery, so run it from HOME instead of the caller's cwd.
+    run(
+        ["git", "config", "--global", "core.excludesFile", str(GLOBAL_IGNORE)],
+        cwd=HOME,
+    )
+
+
+def is_initialized(root: Path) -> bool:
+    return (root / ".codegraph" / "codegraph.db").is_file()
+
+
+def terminate_mcp_processes(root: Path) -> None:
+    target = str(root)
+    own_pid = os.getpid()
+    matches: list[int] = []
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdigit() or int(entry.name) == own_pid:
+            continue
+        try:
+            arguments = [
+                value.decode(errors="replace")
+                for value in (entry / "cmdline").read_bytes().split(b"\0")
+                if value
+            ]
+        except (FileNotFoundError, PermissionError, ProcessLookupError):
+            continue
+        if "serve" not in arguments or "--mcp" not in arguments or "--path" not in arguments:
+            continue
+        try:
+            path_index = arguments.index("--path")
+        except ValueError:
+            continue
+        if path_index + 1 < len(arguments) and str(Path(arguments[path_index + 1]).resolve()) == target:
+            matches.append(int(entry.name))
+    for pid in matches:
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+    for _ in range(20):
+        remaining = []
+        for pid in matches:
+            try:
+                os.kill(pid, 0)
+                remaining.append(pid)
+            except ProcessLookupError:
+                pass
+        if not remaining:
+            return
+        matches = remaining
+        import time
+        time.sleep(0.1)
+    for pid in matches:
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+
+
+def ensure(root: Path) -> None:
+    ensure_global_ignore()
+    if is_initialized(root):
+        run(["codegraph", "sync", str(root)])
+        action = "Updated"
+    else:
+        run(["codegraph", "init", "--yes", str(root)])
+        action = "Initialized"
+    sync_registry(root, "indexed")
+    print(f"{action} CodeGraph index: {root}")
+
+
+def status(root: Path) -> int:
+    result = run(["codegraph", "status", "--json", str(root)], capture=True, check=False)
+    if result.returncode == 0:
+        sync_registry(root, "indexed")
+        print(result.stdout, end="")
+        return 0
+    sync_registry(root, "absent")
+    if result.stdout:
+        print(result.stdout, end="")
+    if result.stderr:
+        print(result.stderr, end="", file=sys.stderr)
+    return result.returncode
+
+
+def remove(root: Path) -> None:
+    terminate_mcp_processes(root)
+    if (root / ".codegraph").exists():
+        run(["codegraph", "uninit", "--force", str(root)])
+    sync_registry(root, "removed")
+    print(f"Removed CodeGraph index: {root}")
+
+
+def agent_configured(command: str, args: list[str]) -> bool:
+    if shutil.which(command) is None:
+        return False
+    return run([command, *args], capture=True, check=False).returncode == 0
+
+
+def opencode_configured() -> bool:
+    if not OPENCODE_CONFIG.is_file():
+        return False
+    try:
+        config = json.loads(OPENCODE_CONFIG.read_text())
+    except (OSError, json.JSONDecodeError):
+        return False
+    server = config.get("mcp", {}).get("codegraph", {})
+    return server.get("enabled", True) and server.get("command") == [
+        "codegraph", "serve", "--mcp",
+    ]
+
+
+def configure_opencode() -> None:
+    OPENCODE_CONFIG.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        config = json.loads(OPENCODE_CONFIG.read_text()) if OPENCODE_CONFIG.exists() else {}
+    except json.JSONDecodeError as exc:
+        raise ManagerError(
+            f"Cannot safely update JSONC with comments: {OPENCODE_CONFIG}"
+        ) from exc
+    config.setdefault("$schema", "https://opencode.ai/config.json")
+    config.setdefault("mcp", {})["codegraph"] = {
+        "type": "local",
+        "command": ["codegraph", "serve", "--mcp"],
+        "enabled": True,
+    }
+    with tempfile.NamedTemporaryFile("w", dir=OPENCODE_CONFIG.parent, delete=False) as handle:
+        json.dump(config, handle, indent=2)
+        handle.write("\n")
+        temporary = Path(handle.name)
+    os.replace(temporary, OPENCODE_CONFIG)
+
+
+def grok_configured() -> bool:
+    if not GROK_CONFIG.is_file():
+        return False
+    try:
+        config = tomllib.loads(GROK_CONFIG.read_text())
+    except (OSError, tomllib.TOMLDecodeError):
+        return False
+    server = config.get("mcp_servers", {}).get("codegraph", {})
+    return (
+        server.get("enabled", True)
+        and server.get("command") == "codegraph"
+        and server.get("args") == ["serve", "--mcp"]
+    )
+
+
+def bootstrap() -> None:
+    ensure_global_ignore()
+    run(["codegraph", "telemetry", "off"])
+    codex = agent_configured("codex", ["mcp", "get", "codegraph"])
+    claude = agent_configured("claude", ["mcp", "get", "codegraph"])
+    opencode = opencode_configured()
+    grok = grok_configured()
+    if shutil.which("codex") is not None and not codex:
+        run(["codex", "mcp", "add", "codegraph", "--", "codegraph", "serve", "--mcp"])
+        codex = agent_configured("codex", ["mcp", "get", "codegraph"])
+    if shutil.which("claude") is not None and not claude:
+        run([
+            "claude", "mcp", "add", "--scope", "user", "codegraph",
+            "--", "codegraph", "serve", "--mcp",
+        ])
+        claude = agent_configured("claude", ["mcp", "get", "codegraph"])
+    if shutil.which("opencode") is not None and not opencode:
+        configure_opencode()
+        opencode = opencode_configured()
+    if shutil.which("grok") is not None and not grok:
+        run(["grok", "mcp", "add", "codegraph", "--", "codegraph", "serve", "--mcp"])
+        grok = grok_configured()
+    print(f"CodeGraph {codegraph_version()}")
+    print(f"Git excludes: {GLOBAL_IGNORE}")
+    print(f"Codex MCP: {'configured' if codex else 'missing'}")
+    print(f"Claude MCP: {'configured' if claude else 'missing'}")
+    print(f"OpenCode MCP: {'configured' if opencode else 'missing'}")
+    print(f"Grok MCP: {'configured' if grok else 'missing'}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="codegraph-manager")
+    parser.add_argument("command", choices=("bootstrap", "ensure", "status", "remove"))
+    parser.add_argument("path", nargs="?", default=".")
+    args = parser.parse_args()
+    require("git")
+    require("codegraph")
+    if args.command == "bootstrap":
+        bootstrap()
+        return 0
+    root = git_root(Path(args.path).expanduser().resolve())
+    if args.command == "ensure":
+        ensure(root)
+    elif args.command == "status":
+        return status(root)
+    elif args.command == "remove":
+        remove(root)
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except ManagerError as error:
+        print(f"codegraph-manager: {error}", file=sys.stderr)
+        raise SystemExit(1)

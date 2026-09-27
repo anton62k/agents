@@ -1,0 +1,33 @@
+[[links]]
+name = "Codex global instructions"
+source = "behavior.md"
+target = "~/.codex/AGENTS.md"
+
+[[links]]
+name = "Claude Code global instructions"
+source = "behavior.md"
+target = "~/.claude/CLAUDE.md"
+
+[[links]]
+name = "OpenCode global instructions"
+source = "behavior.md"
+target = "~/.config/opencode/AGENTS.md"
+
+[[links]]
+name = "Grok global instructions"
+source = "behavior.md"
+target = "~/.grok/AGENTS.md"
+
+[[links]]
+name = "CodeGraph manager"
+source = "tools/codegraph-manager/codegraph-manager"
+target = "~/.local/bin/codegraph-manager"
+
+[[links]]
+name = "worktree sandbox manager"
+source = "tools/worktree-sandbox/worktree-sandbox"
+target = "~/.local/bin/worktree-sandbox"
+
+[[skill_targets]]
+provider = "Claude Code"
+directory = "~/.claude/skills"
