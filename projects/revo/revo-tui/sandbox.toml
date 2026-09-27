@@ -1,0 +1,15 @@
+[commands]
+setup = [
+  '''
+set -euo pipefail
+sudo -n apt-get update
+sudo -n env DEBIAN_FRONTEND=noninteractive apt-get install \
+  -y --no-install-recommends build-essential file binutils
+command -v cc
+command -v file
+command -v readelf
+''',
+  "pnpm install --frozen-lockfile",
+]
+build = []
+verify = "pnpm verify"

@@ -1,0 +1,432 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tomllib
+from typing import Iterable
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+MANIFEST = Path("install/links.toml")
+CYRILLIC = re.compile(r"[\u0400-\u04ff]")
+MARKDOWN_LINK = re.compile(r"\[[^]]*\]\(([^)]+)\)")
+TEXT_SUFFIXES = {".md", ".py", ".toml", ".json", ".sh"}
+REQUIRED_PATHS = (
+    "AGENTS.md",
+    "README.md",
+    "behavior.md",
+    "provider-routing.md",
+    "rules/project-development.md",
+    "rules/saved-prompts.md",
+    "rules/codegraph-development.md",
+    "rules/sandbox-development.md",
+    "guidelines/README.md",
+    "install/links.toml",
+    "tools/codegraph-manager/codegraph-manager",
+    "tools/worktree-sandbox/worktree-sandbox",
+)
+
+
+class AgentsError(RuntimeError):
+    pass
+
+
+def run(
+    args: list[str],
+    *,
+    cwd: Path | None = None,
+    capture: bool = False,
+    check: bool = True,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        args,
+        cwd=cwd,
+        text=True,
+        stdout=subprocess.PIPE if capture else None,
+        stderr=subprocess.PIPE if capture else None,
+        check=check,
+    )
+
+
+def output(args: list[str], *, cwd: Path | None = None) -> str:
+    return run(args, cwd=cwd, capture=True).stdout.strip()
+
+
+def lexical_exists(path: Path) -> bool:
+    return os.path.lexists(path)
+
+
+def expand_home(value: str, home: Path) -> Path:
+    if value == "~":
+        return home
+    if value.startswith("~/"):
+        return home / value[2:]
+    return Path(value)
+
+
+def load_manifest(root: Path) -> dict:
+    path = root / MANIFEST
+    try:
+        return tomllib.loads(path.read_text())
+    except FileNotFoundError as exc:
+        raise AgentsError(f"Missing install manifest: {path}") from exc
+    except tomllib.TOMLDecodeError as exc:
+        raise AgentsError(f"Invalid install manifest: {path}: {exc}") from exc
+
+
+def custom_skills(root: Path) -> list[Path]:
+    skill_root = root / "skills"
+    if not skill_root.is_dir():
+        return []
+    return sorted(
+        path.parent
+        for path in skill_root.glob("*/SKILL.md")
+        if path.is_file()
+    )
+
+
+def desired_links(
+    root: Path,
+    home: Path,
+    *,
+    include_skills: bool = True,
+) -> list[tuple[str, Path, Path]]:
+    manifest = load_manifest(root)
+    links: list[tuple[str, Path, Path]] = []
+    for item in manifest.get("links", []):
+        source = (root / item["source"]).resolve()
+        target = expand_home(item["target"], home)
+        links.append((item["name"], source, target))
+    if include_skills:
+        for target_group in manifest.get("skill_targets", []):
+            directory = expand_home(target_group["directory"], home)
+            for skill in custom_skills(root):
+                links.append((
+                    f"{target_group['provider']} skill {skill.name}",
+                    skill.resolve(),
+                    directory / skill.name,
+                ))
+    return links
+
+
+def link_state(source: Path, target: Path) -> tuple[str, str]:
+    if not source.exists():
+        return "invalid", f"source is missing: {source}"
+    if not lexical_exists(target):
+        return "missing", "will be created"
+    if target.is_symlink():
+        if target.resolve(strict=False) == source.resolve(strict=False):
+            return "ok", "already linked"
+        return "conflict", f"points to {target.resolve(strict=False)}"
+    return "conflict", f"existing {target_type(target)}"
+
+
+def target_type(path: Path) -> str:
+    if path.is_dir():
+        return "directory"
+    if path.is_file():
+        return "file"
+    return "filesystem entry"
+
+
+def inspect_links(
+    root: Path,
+    home: Path,
+    *,
+    include_skills: bool = True,
+) -> list[tuple[str, Path, Path, str, str]]:
+    return [
+        (name, source, target, *link_state(source, target))
+        for name, source, target in desired_links(
+            root, home, include_skills=include_skills
+        )
+    ]
+
+
+def print_link_plan(rows: Iterable[tuple[str, Path, Path, str, str]]) -> None:
+    for name, source, target, state, detail in rows:
+        print(f"{state.upper():8} {name}")
+        print(f"         {target} -> {source}")
+        if state in {"conflict", "invalid"}:
+            print(f"         {detail}")
+
+
+def install_links(
+    root: Path,
+    home: Path,
+    *,
+    dry_run: bool,
+    include_skills: bool,
+) -> None:
+    rows = inspect_links(root, home, include_skills=include_skills)
+    print_link_plan(rows)
+    conflicts = [row for row in rows if row[3] in {"conflict", "invalid"}]
+    if conflicts:
+        raise AgentsError(
+            "Installation stopped before making changes because managed targets conflict"
+        )
+    if dry_run:
+        return
+    for _, source, target, state, _ in rows:
+        if state != "missing":
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.symlink_to(source)
+
+
+def bootstrap_mcp(root: Path) -> None:
+    if shutil.which("codegraph") is None:
+        print("SKIP     CodeGraph MCP bootstrap: codegraph is not installed")
+        return
+    manager = root / "tools/codegraph-manager/codegraph-manager"
+    run([str(manager), "bootstrap"])
+
+
+def iter_repository_files(root: Path) -> Iterable[Path]:
+    for path in root.rglob("*"):
+        relative = path.relative_to(root)
+        if ".git" in relative.parts or "__pycache__" in relative.parts:
+            continue
+        if path.is_file() and not path.is_symlink():
+            yield path
+
+
+def validate_markdown_links(root: Path, path: Path, errors: list[str]) -> None:
+    text = path.read_text(errors="replace")
+    for raw in MARKDOWN_LINK.findall(text):
+        target = raw.split("#", 1)[0]
+        if not target or target.startswith(("http://", "https://", "mailto:")):
+            continue
+        if target.startswith(("$HOME", "~")):
+            continue
+        resolved = (path.parent / target).resolve()
+        if root.resolve() not in (resolved, *resolved.parents):
+            errors.append(f"{path.relative_to(root)}: link escapes repository: {raw}")
+        elif not resolved.exists():
+            errors.append(f"{path.relative_to(root)}: broken link: {raw}")
+
+
+def check_repository(root: Path) -> list[str]:
+    errors: list[str] = []
+    for relative in REQUIRED_PATHS:
+        if not (root / relative).exists():
+            errors.append(f"missing required path: {relative}")
+    try:
+        manifest = load_manifest(root)
+        if not manifest.get("links"):
+            errors.append("install/links.toml defines no managed links")
+    except AgentsError as exc:
+        errors.append(str(exc))
+    for path in iter_repository_files(root):
+        relative = path.relative_to(root)
+        if path.suffix in TEXT_SUFFIXES or path.name in {"agents", "codegraph-manager", "worktree-sandbox"}:
+            try:
+                text = path.read_text()
+            except UnicodeDecodeError:
+                continue
+            if CYRILLIC.search(text):
+                errors.append(f"{relative}: contains Cyrillic text")
+            concrete_home = "/" + "home/"
+            if concrete_home in text:
+                errors.append(f"{relative}: contains a concrete /home path")
+        if path.suffix == ".md":
+            validate_markdown_links(root, path, errors)
+        elif path.suffix == ".json":
+            try:
+                json.loads(path.read_text())
+            except json.JSONDecodeError as exc:
+                errors.append(f"{relative}: invalid JSON: {exc}")
+        elif path.suffix == ".toml":
+            try:
+                tomllib.loads(path.read_text())
+            except tomllib.TOMLDecodeError as exc:
+                errors.append(f"{relative}: invalid TOML: {exc}")
+    for relative in (
+        "bin/agents",
+        "tools/codegraph-manager/codegraph-manager",
+        "tools/worktree-sandbox/worktree-sandbox",
+    ):
+        path = root / relative
+        if path.exists() and not os.access(path, os.X_OK):
+            errors.append(f"{relative}: must be executable")
+        if path.exists():
+            try:
+                compile(path.read_text(), str(path), "exec")
+            except SyntaxError as exc:
+                errors.append(f"{relative}: Python syntax error: {exc}")
+    return errors
+
+
+def command_check(root: Path) -> None:
+    errors = check_repository(root)
+    if errors:
+        for error in errors:
+            print(f"ERROR    {error}")
+        raise AgentsError(f"Repository check failed with {len(errors)} error(s)")
+    print(f"OK       Repository content: {root}")
+
+
+def command_doctor(root: Path, home: Path) -> None:
+    command_check(root)
+    deployed = (home / ".agents").resolve(strict=False)
+    if root.resolve() != deployed:
+        print(f"SKIP     Managed link checks: candidate is not deployed at {home / '.agents'}")
+        return
+    rows = inspect_links(root, home)
+    print_link_plan(rows)
+    failures = [row for row in rows if row[3] != "ok"]
+    if failures:
+        raise AgentsError(f"Doctor found {len(failures)} unmanaged or missing link(s)")
+    print("OK       Managed provider and skill links")
+
+
+def git_output(root: Path, *args: str) -> str:
+    return output(["git", "-C", str(root), *args])
+
+
+def remote_default(root: Path, remote: str = "origin") -> str:
+    reference = git_output(root, "symbolic-ref", f"refs/remotes/{remote}/HEAD")
+    prefix = f"refs/remotes/{remote}/"
+    if not reference.startswith(prefix):
+        raise AgentsError(f"Cannot determine {remote}'s default branch")
+    return reference[len(prefix):]
+
+
+def command_status(root: Path, home: Path) -> None:
+    print(git_output(root, "status", "--short", "--branch"))
+    print_link_plan(inspect_links(root, home))
+
+
+def command_update(root: Path, home: Path, *, skip_mcp: bool) -> None:
+    if root.resolve() != (home / ".agents").resolve(strict=False):
+        raise AgentsError("Update is allowed only from the deployed $HOME/.agents checkout")
+    if git_output(root, "status", "--porcelain"):
+        raise AgentsError("Refusing to update a dirty deployed checkout")
+    remote = "origin"
+    run(["git", "-C", str(root), "fetch", remote])
+    default = remote_default(root, remote)
+    branch = git_output(root, "branch", "--show-current")
+    if branch != default:
+        raise AgentsError(f"Deployed checkout is on {branch!r}; expected {default!r}")
+    run(["git", "-C", str(root), "merge", "--ff-only", f"{remote}/{default}"])
+    command_check(root)
+    install_links(root, home, dry_run=False, include_skills=True)
+    if not skip_mcp:
+        bootstrap_mcp(root)
+    command_doctor(root, home)
+
+
+def fingerprint(path: Path) -> str:
+    digest = hashlib.sha256()
+    digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def portable_inventory(root: Path) -> dict[str, Path]:
+    result: dict[str, Path] = {}
+    for path in iter_repository_files(root):
+        relative = path.relative_to(root)
+        if relative.parts[0] in {"tests", "install", "bin"}:
+            continue
+        result[str(relative)] = path
+    return result
+
+
+def existing_inventory(existing: Path) -> dict[str, Path]:
+    result: dict[str, Path] = {}
+    if not existing.is_dir():
+        return result
+    for path in existing.rglob("*"):
+        relative = path.relative_to(existing)
+        if ".git" in relative.parts or "__pycache__" in relative.parts:
+            continue
+        if path.is_file() and not path.is_symlink():
+            result[str(relative)] = path
+    return result
+
+
+def command_plan_adopt(root: Path, existing: Path) -> None:
+    if not lexical_exists(existing):
+        print(f"MISSING  {existing}: use the fresh installation workflow")
+        return
+    if existing.is_symlink():
+        print(f"SYMLINK  {existing} -> {existing.resolve(strict=False)}")
+        return
+    if not existing.is_dir():
+        raise AgentsError(f"Existing path is not a directory: {existing}")
+    desired = portable_inventory(root)
+    current = existing_inventory(existing)
+    for relative in sorted(desired.keys() | current.keys()):
+        if relative not in current:
+            state = "REPOSITORY_ONLY"
+        elif relative not in desired:
+            state = "EXISTING_ONLY"
+        elif fingerprint(desired[relative]) == fingerprint(current[relative]):
+            state = "IDENTICAL"
+        else:
+            state = "DIFFERENT"
+        print(f"{state:15} {relative}")
+    print("\nRead-only inventory complete. No files were changed.")
+
+
+def parser() -> argparse.ArgumentParser:
+    result = argparse.ArgumentParser(prog="agents")
+    result.add_argument("--root", type=Path, default=REPO_ROOT)
+    result.add_argument("--home", type=Path, default=Path.home())
+    subcommands = result.add_subparsers(dest="command", required=True)
+    subcommands.add_parser("check")
+    subcommands.add_parser("doctor")
+    subcommands.add_parser("status")
+    update = subcommands.add_parser("update")
+    update.add_argument("--skip-mcp", action="store_true")
+    for name in ("plan-install", "install"):
+        install = subcommands.add_parser(name)
+        install.add_argument("--skip-mcp", action="store_true")
+        install.add_argument("--skip-skills", action="store_true")
+    adopt = subcommands.add_parser("plan-adopt")
+    adopt.add_argument("path", type=Path)
+    return result
+
+
+def main() -> int:
+    args = parser().parse_args()
+    root = args.root.expanduser().resolve()
+    home = args.home.expanduser().resolve()
+    if args.command == "check":
+        command_check(root)
+    elif args.command == "doctor":
+        command_doctor(root, home)
+    elif args.command == "status":
+        command_status(root, home)
+    elif args.command in {"plan-install", "install"}:
+        dry_run = args.command == "plan-install"
+        install_links(
+            root,
+            home,
+            dry_run=dry_run,
+            include_skills=not args.skip_skills,
+        )
+        if not dry_run and not args.skip_mcp:
+            bootstrap_mcp(root)
+    elif args.command == "update":
+        command_update(root, home, skip_mcp=args.skip_mcp)
+    elif args.command == "plan-adopt":
+        command_plan_adopt(root, args.path.expanduser().resolve())
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except (AgentsError, subprocess.CalledProcessError) as error:
+        print(f"agents: {error}", file=sys.stderr)
+        raise SystemExit(1)

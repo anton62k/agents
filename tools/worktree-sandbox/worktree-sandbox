@@ -1,0 +1,622 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shlex
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+import tomllib
+import urllib.request
+
+
+HOME = Path.home()
+TOOL_ROOT = Path(__file__).resolve().parent
+PROFILE_ROOT = HOME / ".agents" / "projects"
+STATE_ROOT = HOME / ".worktree" / ".sandbox"
+REGISTRY_ROOT = HOME / ".worktree" / ".registry"
+NVM_VERSION = "0.40.8"
+TEMPLATE_VERSION = "v1"
+
+
+class SandboxError(RuntimeError):
+    pass
+
+
+def run(args: list[str], *, cwd: Path | None = None, capture: bool = False,
+        check: bool = True, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        args,
+        cwd=cwd,
+        text=True,
+        stdout=subprocess.PIPE if capture else None,
+        stderr=subprocess.PIPE if capture else None,
+        check=check,
+        env=env,
+    )
+
+
+def output(args: list[str], *, cwd: Path | None = None) -> str:
+    return run(args, cwd=cwd, capture=True).stdout.strip()
+
+
+def require(command: str) -> None:
+    if shutil.which(command) is None:
+        raise SandboxError(f"Required command is unavailable: {command}")
+
+
+def slug(value: str, limit: int = 36) -> str:
+    normalized = re.sub(r"[^a-z0-9.-]+", "-", value.lower()).strip("-.")
+    return (normalized or "workspace")[:limit].rstrip("-.")
+
+
+def git_root(path: Path) -> Path:
+    try:
+        return Path(output(["git", "-C", str(path), "rev-parse", "--show-toplevel"])).resolve()
+    except subprocess.CalledProcessError as exc:
+        raise SandboxError(f"Not a Git worktree: {path}") from exc
+
+
+def identity(root: Path) -> tuple[str, str, str]:
+    parts = root.parts
+    marker = (HOME / ".worktree").parts
+    if parts[: len(marker)] == marker and len(parts) >= len(marker) + 3:
+        relative = parts[len(marker):]
+        return relative[0], relative[-2], relative[-1]
+    try:
+        relative = root.relative_to(HOME)
+        project = relative.parts[0]
+    except (ValueError, IndexError):
+        project = "external"
+    return project, root.name, root.name
+
+
+def load_package(root: Path) -> dict:
+    package_file = root / "package.json"
+    if not package_file.exists():
+        return {}
+    return json.loads(package_file.read_text())
+
+
+def load_profile(project: str, repo: str) -> tuple[Path, dict]:
+    profile_path = PROFILE_ROOT / project / repo / "sandbox.toml"
+    if not profile_path.exists():
+        return profile_path, {}
+    with profile_path.open("rb") as handle:
+        return profile_path, tomllib.load(handle)
+
+
+def infer_plan(root: Path) -> dict:
+    project, repo, task = identity(root)
+    profile_path, profile = load_profile(project, repo)
+    package = load_package(root)
+    scripts = package.get("scripts", {})
+    dependencies = {
+        **package.get("dependencies", {}),
+        **package.get("devDependencies", {}),
+    }
+    node_file = root / ".nvmrc"
+    node_version = node_file.read_text().strip() if node_file.exists() else "22"
+    manager = package.get("packageManager", "pnpm@latest")
+    pnpm_version = manager.split("@", 1)[1] if manager.startswith("pnpm@") else "latest"
+
+    service_config = profile.get("services", {})
+    services: list[str] = []
+    if service_config.get("postgres", {}).get("enabled", False):
+        services.append("postgres")
+    elif any(key == "pg" or key.startswith("@prisma/") for key in dependencies):
+        services.append("postgres")
+    if service_config.get("redis", {}).get("enabled", False):
+        services.append("redis")
+    elif any(key in dependencies for key in ("redis", "ioredis", "bullmq")):
+        services.append("redis")
+
+    commands = profile.get("commands", {})
+    setup = commands.get("setup", ["pnpm install --frozen-lockfile"])
+    migrate = commands.get("migrate")
+    if migrate is None and "db:migrate:deploy" in scripts:
+        migrate = ["pnpm db:migrate:deploy"]
+    build = commands.get("build")
+    if build is None and "build" in scripts:
+        build = ["pnpm build"]
+    start = commands.get("start")
+    if start is None and "start" in scripts:
+        start = "pnpm start"
+    verify = commands.get("verify")
+    if verify is None and "verify" in scripts:
+        verify = "pnpm verify"
+
+    application = profile.get("application", {})
+    app_port = int(application.get("port", 3000))
+    readiness = application.get("readiness", "/health")
+    env_values = {str(k): str(v) for k, v in profile.get("env", {}).items()}
+
+    path_hash = hashlib.sha256(str(root).encode()).hexdigest()[:8]
+    sandbox_name = slug(f"{project}-{repo}-{task}", 48) + f"-{path_hash}"
+    template_tag = f"worktree-sandbox:node{node_version}-pnpm{pnpm_version}-{TEMPLATE_VERSION}"
+    template_ref = f"docker.io/library/{template_tag}"
+    state_dir = STATE_ROOT / project / repo / task
+
+    return {
+        "version": 1,
+        "root": str(root),
+        "project": project,
+        "repo": repo,
+        "task": task,
+        "profile": str(profile_path) if profile_path.exists() else None,
+        "runtime": {"kind": "node", "node": node_version, "pnpm": pnpm_version},
+        "services": services,
+        "commands": {
+            "setup": list(setup or []),
+            "migrate": list(migrate or []),
+            "build": list(build or []),
+            "start": start,
+            "verify": verify,
+        },
+        "application": {"port": app_port, "readiness": readiness},
+        "env": env_values,
+        "sandbox": sandbox_name,
+        "template": template_ref,
+        "template_tag": template_tag,
+        "state_dir": str(state_dir),
+        "marker": f"worktree-sandbox-{path_hash}",
+    }
+
+
+def state_paths(plan: dict) -> dict[str, Path]:
+    base = Path(plan["state_dir"])
+    return {
+        "base": base,
+        "state": base / "state.json",
+        "env": base / "sandbox.env",
+        "compose": base / "compose.yml",
+        "start": base / "start.sh",
+        "keepalive_pid": base / "keepalive.pid",
+        "keepalive_log": base / "keepalive.log",
+        "api_log": base / "api.log",
+        "api_session_log": base / "api-session.log",
+    }
+
+
+def write_generated_files(plan: dict) -> None:
+    paths = state_paths(plan)
+    paths["base"].mkdir(parents=True, exist_ok=True)
+    env_values = dict(plan["env"])
+    if "postgres" in plan["services"]:
+        env_values.setdefault("DATABASE_URL", "postgresql://sandbox:sandbox@127.0.0.1:55434/sandbox")
+    if "redis" in plan["services"]:
+        env_values.setdefault("REDIS_URL", "redis://127.0.0.1:56379")
+    env_values.setdefault("HTTP_HOST", "0.0.0.0")
+    env_values.setdefault("HTTP_PORT", str(plan["application"]["port"]))
+    paths["env"].write_text("".join(f"{key}={value}\n" for key, value in sorted(env_values.items())))
+    paths["env"].chmod(0o600)
+
+    sections = ["services:"]
+    if "postgres" in plan["services"]:
+        sections.extend([
+            "  postgres:",
+            "    image: postgres:17-alpine",
+            "    restart: unless-stopped",
+            "    environment:",
+            "      POSTGRES_DB: sandbox",
+            "      POSTGRES_USER: sandbox",
+            "      POSTGRES_PASSWORD: sandbox",
+            "    ports:",
+            '      - "55434:5432"',
+            "    volumes:",
+            "      - postgres-data:/var/lib/postgresql/data",
+            "    healthcheck:",
+            '      test: ["CMD-SHELL", "pg_isready -U sandbox -d sandbox"]',
+            "      interval: 2s",
+            "      timeout: 3s",
+            "      retries: 15",
+        ])
+    if "redis" in plan["services"]:
+        sections.extend([
+            "  redis:",
+            "    image: redis:8-alpine",
+            "    restart: unless-stopped",
+            '    command: ["redis-server", "--appendonly", "yes"]',
+            "    ports:",
+            '      - "56379:6379"',
+            "    volumes:",
+            "      - redis-data:/data",
+            "    healthcheck:",
+            '      test: ["CMD", "redis-cli", "ping"]',
+            "      interval: 2s",
+            "      timeout: 3s",
+            "      retries: 15",
+        ])
+    if plan["services"]:
+        sections.append("volumes:")
+        if "postgres" in plan["services"]:
+            sections.append("  postgres-data:")
+        if "redis" in plan["services"]:
+            sections.append("  redis-data:")
+    paths["compose"].write_text("\n".join(sections) + "\n")
+
+    start = plan["commands"].get("start")
+    if start:
+        start_script = (
+            "#!/usr/bin/env bash\n"
+            "set -euo pipefail\n"
+            f"{start} &\n"
+            "child=$!\n"
+            "trap 'kill -TERM \"$child\" 2>/dev/null || true' TERM INT\n"
+            "wait \"$child\"\n"
+        )
+    else:
+        start_script = "#!/usr/bin/env bash\nexit 0\n"
+    paths["start"].write_text(start_script)
+    paths["start"].chmod(0o700)
+    paths["state"].write_text(json.dumps({**plan, "status": observed_status(plan)}, indent=2) + "\n")
+
+
+def sbx_rows() -> dict[str, str]:
+    result = output(["sbx", "ls"])
+    rows: dict[str, str] = {}
+    for line in result.splitlines()[1:]:
+        columns = line.split()
+        if len(columns) >= 3:
+            rows[columns[0]] = columns[2]
+    return rows
+
+
+def observed_status(plan: dict) -> str:
+    try:
+        return sbx_rows().get(plan["sandbox"], "absent")
+    except Exception:
+        return "unknown"
+
+
+def registry_path(plan: dict) -> Path:
+    return REGISTRY_ROOT / plan["project"] / plan["repo"] / f"{plan['task']}.json"
+
+
+def sync_registry(plan: dict, status: str | None = None) -> None:
+    path = registry_path(plan)
+    if not path.exists():
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    lock_path = path.with_suffix(path.suffix + ".lock")
+    with lock_path.open("a+") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            record = json.loads(path.read_text())
+        except (OSError, json.JSONDecodeError) as exc:
+            raise SandboxError(f"Cannot read worktree registry record: {path}") from exc
+        now = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        observed = status or observed_status(plan)
+        if observed == "absent":
+            observed = "removed"
+        if observed not in {"running", "stopped", "removed", "unknown"}:
+            observed = "unknown"
+        record["sandbox"] = {
+            "provider": "docker-sandboxes",
+            "name": plan["sandbox"],
+            "status": observed,
+            "template": plan["template"],
+            "lastCheckedAt": now,
+        }
+        record["lastCheckedAt"] = now
+        with tempfile.NamedTemporaryFile("w", dir=path.parent, delete=False) as handle:
+            json.dump(record, handle, indent=2)
+            handle.write("\n")
+            temporary = Path(handle.name)
+        os.replace(temporary, path)
+
+
+def sandbox_exists(plan: dict) -> bool:
+    return plan["sandbox"] in sbx_rows()
+
+
+def wait_running(plan: dict) -> None:
+    for _ in range(60):
+        if observed_status(plan) == "running":
+            return
+        time.sleep(0.5)
+    raise SandboxError("Sandbox did not reach running state")
+
+
+def ensure_running(plan: dict) -> None:
+    if observed_status(plan) != "running":
+        run(["sbx", "exec", plan["sandbox"], "true"], check=False)
+        wait_running(plan)
+
+
+def template_exists(reference: str) -> bool:
+    for line in output(["sbx", "template", "ls"]).splitlines()[1:]:
+        columns = line.split()
+        if len(columns) >= 2 and f"{columns[0]}:{columns[1]}" == reference:
+            return True
+    return False
+
+
+def ensure_template(plan: dict) -> None:
+    if template_exists(plan["template"]):
+        return
+    runtime = plan["runtime"]
+    run([
+        "docker", "build",
+        "--build-arg", f"NODE_VERSION={runtime['node']}",
+        "--build-arg", f"NVM_VERSION={NVM_VERSION}",
+        "--build-arg", f"PNPM_VERSION={runtime['pnpm']}",
+        "--tag", plan["template_tag"],
+        str(TOOL_ROOT / "template"),
+    ])
+    with tempfile.NamedTemporaryFile(dir=plan["state_dir"], suffix=".tar") as archive:
+        run(["docker", "image", "save", plan["template_tag"], "--output", archive.name])
+        run(["sbx", "template", "load", archive.name])
+
+
+def create(plan: dict) -> None:
+    require("docker")
+    require("sbx")
+    write_generated_files(plan)
+    if sandbox_exists(plan):
+        sync_registry(plan)
+        print(f"Sandbox already exists: {plan['sandbox']}")
+        return
+    ensure_template(plan)
+    profile_path = load_profile(plan["project"], plan["repo"])[1]
+    resources = profile_path.get("resources", {})
+    run([
+        "sbx", "create",
+        "--name", plan["sandbox"],
+        "--cpus", str(resources.get("cpus", 4)),
+        "--memory", str(resources.get("memory", "8g")),
+        "--publish", str(plan["application"]["port"]),
+        "--template", plan["template"],
+        "shell", plan["root"], plan["state_dir"],
+    ])
+    sync_registry(plan)
+    print(f"Created {plan['sandbox']}")
+
+
+def pid_matches(pid_file: Path, fragment: str) -> bool:
+    try:
+        pid = int(pid_file.read_text().strip())
+        os.kill(pid, 0)
+        command = Path(f"/proc/{pid}/cmdline").read_bytes().replace(b"\0", b" ").decode(errors="replace")
+        return fragment in command
+    except (FileNotFoundError, ProcessLookupError, PermissionError, ValueError):
+        return False
+
+
+def stop_process_group(pid_file: Path, fragment: str) -> None:
+    if pid_matches(pid_file, fragment):
+        pid = int(pid_file.read_text().strip())
+        try:
+            os.killpg(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        for _ in range(20):
+            try:
+                os.kill(pid, 0)
+            except ProcessLookupError:
+                break
+            time.sleep(0.1)
+        else:
+            try:
+                os.killpg(pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+    pid_file.unlink(missing_ok=True)
+
+
+def sandbox_process(plan: dict, marker: str) -> bool:
+    result = run(["sbx", "exec", plan["sandbox"], "pgrep", "-f", f"^{marker} "], capture=True, check=False)
+    return result.returncode == 0
+
+
+def start_keepalive(plan: dict) -> None:
+    paths = state_paths(plan)
+    marker = plan["marker"] + "-keepalive"
+    if pid_matches(paths["keepalive_pid"], marker) and sandbox_process(plan, marker):
+        return
+    run(["sbx", "exec", plan["sandbox"], "pkill", "-f", f"^{marker} "], check=False, capture=True)
+    stop_process_group(paths["keepalive_pid"], marker)
+    name = shlex.quote(plan["sandbox"])
+    process_marker = shlex.quote(marker)
+    command = f"tail -f /dev/null | sbx exec --interactive {name} bash -lc 'exec -a {process_marker} sleep infinity'"
+    log_handle = paths["keepalive_log"].open("ab")
+    process = subprocess.Popen(
+        ["bash", "-c", command],
+        stdin=subprocess.DEVNULL,
+        stdout=log_handle,
+        stderr=subprocess.STDOUT,
+        start_new_session=True,
+    )
+    log_handle.close()
+    paths["keepalive_pid"].write_text(f"{process.pid}\n")
+    for _ in range(20):
+        if pid_matches(paths["keepalive_pid"], marker) and sandbox_process(plan, marker):
+            return
+        time.sleep(0.25)
+    raise SandboxError("Keepalive session failed to start")
+
+
+def sandbox_exec(plan: dict, command: list[str], *, capture: bool = False,
+                 check: bool = True) -> subprocess.CompletedProcess[str]:
+    return run(
+        ["sbx", "exec", "--env-file", str(state_paths(plan)["env"]), plan["sandbox"], *command],
+        cwd=Path(plan["root"]), capture=capture, check=check,
+    )
+
+
+def compose_command(plan: dict, *args: str) -> list[str]:
+    return [
+        "docker", "compose", "--project-name", "worktree-sandbox",
+        "--file", str(state_paths(plan)["compose"]), *args,
+    ]
+
+
+def host_port(plan: dict) -> int | None:
+    result = json.loads(output(["sbx", "ports", plan["sandbox"], "--json"]))
+    mappings = result if isinstance(result, list) else result.get("ports", result.get("mappings", []))
+    for mapping in mappings:
+        if int(mapping.get("sandbox_port", -1)) == plan["application"]["port"]:
+            return int(mapping["host_port"])
+    return None
+
+
+def up(plan: dict) -> None:
+    if not sandbox_exists(plan):
+        create(plan)
+    else:
+        write_generated_files(plan)
+    ensure_running(plan)
+    start_keepalive(plan)
+    if plan["services"]:
+        sandbox_exec(plan, compose_command(plan, "up", "--detach", "--wait"))
+    for stage in ("setup", "migrate", "build"):
+        for command in plan["commands"].get(stage, []):
+            print(f"[{stage}] {command}")
+            sandbox_exec(plan, ["bash", "-lc", command])
+    start = plan["commands"].get("start")
+    if start:
+        marker = plan["marker"] + "-api"
+        sandbox_exec(plan, ["pkill", "-f", f"^{marker} "], check=False, capture=True)
+        paths = state_paths(plan)
+        command = (
+            f"exec -a {shlex.quote(marker)} bash {shlex.quote(str(paths['start']))} "
+            f">{shlex.quote(str(paths['api_log']))} 2>&1"
+        )
+        log_handle = paths["api_session_log"].open("ab")
+        process = subprocess.Popen(
+            ["sbx", "exec", "--env-file", str(paths["env"]), plan["sandbox"], "bash", "-lc", command],
+            cwd=plan["root"], stdin=subprocess.DEVNULL, stdout=log_handle,
+            stderr=subprocess.STDOUT, start_new_session=True,
+        )
+        log_handle.close()
+        port = None
+        for _ in range(60):
+            port = host_port(plan)
+            if port:
+                url = f"http://127.0.0.1:{port}{plan['application']['readiness']}"
+                try:
+                    with urllib.request.urlopen(url, timeout=1) as response:
+                        if response.status < 400:
+                            print(f"Ready: http://127.0.0.1:{port}")
+                            write_generated_files(plan)
+                            sync_registry(plan, "running")
+                            return
+                except Exception:
+                    pass
+            time.sleep(0.5)
+        tail = paths["api_log"].read_text(errors="replace")[-8000:] if paths["api_log"].exists() else ""
+        raise SandboxError(f"Readiness timed out.\n{tail}")
+    write_generated_files(plan)
+    sync_registry(plan)
+
+
+def status(plan: dict) -> None:
+    paths = state_paths(plan)
+    state = observed_status(plan)
+    sync_registry(plan, state)
+    print(f"Sandbox: {plan['sandbox']}")
+    print(f"Worktree: {plan['root']}")
+    print(f"State: {state}")
+    if state != "running":
+        return
+    port = host_port(plan)
+    if port:
+        print(f"Application: http://127.0.0.1:{port}")
+    marker = plan["marker"] + "-keepalive"
+    print(f"Keepalive: {'running' if pid_matches(paths['keepalive_pid'], marker) and sandbox_process(plan, marker) else 'stopped'}")
+    api_marker = plan["marker"] + "-api"
+    print(f"API: {'running' if sandbox_process(plan, api_marker) else 'stopped'}")
+
+
+def stop(plan: dict) -> None:
+    paths = state_paths(plan)
+    stop_process_group(paths["keepalive_pid"], plan["marker"] + "-keepalive")
+    if sandbox_exists(plan) and observed_status(plan) == "running":
+        run(["sbx", "stop", plan["sandbox"]])
+    write_generated_files(plan)
+    sync_registry(plan, "stopped")
+    print(f"Stopped {plan['sandbox']}; state is preserved")
+
+
+def remove(plan: dict) -> None:
+    if sandbox_exists(plan):
+        stop(plan)
+        run(["sbx", "rm", "--force", plan["sandbox"]])
+    shutil.rmtree(plan["state_dir"], ignore_errors=True)
+    sync_registry(plan, "removed")
+    print(f"Removed sandbox runtime; worktree retained: {plan['root']}")
+
+
+def print_plan(plan: dict) -> None:
+    print(f"Worktree: {plan['root']}")
+    print(f"Profile: {plan['profile'] or 'auto-detected'}")
+    print(f"Sandbox: {plan['sandbox']}")
+    print(f"Template: {plan['template']}")
+    runtime = plan["runtime"]
+    print(f"Runtime: Node {runtime['node']}, pnpm {runtime['pnpm']}")
+    print(f"Services: {', '.join(plan['services']) or 'none'}")
+    for stage in ("setup", "migrate", "build"):
+        values = plan["commands"].get(stage, [])
+        print(f"{stage.title()}: {'; '.join(values) if values else 'none'}")
+    print(f"Start: {plan['commands'].get('start') or 'none'}")
+    print(f"Verify: {plan['commands'].get('verify') or 'none'}")
+    print(f"Readiness: {plan['application']['readiness']} on {plan['application']['port']}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="worktree-sandbox")
+    parser.add_argument("command", choices=("plan", "create", "up", "exec", "verify", "status", "stop", "remove"))
+    parser.add_argument("worktree", nargs="?", default=".")
+    parser.add_argument("remainder", nargs=argparse.REMAINDER)
+    args = parser.parse_args()
+    require("git")
+    root = git_root(Path(args.worktree).expanduser().resolve())
+    plan = infer_plan(root)
+    if args.command == "plan":
+        print_plan(plan)
+    elif args.command == "create":
+        create(plan)
+    elif args.command == "up":
+        up(plan)
+    elif args.command == "status":
+        status(plan)
+    elif args.command == "stop":
+        stop(plan)
+    elif args.command == "remove":
+        remove(plan)
+    elif args.command == "verify":
+        command = plan["commands"].get("verify")
+        if not command:
+            raise SandboxError("No verify command was detected or configured")
+        ensure_running(plan)
+        start_keepalive(plan)
+        sandbox_exec(plan, ["bash", "-lc", command])
+    elif args.command == "exec":
+        command = args.remainder
+        if command and command[0] == "--":
+            command = command[1:]
+        if not command:
+            raise SandboxError("exec requires a command after --")
+        ensure_running(plan)
+        start_keepalive(plan)
+        return sandbox_exec(plan, command, check=False).returncode
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except SandboxError as error:
+        print(f"worktree-sandbox: {error}", file=sys.stderr)
+        raise SystemExit(1)
