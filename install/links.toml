@@ -19,6 +19,11 @@ source = "behavior.md"
 target = "~/.grok/AGENTS.md"
 
 [[links]]
+name = "Antigravity CLI global instructions"
+source = "behavior.md"
+target = "~/.gemini/AGENTS.md"
+
+[[links]]
 name = "CodeGraph manager"
 source = "tools/codegraph-manager/codegraph-manager"
 target = "~/.local/bin/codegraph-manager"
@@ -31,3 +36,7 @@ target = "~/.local/bin/worktree-sandbox"
 [[skill_targets]]
 provider = "Claude Code"
 directory = "~/.claude/skills"
+
+[[skill_targets]]
+provider = "Antigravity CLI"
+directory = "~/.gemini/antigravity-cli/skills"

@@ -24,8 +24,8 @@ precedence. Generated indexes are local development infrastructure.
 
 ## Use it with agents
 
-- Codex, Claude, OpenCode, and Grok connect to the global `codegraph` MCP
-  server. Detailed tool guidance arrives through the MCP initialization
+- Codex, Claude, OpenCode, Grok, and Antigravity CLI connect to the global
+  `codegraph` MCP server. Detailed tool guidance arrives through the MCP initialization
   response. Each client's global instruction file links to the shared behavior
   file, which supplies the lifecycle defaults and command-line fallback.
 - In an indexed checkout, use `codegraph_explore` first for structural questions:

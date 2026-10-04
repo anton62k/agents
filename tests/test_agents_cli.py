@@ -50,6 +50,26 @@ class AgentsCliTest(unittest.TestCase):
             self.assertEqual(entry.resolve(), ROOT / "behavior.md")
             self.assertIn("OK", second.stdout)
             self.assertTrue((home / ".claude/skills/crit").is_symlink())
+            agy_entry = home / ".gemini/AGENTS.md"
+            self.assertTrue(agy_entry.is_symlink())
+            self.assertEqual(agy_entry.resolve(), ROOT / "behavior.md")
+            agy_skill = home / ".gemini/antigravity-cli/skills/crit"
+            self.assertTrue(agy_skill.is_symlink())
+            self.assertEqual(agy_skill.resolve(), ROOT / "skills/crit")
+
+    def test_agy_conflict_stops_before_any_write(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            conflict = home / ".gemini/AGENTS.md"
+            conflict.parent.mkdir(parents=True)
+            conflict.write_text("user-owned instructions\n")
+
+            result = run_cli(home, "install", "--skip-mcp")
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(conflict.read_text(), "user-owned instructions\n")
+            self.assertFalse(os.path.lexists(home / ".codex/AGENTS.md"))
+            self.assertIn("CONFLICT", result.stdout)
 
     def test_conflict_stops_before_any_write(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
