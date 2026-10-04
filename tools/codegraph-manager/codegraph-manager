@@ -21,6 +21,7 @@ GLOBAL_IGNORE = HOME / ".config" / "git" / "ignore"
 REGISTRY_ROOT = HOME / ".worktree" / ".registry"
 OPENCODE_CONFIG = HOME / ".config" / "opencode" / "opencode.jsonc"
 GROK_CONFIG = HOME / ".grok" / "config.toml"
+AGY_CONFIG = HOME / ".gemini" / "config" / "mcp_config.json"
 
 
 class ManagerError(RuntimeError):
@@ -265,6 +266,21 @@ def grok_configured() -> bool:
     )
 
 
+def agy_configured() -> bool:
+    if not AGY_CONFIG.is_file():
+        return False
+    try:
+        config = json.loads(AGY_CONFIG.read_text())
+    except (OSError, json.JSONDecodeError):
+        return False
+    server = config.get("mcpServers", {}).get("codegraph", {})
+    return (
+        not server.get("disabled", False)
+        and server.get("command") == "codegraph"
+        and server.get("args") == ["serve", "--mcp"]
+    )
+
+
 def bootstrap() -> None:
     ensure_global_ignore()
     run(["codegraph", "telemetry", "off"])
@@ -272,6 +288,7 @@ def bootstrap() -> None:
     claude = agent_configured("claude", ["mcp", "get", "codegraph"])
     opencode = opencode_configured()
     grok = grok_configured()
+    agy = agy_configured()
     if shutil.which("codex") is not None and not codex:
         run(["codex", "mcp", "add", "codegraph", "--", "codegraph", "serve", "--mcp"])
         codex = agent_configured("codex", ["mcp", "get", "codegraph"])
@@ -287,12 +304,16 @@ def bootstrap() -> None:
     if shutil.which("grok") is not None and not grok:
         run(["grok", "mcp", "add", "codegraph", "--", "codegraph", "serve", "--mcp"])
         grok = grok_configured()
+    if shutil.which("agy") is not None and not agy:
+        run(["agy", "mcp", "add", "codegraph", "codegraph", "serve", "--mcp"])
+        agy = agy_configured()
     print(f"CodeGraph {codegraph_version()}")
     print(f"Git excludes: {GLOBAL_IGNORE}")
     print(f"Codex MCP: {'configured' if codex else 'missing'}")
     print(f"Claude MCP: {'configured' if claude else 'missing'}")
     print(f"OpenCode MCP: {'configured' if opencode else 'missing'}")
     print(f"Grok MCP: {'configured' if grok else 'missing'}")
+    print(f"Antigravity CLI MCP: {'configured' if agy else 'missing'}")
 
 
 def main() -> int:

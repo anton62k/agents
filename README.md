@@ -3,9 +3,10 @@
 This repository is the versioned source of shared behavior, engineering
 guidelines, skills, project profiles, and local tools used by coding agents.
 
-The deployed checkout lives at `$HOME/.agents`. Codex, Claude Code, OpenCode, and
-Grok load the same `behavior.md` through provider-specific entry points. Detailed
-rules are loaded only when their topic applies.
+The deployed checkout lives at `$HOME/.agents`. Codex, Claude Code, OpenCode,
+Grok, and Antigravity CLI (`agy`) load the same `behavior.md` through
+provider-specific entry points. Detailed rules are loaded only when their topic
+applies.
 
 ## Layout
 
@@ -91,14 +92,36 @@ Never replace them with `rm -rf`.
 | Claude Code | `$HOME/.claude/CLAUDE.md` |
 | OpenCode | `$HOME/.config/opencode/AGENTS.md` |
 | Grok | `$HOME/.grok/AGENTS.md` |
+| Antigravity CLI (`agy`) | `$HOME/.gemini/AGENTS.md` |
 
 Each entry points to `$HOME/.agents/behavior.md`. Codex, OpenCode, and Grok
 discover the shared `$HOME/.agents/skills` directory directly. Custom skills are
-linked into Claude Code's native skill directory without replacing unrelated
-skills.
+linked into Claude Code's native skill directory and Antigravity CLI's
+`$HOME/.gemini/antigravity-cli/skills` directory without replacing unrelated skills.
 
 Provider configuration remains provider-owned. The installer does not replace
 configuration files, authentication, sessions, trust state, or caches.
+
+### Antigravity CLI permissions
+
+The installer connects shared instructions and skills and bootstraps CodeGraph
+MCP for `agy`. Permissions remain local configuration. To enable persistent YOLO
+mode, merge these keys into `$HOME/.gemini/antigravity-cli/settings.json`,
+preserving its other fields:
+
+```json
+{
+  "toolPermission": "always-proceed",
+  "artifactReviewPolicy": "always-proceed"
+}
+```
+
+Start a new `agy` session to load the settings and shared instructions. For a
+single invocation, `agy --dangerously-skip-permissions` auto-approves tool
+permission requests. The persistent settings above also disable artifact review
+prompts. See the official [CLI reference](https://antigravity.google/docs/cli/reference/),
+[global rules](https://antigravity.google/docs/rules/), and
+[skill locations](https://antigravity.google/docs/skills/).
 
 ## Developing changes
 
