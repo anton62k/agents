@@ -3,7 +3,8 @@ FROM ${BASE_IMAGE}
 
 ARG NODE_VERSION=26
 ARG NVM_VERSION=0.40.8
-ARG PNPM_VERSION=12.4.1
+ARG PACKAGE_MANAGER=pnpm
+ARG PACKAGE_MANAGER_VERSION=12.4.1
 
 USER root
 RUN apt-get update -qq \
@@ -22,12 +23,19 @@ RUN bash -euc 'unset NPM_CONFIG_PREFIX npm_config_prefix; \
     nvm alias default "$NODE_VERSION"; \
     node_root="$(dirname "$(dirname "$(nvm which "$NODE_VERSION")")")"; \
     ln -s "$node_root" "$NVM_DIR/current"; \
-    npm install --global --allow-scripts=pnpm "pnpm@$PNPM_VERSION"; \
+    if [ "$PACKAGE_MANAGER_VERSION" != "bundled" ]; then \
+      if [ "$PACKAGE_MANAGER" = "pnpm" ]; then \
+        npm install --global --allow-scripts=pnpm "pnpm@$PACKAGE_MANAGER_VERSION"; \
+      else \
+        npm install --global "$PACKAGE_MANAGER@$PACKAGE_MANAGER_VERSION"; \
+      fi; \
+    fi; \
     rm /tmp/install-nvm.sh'
 
 ENV PATH="/home/agent/.nvm/current/bin:${PATH}"
+ENV SANDBOX_PACKAGE_MANAGER=${PACKAGE_MANAGER}
 COPY --chown=agent:agent persistent-env.sh /home/agent/.worktree-sandbox-env.sh
 RUN cat /home/agent/.worktree-sandbox-env.sh >> /etc/sandbox-persistent.sh
 RUN node --version \
-    && pnpm --version \
-    && bash -lc 'nvm --version; node --version; pnpm --version'
+    && "$SANDBOX_PACKAGE_MANAGER" --version \
+    && bash -lc 'nvm --version; node --version; "$SANDBOX_PACKAGE_MANAGER" --version'
