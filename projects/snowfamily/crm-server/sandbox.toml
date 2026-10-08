@@ -1,0 +1,26 @@
+[runtime]
+node = "14.20.1"
+npm = "6.14.17"
+
+[resources]
+cpus = 4
+memory = "6g"
+
+[services.postgres]
+enabled = true
+image = "postgres:12.11-alpine"
+
+[commands]
+setup = ['bash "$SANDBOX_STATE_DIR/in-node" npm ci --ignore-scripts', 'bash "$SANDBOX_STATE_DIR/in-node" npm run prisma:generate']
+migrate = ['bash "$SANDBOX_STATE_DIR/in-node" npm run prisma:deploy', 'bash "$SANDBOX_STATE_DIR/in-node" npm run prisma:seed']
+build = ['bash "$SANDBOX_STATE_DIR/in-node" npm run build']
+start = 'bash "$SANDBOX_STATE_DIR/in-node" node dist/src/main.js'
+verify = 'bash "$SANDBOX_STATE_DIR/in-node" sh -lc "npm test -- --runInBand && npm run tsc && npm run build"'
+
+[application]
+port = 4000
+readiness = "/graphql?query=%7B__typename%7D"
+readinessTimeout = 180
+
+[env]
+NODE_ENV = "development"

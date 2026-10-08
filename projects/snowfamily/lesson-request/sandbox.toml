@@ -1,0 +1,27 @@
+[runtime]
+node = "14.20.1"
+npm = "6.14.17"
+
+[resources]
+cpus = 4
+memory = "6g"
+
+[commands]
+setup = ["npm ci --ignore-scripts", "npm run graphql-codegen"]
+build = ["NODE_ENV=production npm run build"]
+start = "./node_modules/.bin/next dev --hostname 0.0.0.0 --port 3000"
+verify = "NODE_ENV=test npm run test:ci -- --runInBand --modulePaths . && npm run tsc && NODE_ENV=production npm run build"
+
+[application]
+port = 3000
+readiness = "/"
+readinessTimeout = 180
+
+[env]
+NODE_ENV = "development"
+NEXT_TELEMETRY_DISABLED = "1"
+GRAPHQL_USERNAME = "sandbox-admin"
+GRAPHQL_PASSWORD = "sandbox-only-password"
+SECRET_COOKIE_PASSWORD = "snowfamily-local-sandbox-cookie-password-2026"
+ENABLED_REQUEST = "true"
+NEXT_PUBLIC_TIMEZONE = "Europe/Moscow"

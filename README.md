@@ -168,3 +168,7 @@ agents plan-adopt PATH       Compare an existing directory without modifying it
 
 All commands are non-destructive by default. A conflict is an error that requires
 review, not a reason to overwrite user data.
+
+## Project runtime profiles
+
+[Snowfamily](projects/snowfamily/README.md) runs its legacy npm/Node stack in isolated worktree sandboxes with synthetic PostgreSQL fixtures.
