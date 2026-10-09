@@ -26,6 +26,13 @@ They cover project discovery, worktree consent and setup, ignored files,
 dependencies, the local registry, and cleanup after merge.
 Read-only exploration and general discussion do not require this file.
 
+## Shared agent configuration
+
+Before changing `$HOME/.agents` or its repository, load `$HOME/.agents/AGENTS.md`.
+Ask the user before opening a pull request there, explain what it changes and why,
+and never merge it without an explicit request. Keep project-specific content out
+of it.
+
 ## Saved prompts and agent handoffs
 
 When asked to prepare a prompt for another agent, or find, execute, resume, or

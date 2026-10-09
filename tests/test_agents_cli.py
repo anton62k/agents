@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -11,9 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 CLI = ROOT / "bin/agents"
 
 
-def run_cli(home: Path, *args: str) -> subprocess.CompletedProcess[str]:
+def run_cli(home: Path, *args: str, root: Path = ROOT) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [str(CLI), "--root", str(ROOT), "--home", str(home), *args],
+        [str(CLI), "--root", str(root), "--home", str(home), *args],
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -27,6 +28,19 @@ class AgentsCliTest(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("OK       Repository content", result.stdout)
+
+    def test_check_rejects_project_profiles(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "agents"
+            shutil.copytree(ROOT, root, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+            profile = root / "projects/demo/app/sandbox.toml"
+            profile.parent.mkdir(parents=True)
+            profile.write_text("[commands]\n")
+
+            result = run_cli(Path(directory), "check", root=root)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("ERROR    projects/:", result.stdout)
 
     def test_plan_install_does_not_write(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

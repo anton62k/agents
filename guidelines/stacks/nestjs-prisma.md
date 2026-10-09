@@ -13,9 +13,6 @@ other projects to migrate.
   catch-all contracts directory in advance.
 - Keep a Prisma chain in named handler methods. Do not introduce a repository
   pattern.
-- In Unliteral Next, tables are available through `this.db.tables` for the current
-  transaction. Do not impose that accessor on other projects without checking
-  their context.
 - Call other features through their public API without importing their handlers.
 - New data models and mappings require a consumer, not assumptions about the future.
 - In projects using Oxlint and Oxfmt, use those tools. Do not add ESLint or a custom

@@ -23,7 +23,7 @@ import urllib.request
 
 HOME = Path.home()
 TOOL_ROOT = Path(__file__).resolve().parent
-PROFILE_ROOT = HOME / ".agents" / "projects"
+PROFILE_ROOT = HOME / ".worktree" / ".profiles"
 STATE_ROOT = HOME / ".worktree" / ".sandbox"
 REGISTRY_ROOT = HOME / ".worktree" / ".registry"
 NVM_VERSION = "0.40.8"

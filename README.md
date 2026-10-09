@@ -1,7 +1,7 @@
 # Shared agent configuration
 
 This repository is the versioned source of shared behavior, engineering
-guidelines, skills, project profiles, and local tools used by coding agents.
+guidelines, skills, and local tools used by coding agents.
 
 The deployed checkout lives at `$HOME/.agents`. Codex, Claude Code, OpenCode,
 Grok, and Antigravity CLI (`agy`) load the same `behavior.md` through
@@ -16,7 +16,6 @@ rules/               Worktrees, saved prompts, CodeGraph, and sandbox lifecycle
 guidelines/          Accepted engineering preferences and pending proposals
 providers/           Cross-provider invocation guidance
 skills/              Portable user-authored skills
-projects/            Portable per-project sandbox profiles
 tools/               Local lifecycle utilities
 install/links.toml   Paths managed by the installer
 bin/agents           Installation, validation, status, and update command

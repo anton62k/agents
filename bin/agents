@@ -226,6 +226,8 @@ def check_repository(root: Path) -> list[str]:
             errors.append("install/links.toml defines no managed links")
     except AgentsError as exc:
         errors.append(str(exc))
+    if (root / "projects").exists():
+        errors.append("projects/: keep project-specific profiles, scripts, and fixtures out of this repository")
     for path in iter_repository_files(root):
         relative = path.relative_to(root)
         if path.suffix in TEXT_SUFFIXES or path.name in {"agents", "codegraph-manager", "worktree-sandbox"}:

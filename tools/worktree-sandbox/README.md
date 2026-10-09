@@ -2,7 +2,7 @@
 
 `worktree-sandbox` manages one Docker Sandbox per Git worktree without adding
 files to the repository. It auto-detects Node.js and pnpm versions, reads an
-optional external project profile, generates runtime state under
+optional local project profile, generates runtime state under
 `$HOME/.worktree/.sandbox`, and mounts that state beside the worktree.
 
 ```bash
@@ -16,9 +16,8 @@ worktree-sandbox stop /path/to/worktree
 worktree-sandbox remove /path/to/worktree
 ```
 
-External profiles live at
-`$HOME/.agents/projects/<project>/<repo>/sandbox.toml`. Generated env,
-Compose, logs, and lifecycle state live at
+Local profiles live at `$HOME/.worktree/.profiles/<project>/<repo>/sandbox.toml`
+and are not versioned. Generated env, Compose, logs, and lifecycle state live at
 `$HOME/.worktree/.sandbox/<project>/<repo>/<task>`.
 
 The profile can define resources, PostgreSQL and Redis, setup/migration/build/

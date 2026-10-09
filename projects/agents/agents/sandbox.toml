@@ -1,5 +1,0 @@
-[commands]
-setup = []
-migrate = []
-build = []
-verify = "bin/agents check && python3 -m unittest discover -s tests -v && tests/integration_sandbox.sh"
