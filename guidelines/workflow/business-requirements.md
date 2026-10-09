@@ -103,8 +103,8 @@ sourced research under `research/` when appropriate.
 - `plan.md`: stages.
 - `product/`: purpose and vocabulary.
 - `requirements/`: REQs.
-- `adrs/`: concise decisions above SPECs, linked to REQs.
-- `specs/`: detailed system analysis.
+- `adrs/`: decisions, module APIs, and algorithms, linked to REQs.
+- `specs/`: optional detail that would make the parent ADR too large.
 - `ux/`: interface and interaction.
 - `research/`: research.
 - `templates/`: templates.
