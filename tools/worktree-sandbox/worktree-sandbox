@@ -23,11 +23,11 @@ import urllib.request
 
 HOME = Path.home()
 TOOL_ROOT = Path(__file__).resolve().parent
-PROFILE_ROOT = Path(os.environ.get("WORKTREE_SANDBOX_PROFILE_ROOT", HOME / ".agents" / "projects"))
+PROFILE_ROOT = HOME / ".agents" / "projects"
 STATE_ROOT = HOME / ".worktree" / ".sandbox"
 REGISTRY_ROOT = HOME / ".worktree" / ".registry"
 NVM_VERSION = "0.40.8"
-TEMPLATE_VERSION = "v2"
+TEMPLATE_VERSION = "v1"
 
 
 class SandboxError(RuntimeError):
@@ -107,19 +107,9 @@ def infer_plan(root: Path) -> dict:
         **package.get("devDependencies", {}),
     }
     node_file = root / ".nvmrc"
-    runtime_config = profile.get("runtime", {})
-    node_version = str(runtime_config.get("node", node_file.read_text().strip() if node_file.exists() else "22"))
-    declared_manager = package.get("packageManager")
-    if declared_manager:
-        manager, _, manager_version = declared_manager.partition("@")
-    elif (root / "package-lock.json").exists():
-        manager, manager_version = "npm", "bundled"
-    else:
-        manager, manager_version = "pnpm", "latest"
-    if manager not in ("npm", "pnpm"):
-        raise SandboxError(f"Unsupported package manager: {manager}")
-    manager_version = str(runtime_config.get(manager, manager_version))
-    install_command = "npm ci" if manager == "npm" else "pnpm install --frozen-lockfile"
+    node_version = node_file.read_text().strip() if node_file.exists() else "22"
+    manager = package.get("packageManager", "pnpm@latest")
+    pnpm_version = manager.split("@", 1)[1] if manager.startswith("pnpm@") else "latest"
 
     service_config = profile.get("services", {})
     services: list[str] = []
@@ -133,19 +123,19 @@ def infer_plan(root: Path) -> dict:
         services.append("redis")
 
     commands = profile.get("commands", {})
-    setup = commands.get("setup", [install_command])
+    setup = commands.get("setup", ["pnpm install --frozen-lockfile"])
     migrate = commands.get("migrate")
     if migrate is None and "db:migrate:deploy" in scripts:
-        migrate = [f"{manager} run db:migrate:deploy"]
+        migrate = ["pnpm db:migrate:deploy"]
     build = commands.get("build")
     if build is None and "build" in scripts:
-        build = [f"{manager} run build"]
+        build = ["pnpm build"]
     start = commands.get("start")
     if start is None and "start" in scripts:
-        start = f"{manager} run start"
+        start = "pnpm start"
     verify = commands.get("verify")
     if verify is None and "verify" in scripts:
-        verify = f"{manager} run verify"
+        verify = "pnpm verify"
 
     application = profile.get("application", {})
     app_port = int(application.get("port", 3000))
@@ -154,7 +144,7 @@ def infer_plan(root: Path) -> dict:
 
     path_hash = hashlib.sha256(str(root).encode()).hexdigest()[:8]
     sandbox_name = slug(f"{project}-{repo}-{task}", 48) + f"-{path_hash}"
-    template_tag = f"worktree-sandbox:node{node_version}-{manager}{manager_version}-{TEMPLATE_VERSION}"
+    template_tag = f"worktree-sandbox:node{node_version}-pnpm{pnpm_version}-{TEMPLATE_VERSION}"
     template_ref = f"docker.io/library/{template_tag}"
     state_dir = STATE_ROOT / project / repo / task
 
@@ -165,8 +155,7 @@ def infer_plan(root: Path) -> dict:
         "repo": repo,
         "task": task,
         "profile": str(profile_path) if profile_path.exists() else None,
-        "runtime": {"kind": "node", "node": node_version, "packageManager": manager, "packageManagerVersion": manager_version},
-        "service_config": service_config,
+        "runtime": {"kind": "node", "node": node_version, "pnpm": pnpm_version},
         "services": services,
         "commands": {
             "setup": list(setup or []),
@@ -175,7 +164,7 @@ def infer_plan(root: Path) -> dict:
             "start": start,
             "verify": verify,
         },
-        "application": {"port": app_port, "readiness": readiness, "readinessTimeout": int(application.get("readinessTimeout", 30))},
+        "application": {"port": app_port, "readiness": readiness},
         "env": env_values,
         "sandbox": sandbox_name,
         "template": template_ref,
@@ -208,7 +197,6 @@ def write_generated_files(plan: dict) -> None:
         env_values.setdefault("DATABASE_URL", "postgresql://sandbox:sandbox@127.0.0.1:55434/sandbox")
     if "redis" in plan["services"]:
         env_values.setdefault("REDIS_URL", "redis://127.0.0.1:56379")
-    env_values.setdefault("SANDBOX_STATE_DIR", str(paths["base"]))
     env_values.setdefault("HTTP_HOST", "0.0.0.0")
     env_values.setdefault("HTTP_PORT", str(plan["application"]["port"]))
     paths["env"].write_text("".join(f"{key}={value}\n" for key, value in sorted(env_values.items())))
@@ -218,7 +206,7 @@ def write_generated_files(plan: dict) -> None:
     if "postgres" in plan["services"]:
         sections.extend([
             "  postgres:",
-            f"    image: {plan['service_config'].get('postgres', {}).get('image', 'postgres:17-alpine')}",
+            "    image: postgres:17-alpine",
             "    restart: unless-stopped",
             "    environment:",
             "      POSTGRES_DB: sandbox",
@@ -273,7 +261,6 @@ def write_generated_files(plan: dict) -> None:
     paths["start"].write_text(start_script)
     paths["start"].chmod(0o700)
     paths["state"].write_text(json.dumps({**plan, "status": observed_status(plan)}, indent=2) + "\n")
-    paths["state"].chmod(0o600)
 
 
 def sbx_rows() -> dict[str, str]:
@@ -364,8 +351,7 @@ def ensure_template(plan: dict) -> None:
         "docker", "build",
         "--build-arg", f"NODE_VERSION={runtime['node']}",
         "--build-arg", f"NVM_VERSION={NVM_VERSION}",
-        "--build-arg", f"PACKAGE_MANAGER={runtime['packageManager']}",
-        "--build-arg", f"PACKAGE_MANAGER_VERSION={runtime['packageManagerVersion']}",
+        "--build-arg", f"PNPM_VERSION={runtime['pnpm']}",
         "--tag", plan["template_tag"],
         str(TOOL_ROOT / "template"),
     ])
@@ -492,26 +478,16 @@ def up(plan: dict) -> None:
         write_generated_files(plan)
     ensure_running(plan)
     start_keepalive(plan)
-    stop_application(plan)
     if plan["services"]:
         sandbox_exec(plan, compose_command(plan, "up", "--detach", "--wait"))
     for stage in ("setup", "migrate", "build"):
         for command in plan["commands"].get(stage, []):
             print(f"[{stage}] {command}")
             sandbox_exec(plan, ["bash", "-lc", command])
-    start_application(plan)
-
-
-def stop_application(plan: dict) -> None:
-    marker = plan["marker"] + "-api"
-    sandbox_exec(plan, ["pkill", "-f", f"^{marker} "], check=False, capture=True)
-
-
-def start_application(plan: dict) -> None:
     start = plan["commands"].get("start")
     if start:
         marker = plan["marker"] + "-api"
-        stop_application(plan)
+        sandbox_exec(plan, ["pkill", "-f", f"^{marker} "], check=False, capture=True)
         paths = state_paths(plan)
         command = (
             f"exec -a {shlex.quote(marker)} bash {shlex.quote(str(paths['start']))} "
@@ -525,8 +501,7 @@ def start_application(plan: dict) -> None:
         )
         log_handle.close()
         port = None
-        deadline = time.monotonic() + plan["application"]["readinessTimeout"]
-        while time.monotonic() < deadline:
+        for _ in range(60):
             port = host_port(plan)
             if port:
                 url = f"http://127.0.0.1:{port}{plan['application']['readiness']}"
@@ -544,17 +519,6 @@ def start_application(plan: dict) -> None:
         raise SandboxError(f"Readiness timed out.\n{tail}")
     write_generated_files(plan)
     sync_registry(plan)
-
-
-def restart(plan: dict) -> None:
-    if not sandbox_exists(plan):
-        raise SandboxError("Run up before restarting the application")
-    write_generated_files(plan)
-    ensure_running(plan)
-    start_keepalive(plan)
-    if plan["services"]:
-        sandbox_exec(plan, compose_command(plan, "up", "--detach", "--wait"))
-    start_application(plan)
 
 
 def status(plan: dict) -> None:
@@ -580,11 +544,7 @@ def stop(plan: dict) -> None:
     stop_process_group(paths["keepalive_pid"], plan["marker"] + "-keepalive")
     if sandbox_exists(plan) and observed_status(plan) == "running":
         run(["sbx", "stop", plan["sandbox"]])
-    if paths["state"].exists():
-        state = json.loads(paths["state"].read_text())
-        state["status"] = "stopped"
-        paths["state"].write_text(json.dumps(state, indent=2) + "\n")
-        paths["state"].chmod(0o600)
+    write_generated_files(plan)
     sync_registry(plan, "stopped")
     print(f"Stopped {plan['sandbox']}; state is preserved")
 
@@ -604,7 +564,7 @@ def print_plan(plan: dict) -> None:
     print(f"Sandbox: {plan['sandbox']}")
     print(f"Template: {plan['template']}")
     runtime = plan["runtime"]
-    print(f"Runtime: Node {runtime['node']}, {runtime['packageManager']} {runtime['packageManagerVersion']}")
+    print(f"Runtime: Node {runtime['node']}, pnpm {runtime['pnpm']}")
     print(f"Services: {', '.join(plan['services']) or 'none'}")
     for stage in ("setup", "migrate", "build"):
         values = plan["commands"].get(stage, [])
@@ -616,7 +576,7 @@ def print_plan(plan: dict) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(prog="worktree-sandbox")
-    parser.add_argument("command", choices=("plan", "create", "up", "restart", "exec", "verify", "status", "stop", "remove"))
+    parser.add_argument("command", choices=("plan", "create", "up", "exec", "verify", "status", "stop", "remove"))
     parser.add_argument("worktree", nargs="?", default=".")
     parser.add_argument("remainder", nargs=argparse.REMAINDER)
     args = parser.parse_args()
@@ -629,8 +589,6 @@ def main() -> int:
         create(plan)
     elif args.command == "up":
         up(plan)
-    elif args.command == "restart":
-        restart(plan)
     elif args.command == "status":
         status(plan)
     elif args.command == "stop":
