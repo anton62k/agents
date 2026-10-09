@@ -11,10 +11,12 @@ precedence. Load the project development rules whenever a Git worktree is used.
   infrastructure files to the repository.
 - Start with `worktree-sandbox plan <worktree>` and inspect the detected runtime,
   services, commands, profile, ports, and readiness path before creation.
-- Put project-specific settings outside the repository at
-  `$HOME/.agents/projects/<project>/<repo>/sandbox.toml`. Generated env,
-  Compose, logs, PIDs, and lifecycle state belong under
-  `$HOME/.worktree/.sandbox/<project>/<repo>/<task>`.
+- Put project-specific settings in a local profile at
+  `$HOME/.worktree/.profiles/<project>/<repo>/sandbox.toml`. Like the registry,
+  it is machine state and is not versioned. Generated env, Compose, logs, PIDs,
+  and lifecycle state belong under `$HOME/.worktree/.sandbox/<project>/<repo>/<task>`.
+- Never add project profiles, launchers, fixtures, or scripts to `$HOME/.agents`.
+  When a local profile is insufficient, discuss a repository-local workflow.
 - Use a repository-local workflow only when the repository already has one or
   the team explicitly wants sandbox infrastructure versioned with the project.
   Do not add Dockerfiles, Compose files, scripts, or CI jobs merely to let the
@@ -38,12 +40,12 @@ precedence. Load the project development rules whenever a Git worktree is used.
   reversible sandbox described in that proposal.
 - If the user already authorized the standard workflow, make the sandbox
   decision from these criteria, state the choice before creation, and proceed
-  without another question. An applicable project rule or tested external
+  without another question. An applicable project rule or tested local
   profile can make sandbox use the project default.
 - Keep ordinary CI independent of Docker Sandboxes. The sandbox runs the same
   repository verification gate locally; it does not need a dedicated CI job.
 - If automatic detection is sufficient, no profile is required. Create a small
-  external profile when service selection, commands, environment values,
+  local profile when service selection, commands, environment values,
   resources, application port, or readiness differs from the defaults.
 
 ## Keep one sandbox per worktree
@@ -76,7 +78,7 @@ precedence. Load the project development rules whenever a Git worktree is used.
 ## Agent workflow
 
 1. Create and register the worktree using the project development rules.
-2. Run `worktree-sandbox plan <worktree>`. Add or adjust its external profile
+2. Run `worktree-sandbox plan <worktree>`. Add or adjust its local profile
    only when the plan is incomplete or unsafe.
 3. Run `worktree-sandbox up <worktree>` and report the sandbox name and URL from
    `worktree-sandbox status <worktree>`.

@@ -9,6 +9,10 @@ branch as deployed configuration.
   separate Git worktree, validate it, and deliver it through a pull request.
 - Base every task worktree on the freshly fetched remote default branch. Keep the
   live checkout stable until the pull request is merged.
+- Ask the user before opening a pull request. Explain what it changes and why the
+  change belongs in this repository; open it only after explicit approval.
+- Never merge a pull request unless the user explicitly asks to merge that pull
+  request.
 - After merge, update the live checkout only by fast-forwarding its default branch,
   then run `bin/agents install` and `bin/agents doctor`.
 - Keep all repository content, user-facing output, comments, commit messages, and
@@ -31,9 +35,12 @@ branch as deployed configuration.
 
 ## Repository boundaries
 
-- Keep portable behavior, rules, guidelines, skills, project profiles, and tools in
-  Git. Keep credentials, prompts, sessions, indexes, registries, backups, and machine
-  state outside the repository.
+- Keep portable behavior, rules, guidelines, skills, and tools in Git. Keep
+  credentials, prompts, sessions, indexes, registries, sandbox profiles, backups,
+  and machine state outside the repository.
+- Do not add content tied to one project: profiles, launchers, fixtures, scripts,
+  rules, or examples. Keep it in the project repository or in local state such as
+  `$HOME/.worktree/.profiles`. `bin/agents check` rejects a `projects/` directory.
 - Put unaccepted generalizations under `guidelines/proposals/`. Promote them only
   after user acceptance and keep project-specific decisions in the project repo.
 - Keep `behavior.md` small and route to detailed files only when their topic applies.
